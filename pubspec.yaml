@@ -1,5 +1,5 @@
 name: whatnext
-description: A new Flutter project.
+description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -28,6 +28,21 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+  firebase_core: ^0.7.0
+  firebase_auth: ^0.20.1
+  firebase_dynamic_links: ^0.7.0+1
+  flutter_signin_button: ^1.1.0
+  google_sign_in: ^4.5.9
+  get_it: ^5.0.6
+  provider: ^4.3.3
+  stacked: ^1.9.1+2
+  provider_architecture: ^1.1.1+1
+  stacked_themes: ^0.2.2+2
+  cloud_firestore: ^0.16.0+1
+  tmdb_api: ^1.2.5
+  dio: ^3.0.10
+  intl: ^0.16.1
+
 
 dev_dependencies:
   flutter_test:
@@ -45,8 +60,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

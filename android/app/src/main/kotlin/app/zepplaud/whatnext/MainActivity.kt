@@ -1,4 +1,4 @@
-package com.example.whatnext
+package app.zepplaud.whatnext
 
 import io.flutter.embedding.android.FlutterActivity
 

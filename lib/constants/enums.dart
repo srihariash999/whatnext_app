@@ -1,0 +1,1 @@
+enum FriendStatus { available, following }
