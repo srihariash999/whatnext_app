@@ -596,51 +596,71 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                 )
               : SingleChildScrollView(
                   child: Column(
-                    children: model.searchResults
-                        .map(
-                          (Movie result) => Container(
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 12.0, bottom: 12.0, left: 12.0),
-                              child: ListTile(
-                                onTap: () {
-                                  model.onMovieTap(result.id);
-                                },
-                                title: Text(
-                                  result.title,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline3
-                                      .copyWith(fontWeight: FontWeight.w400),
-                                ),
-                                subtitle: Text(
-                                  '${formatter.format(DateTime.parse(result.releaseDate))}',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline5,
-                                ),
-                                trailing: Container(
-                                  height: 180.0,
-                                  width: 150.0,
-                                  child: result.posterPath != null
-                                      ? Image.network(
-                                          "https://image.tmdb.org/t/p/w500${result.posterPath}",
-                                          fit: BoxFit.contain,
-                                        )
-                                      : Container(
-                                          child: Icon(
-                                            Icons.not_interested,
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            size: 22.0,
-                                          ),
-                                        ),
-                                ),
-                              ),
+                    children:
+                        model.searchResults.map((Map<String, dynamic> result) {
+                      String date;
+                      if (result['media_type'] == 'movie') {
+                        if (result['item'].releaseDate.toString() != "null" &&
+                            result['item'].releaseDate.toString() != "") {
+                          date = result['item'].releaseDate;
+                        } else {
+                          date = "${DateTime.now()}";
+                        }
+                      } else {
+                        if (result['item'].firstAirDate.toString() != "null" &&
+                            result['item'].firstAirDate.toString() != "") {
+                          date = result['item'].firstAirDate;
+                        } else {
+                          date = "${DateTime.now()}";
+                        }
+                      }
+
+                      return Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              top: 12.0, bottom: 12.0, left: 12.0),
+                          child: ListTile(
+                            onTap: () {
+                              model.onMovieTap(
+                                result['item'].id,
+                                result['media_type'],
+                              );
+                            },
+                            title: Text(
+                              result['media_type'] == 'movie'
+                                  ? result['item'].title
+                                  : result['item'].originalName,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w400),
+                            ),
+                            subtitle: Text(
+                              '${formatter.format(DateTime.parse(date))}',
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline5,
+                            ),
+                            trailing: Container(
+                              height: 180.0,
+                              width: 150.0,
+                              child: result['item'].posterPath != null
+                                  ? Image.network(
+                                      "https://image.tmdb.org/t/p/w500${result['item'].posterPath}",
+                                      fit: BoxFit.contain,
+                                    )
+                                  : Container(
+                                      child: Icon(
+                                        Icons.not_interested,
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        size: 22.0,
+                                      ),
+                                    ),
                             ),
                           ),
-                        )
-                        .toList(),
+                        ),
+                      );
+                    }).toList(),
                   ),
                 );
         });
