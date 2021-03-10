@@ -84,6 +84,12 @@ class HomeViewModel extends BaseModel {
   }
 
   navigateToFriends() {
+    print(" friends");
+    _navigationService.navigateTo(ThemesViewRoute);
+  }
+
+  navigateToTheme() {
+    print(" theme");
     _navigationService.navigateTo(FriendsViewRoute);
   }
 
@@ -115,9 +121,7 @@ class HomeViewModel extends BaseModel {
 
   fetchSearchReults(String query) async {
     if (_prevQuery != query) {
-     
       var sRes = await _tmdbService.fetchSearchResultsFromTmdb(query);
-     
 
       for (var i in sRes['results']) {
         _searchResults.add(

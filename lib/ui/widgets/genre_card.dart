@@ -20,7 +20,7 @@ class GenreCard extends StatelessWidget {
       ),
       child: Text(
         genre,
-        style: TextStyle(color: kTextColor.withOpacity(0.8), fontSize: 16),
+        style: Theme.of(context).primaryTextTheme.headline4,
       ),
     );
   }

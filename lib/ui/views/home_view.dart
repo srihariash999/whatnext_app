@@ -109,6 +109,7 @@ class HomeView extends StatelessWidget {
                 verticalSpaceMedium,
                 AnimatedCrossFade(
                   duration: Duration(milliseconds: 600),
+                  reverseDuration: Duration(milliseconds: 600),
                   crossFadeState: model.tabType == 'movie'
                       ? CrossFadeState.showFirst
                       : CrossFadeState.showSecond,
@@ -276,7 +277,7 @@ class DrawerWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
-                          onTap: model.navigateToFriends,
+                          onTap: model.navigateToTheme,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
@@ -288,6 +289,26 @@ class DrawerWidget extends StatelessWidget {
                               ),
                               horizontalSpaceMedium,
                               Icon(Icons.people_alt_outlined,
+                                  color: Theme.of(context).primaryColorLight),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: model.navigateToFriends,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                "Themes",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline2,
+                              ),
+                              horizontalSpaceMedium,
+                              Icon(Icons.color_lens,
                                   color: Theme.of(context).primaryColorLight),
                             ],
                           ),

@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:stacked_themes/stacked_themes.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
@@ -17,5 +16,4 @@ void setupLocator() {
   locator.registerLazySingleton(() => TmdbService());
   locator.registerLazySingleton(() => AuthenticationService());
   locator.registerLazySingleton(() => FirestoreService());
-  locator.registerSingleton(() => ThemeService.getInstance());
 }

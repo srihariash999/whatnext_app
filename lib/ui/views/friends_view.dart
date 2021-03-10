@@ -49,22 +49,29 @@ class FriendsView extends StatelessWidget {
                           controller: _searchController,
                           onChanged: (val) => model.searchFilter(val),
                           decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            filled: true,
                             hintText: "Search a user",
+                            hintStyle:
+                                Theme.of(context).primaryTextTheme.headline4,
                             suffixIcon: InkWell(
                               onTap: () {
                                 _searchController.clear();
                                 model.searchFilter("");
                               },
-                              child: Icon(Icons.clear),
+                              child: Icon(
+                                Icons.clear,
+                                color: Theme.of(context).primaryColorLight,
+                              ),
                             ),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).primaryColorLight,
+                              ),
                               borderRadius: BorderRadius.circular(18.0),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white60),
+                              borderSide: BorderSide(
+                                color: Theme.of(context).primaryColorLight,
+                              ),
                               borderRadius: BorderRadius.circular(18.0),
                             ),
                           ),

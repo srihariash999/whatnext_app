@@ -8,4 +8,5 @@ const String MovieDetailsViewRoute = "MovieDetailsView";
 const String TvShowDetailsViewRoute = "TvShowDetailsView";
 const String PersonProfileViewRoute = "PersonProfileView";
 const String StartupViewRoute = "StartupView";
+const String ThemesViewRoute = "ThemesView";
 // Generate the views here
