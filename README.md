@@ -54,7 +54,7 @@ $ flutter run
 
 ## Interested in contributing ?
 
-See the [contributor's guide!](CONTRIBUTING.md)
+See the [contributor's guide!](contributing.md)
 
 ## Questions or issues ?
 
