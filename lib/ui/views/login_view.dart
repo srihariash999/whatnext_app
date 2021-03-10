@@ -72,6 +72,14 @@ class LoginView extends StatelessWidget {
                 print(" wants to signup");
                 model.navigateToSignUp();
               },
+            ),
+            verticalSpaceMedium,
+            TextLink(
+              'Reset password',
+              onPressed: () {
+                print(" Reset password");
+                model.navigateToResetView();
+              },
             )
           ],
         ),

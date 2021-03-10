@@ -38,11 +38,37 @@ class LoginViewModel extends BaseModel {
     }
   }
 
+  Future resetPassword({@required String email}) async {
+    if (email.length < 1) {
+      await _dialogService.showDialog(
+        title: 'Login Failure',
+        description: 'Email should not be null',
+      );
+    } else {
+      setBusy(true);
+      await _authenticationService.resetPassword(email);
+      setBusy(false);
+      await _dialogService.showDialog(
+        title: 'Reset password',
+        description:
+            'A link to reset your password has been sent successfully to your email',
+      );
+    }
+  }
+
   navigateToSignUp() {
     try {
       _navigationService.navigateTo(SignUpViewRoute);
     } catch (e) {
       print(" cannot navigate to signup: $e");
+    }
+  }
+
+  navigateToResetView() {
+    try {
+      _navigationService.navigateTo(ResetPasswordViewRoute);
+    } catch (e) {
+      print(" cannot navigate to reset view: $e");
     }
   }
 }
