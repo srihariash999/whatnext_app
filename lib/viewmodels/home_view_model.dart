@@ -19,8 +19,11 @@ class HomeViewModel extends BaseModel {
   int _popPage = 1;
   int _topPage = 1;
 
-  int _tab = 0;
-  int get currentTab => _tab;
+  int _popPage2 = 1;
+  int _topPage2 = 1;
+
+  String _tabType = "";
+  String get tabType => _tabType;
 
   String _prevQuery = "";
 
@@ -39,11 +42,23 @@ class HomeViewModel extends BaseModel {
   List<Movie> _topRatedMoviesList = [];
   List<Movie> get topRatedMoviesList => _topRatedMoviesList;
 
-  onInit() async {
-    setBusy(true);
+  List<TvShow> _popularTvShowsList = [];
+  List<TvShow> get popularTvShowsList => _popularTvShowsList;
 
+  List<TvShow> _topRatedTvShowsList = [];
+  List<TvShow> get topRatedTvShowsList => _topRatedTvShowsList;
+
+  Future<void> onInit() async {
+    setBusy(true);
+    _tabType = 'movie';
     fetchPopularMovies();
+    setState();
     fetchTopRatedMovies();
+    setState();
+    fetchPopularTvShows();
+    setState();
+    fetchTopRatedTvShows();
+    setState();
     setBusy(false);
   }
 
@@ -57,23 +72,15 @@ class HomeViewModel extends BaseModel {
     }
   }
 
-  // final _snackbarService = locator<SnackbarService>();
-
-  Future logout() async {
-    bool logoutResult = await _authenticationService.logout();
-
-    if (logoutResult) {
-      // _snackbarService.showSnackBar(message: "Logout Successful !");
-      // await Future.delayed(Duration(seconds: 1));
-      _navigationService.navigateReplacement(LoginViewRoute);
-    } else {
-      // _snackbarService.showSnackBar(message: "Could not logout !");
-    }
+  switchTabs(String tabName) {
+    _tabType = tabName;
+    setState();
   }
 
-  changeTab(int newTab) {
-    _tab = newTab;
-    setState();
+  Future logout() async {
+    await _authenticationService.logout();
+
+    _navigationService.navigateReplacement(LoginViewRoute);
   }
 
   navigateToFriends() {
@@ -90,18 +97,27 @@ class HomeViewModel extends BaseModel {
 
   fetchPopularMovies() async {
     var s = await _tmdbService.fetchPopularMoviesFromTmdb(_popPage);
-    print("s : $s");
+
     for (var i in s['results']) {
       _popularMoviesList.add(Movie.fromJson(i));
       setState();
     }
   }
 
+  fetchPopularTvShows() async {
+    var s = await _tmdbService.fetchPopularTvShowsFromTmdb(_popPage2);
+
+    for (var i in s['results']) {
+      _popularTvShowsList.add(TvShow.fromJson(i));
+      setState();
+    }
+  }
+
   fetchSearchReults(String query) async {
     if (_prevQuery != query) {
-      print(" res");
+     
       var sRes = await _tmdbService.fetchSearchResultsFromTmdb(query);
-      print(" sres : $sRes");
+     
 
       for (var i in sRes['results']) {
         _searchResults.add(
@@ -125,11 +141,18 @@ class HomeViewModel extends BaseModel {
       _topRatedMoviesList.add(Movie.fromJson(i));
       setState();
     }
-
-    print(" toprated movies : $_topRatedMoviesList");
   }
 
-  onMovieTap(int id, String mediaType) {
+  fetchTopRatedTvShows() async {
+    var s = await _tmdbService.fetchTopRatedTvShowsFromTmdb(_topPage2);
+
+    for (var i in s['results']) {
+      _topRatedTvShowsList.add(TvShow.fromJson(i));
+      setState();
+    }
+  }
+
+  onItemTap(int id, String mediaType) {
     if (mediaType == "movie") {
       _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
     } else {
@@ -140,9 +163,19 @@ class HomeViewModel extends BaseModel {
   loadMorePopularMovies() async {
     _popPage++;
     var s = await _tmdbService.fetchPopularMoviesFromTmdb(_popPage);
-    print("s : $s");
+
     for (var i in s['results']) {
       _popularMoviesList.add(Movie.fromJson(i));
+      setState();
+    }
+  }
+
+  loadMorePopularTvShows() async {
+    _popPage2++;
+    var s = await _tmdbService.fetchPopularTvShowsFromTmdb(_popPage2);
+
+    for (var i in s['results']) {
+      _popularTvShowsList.add(TvShow.fromJson(i));
       setState();
     }
   }
@@ -153,6 +186,16 @@ class HomeViewModel extends BaseModel {
     print("s : $s");
     for (var i in s['results']) {
       _topRatedMoviesList.add(Movie.fromJson(i));
+      setState();
+    }
+  }
+
+  loadMoreTopRatedTvShows() async {
+    _topPage2++;
+    var s = await _tmdbService.fetchPopularTvShowsFromTmdb(_topPage2);
+
+    for (var i in s['results']) {
+      _topRatedTvShowsList.add(TvShow.fromJson(i));
       setState();
     }
   }

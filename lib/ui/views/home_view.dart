@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/movie.dart';
-import 'package:whatnext/ui/shared/shared_styles.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:whatnext/models/tv_show.dart';
+
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 // import 'package:whatnext/ui/views/movie_details_view.dart';
 
@@ -27,272 +27,198 @@ class HomeView extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         } else {
-          if (kIsWeb) {
-            return Container(
-              child: Scaffold(
-                body: Column(
+          return Scaffold(
+            // key: locator<SnackbarService>().scaffoldKey,
+            backgroundColor: Theme.of(context).backgroundColor,
+            appBar: AppBar(
+              backgroundColor: Theme.of(context).primaryColor,
+              title: Container(
+                height: 60.0,
+                width: 140.0,
+                padding: EdgeInsets.all(4.0),
+                child: Image.asset('assets/whatnext_logo.png'),
+              ),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.search,
+                      color: Theme.of(context).primaryColorLight),
+                  onPressed: () => showSearch(
+                    context: context,
+                    delegate: CustomSearchDelegate(),
+                  ),
+                )
+              ],
+              elevation: 0.0,
+            ),
+
+            drawer: DrawerWidget(),
+            body: Column(
+              children: [
+                verticalSpaceSmall,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    verticalSpaceMedium,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            model.navigateToWatchList();
-                          },
-                          child: Container(
-                            child: Text(
-                              'Watchlist',
-                              style: namesTextStyle.copyWith(
-                                  fontSize: 20.0, fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        horizontalSpaceMedium,
-                        InkWell(
-                          onTap: () {
-                            model.navigateToFriends();
-                          },
-                          child: Container(
-                            child: Text(
-                              'Friends',
-                              style: namesTextStyle.copyWith(
-                                  fontSize: 20.0, fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        horizontalSpaceMedium,
-                        InkWell(
-                          onTap: () {
-                            model.navigateToProfile();
-                          },
-                          child: Container(
-                            child: Text(
-                              'Profile',
-                              style: namesTextStyle.copyWith(
-                                  fontSize: 20.0, fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        horizontalSpaceMedium,
-                        InkWell(
-                          onTap: model.logout,
-                          child: Container(
-                            child: Text(
-                              'Logout',
-                              style: namesTextStyle.copyWith(
-                                  fontSize: 20.0, fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                        ),
-                        horizontalSpaceMedium,
-                      ],
-                    ),
-                    verticalSpaceMedium,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            model.changeTab(0);
-                          },
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Popular Movies',
-                                style: namesTextStyle.copyWith(
-                                    decoration: model.currentTab == 0
-                                        ? TextDecoration.underline
-                                        : TextDecoration.none,
-                                    decorationThickness:
-                                        model.currentTab == 0 ? 2.0 : 0.0,
-                                    decorationColor: model.currentTab == 0
-                                        ? Colors.red[400]
-                                        : Colors.white,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                        ),
-                        horizontalSpaceMedium,
-                        InkWell(
-                          onTap: () {
-                            model.changeTab(1);
-                          },
-                          child: Container(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                'Top Rated Movies',
-                                style: namesTextStyle.copyWith(
-                                    decoration: model.currentTab == 1
-                                        ? TextDecoration.underline
-                                        : TextDecoration.none,
-                                    decorationThickness:
-                                        model.currentTab == 1 ? 2.0 : 0.0,
-                                    decorationColor: model.currentTab == 1
-                                        ? Colors.red[400]
-                                        : Colors.white,
-                                    fontSize: 20.0,
-                                    fontWeight: FontWeight.w400),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Expanded(
+                    InkWell(
+                      onTap: () {
+                        model.switchTabs('movie');
+                      },
                       child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Movies',
+                            style: Theme.of(context).primaryTextTheme.headline1,
+                          ),
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.easeInCirc,
+                            height: 4.0,
+                            width: 35.0,
+                            color: model.tabType == 'movie'
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).backgroundColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        model.switchTabs('tv');
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            'Tv Shows',
+                            style: Theme.of(context).primaryTextTheme.headline1,
+                          ),
+                          AnimatedContainer(
+                            duration: Duration(milliseconds: 400),
+                            curve: Curves.easeInCirc,
+                            height: 4.0,
+                            width: 35.0,
+                            color: model.tabType == 'tv'
+                                ? Theme.of(context).primaryColorLight
+                                : Theme.of(context).backgroundColor,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                verticalSpaceMedium,
+                AnimatedCrossFade(
+                  duration: Duration(milliseconds: 600),
+                  crossFadeState: model.tabType == 'movie'
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  firstCurve: Curves.easeInCirc,
+                  secondCurve: Curves.easeInCirc,
+                  firstChild: RefreshIndicator(
+                    onRefresh: model.onInit,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.76,
+                      child: ListView(
                         children: [
                           verticalSpaceSmall,
-                          Builder(
-                            builder: (context) => MaterialButton(
-                              child: Container(
-                                color: Colors.grey[200],
-                                padding:
-                                    EdgeInsets.only(top: 12.0, bottom: 12.0),
-                                width: 300.0,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(left: 16.0),
-                                      child: Text('Search'),
-                                    ),
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.only(right: 16.0),
-                                      child: Icon(Icons.search),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              onPressed: () => showSearch(
-                                context: context,
-                                delegate: CustomSearchDelegate(),
-                              ),
+                          Container(
+                            padding: EdgeInsets.only(left: 16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Popular Movies",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
                             ),
                           ),
                           verticalSpaceSmall,
-                          Expanded(
-                            child: Container(
-                              child: model.currentTab == 0
-                                  ? MovieGridWidget(
-                                      moviesList: model.popularMoviesList,
-                                      onMovieTap: model.onMovieTap,
-                                      loadMore: model.loadMorePopularMovies,
-                                    )
-                                  : Container(
-                                      child: MovieGridWidget(
-                                        moviesList: model.topRatedMoviesList,
-                                        onMovieTap: model.onMovieTap,
-                                        loadMore: model.loadMoreTopRatedMovies,
-                                      ),
-                                    ),
+                          Container(
+                            height: 300,
+                            width: 200.0,
+                            child: MovieListWidget(
+                              moviesList: model.popularMoviesList,
+                              onMovieTap: model.onItemTap,
+                              loadMore: model.loadMorePopularMovies,
+                              direction: Axis.horizontal,
+                            ),
+                          ),
+                          verticalSpaceSmall,
+                          Container(
+                            padding: EdgeInsets.only(left: 16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Top Rated Movies",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                          ),
+                          verticalSpaceSmall,
+                          Container(
+                            height: 300,
+                            child: MovieListWidget(
+                              moviesList: model.topRatedMoviesList,
+                              direction: Axis.horizontal,
+                              onMovieTap: model.onItemTap,
+                              loadMore: model.loadMoreTopRatedMovies,
                             ),
                           ),
                         ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
+                  secondChild: RefreshIndicator(
+                    onRefresh: model.onInit,
+                    child: Container(
+                      height: MediaQuery.of(context).size.height * 0.76,
+                      child: ListView(
+                        children: [
+                          verticalSpaceSmall,
+                          Container(
+                            padding: EdgeInsets.only(left: 16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Popular Tv Shows",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                          ),
+                          verticalSpaceSmall,
+                          Container(
+                            height: 300,
+                            width: 200.0,
+                            child: TvShowListWidget(
+                              tvShowsList: model.popularTvShowsList,
+                              onTvShowTap: model.onItemTap,
+                              loadMore: model.loadMorePopularTvShows,
+                              direction: Axis.horizontal,
+                            ),
+                          ),
+                          verticalSpaceSmall,
+                          Container(
+                            padding: EdgeInsets.only(left: 16.0),
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Top Rated Tv Shows",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                          ),
+                          verticalSpaceSmall,
+                          Container(
+                            height: 300,
+                            child: TvShowListWidget(
+                                tvShowsList: model.topRatedTvShowsList,
+                                direction: Axis.horizontal,
+                                onTvShowTap: model.onItemTap,
+                                loadMore: model.loadMoreTopRatedTvShows),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            );
-          } else {
-            return Scaffold(
-              // key: locator<SnackbarService>().scaffoldKey,
-              backgroundColor: Theme.of(context).backgroundColor,
-              appBar: AppBar(
-                backgroundColor: Theme.of(context).primaryColor,
-                actions: [
-                  Container(
-                    padding: EdgeInsets.all(4.0),
-                    child: Image.asset('assets/whatnext_logo.png'),
-                  )
-                ],
-                elevation: 0.0,
-              ),
-
-              drawer: DrawerWidget(),
-              body: ListView(
-                children: [
-                  verticalSpaceSmall,
-                  Builder(
-                    builder: (context) => MaterialButton(
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.grey[200],
-                          borderRadius: BorderRadius.circular(16.0),
-                        ),
-                        padding: EdgeInsets.only(top: 12.0, bottom: 12.0),
-                        width: 300.0,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 16.0),
-                              child: Text('Search'),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(right: 16.0),
-                              child: Icon(Icons.search),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onPressed: () => showSearch(
-                        context: context,
-                        delegate: CustomSearchDelegate(),
-                      ),
-                    ),
-                  ),
-                  verticalSpaceSmall,
-                  Container(
-                    padding: EdgeInsets.only(left: 16.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Popular Movies",
-                      style: Theme.of(context).primaryTextTheme.headline2,
-                    ),
-                  ),
-                  verticalSpaceSmall,
-                  Container(
-                    height: 300,
-                    width: 200.0,
-                    child: MovieListWidget(
-                      moviesList: model.popularMoviesList,
-                      onMovieTap: model.onMovieTap,
-                      loadMore: model.loadMorePopularMovies,
-                      direction: Axis.horizontal,
-                    ),
-                  ),
-                  verticalSpaceSmall,
-                  Container(
-                    padding: EdgeInsets.only(left: 16.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Top Rated Movies",
-                      style: Theme.of(context).primaryTextTheme.headline2,
-                    ),
-                  ),
-                  verticalSpaceSmall,
-                  Container(
-                    height: 300,
-                    child: MovieListWidget(
-                      moviesList: model.topRatedMoviesList,
-                      direction: Axis.horizontal,
-                      onMovieTap: model.onMovieTap,
-                      loadMore: model.loadMoreTopRatedMovies,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
+              ],
+            ),
+          );
         }
       },
     );
@@ -498,31 +424,31 @@ class MovieListWidget extends StatelessWidget {
   }
 }
 
-class MovieGridWidget extends StatelessWidget {
-  final List moviesList;
-  final Function onMovieTap;
+class TvShowListWidget extends StatelessWidget {
+  final List tvShowsList;
+  final Function onTvShowTap;
   final Function loadMore;
-
-  const MovieGridWidget({
-    @required this.moviesList,
-    @required this.onMovieTap,
+  final Axis direction;
+  const TvShowListWidget({
+    @required this.tvShowsList,
+    @required this.onTvShowTap,
     @required this.loadMore,
+    @required this.direction,
     Key key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      gridDelegate:
-          SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 5),
-      itemCount: moviesList.length + 1,
+    return ListView.builder(
+      scrollDirection: direction,
+      itemCount: tvShowsList.length + 1,
       itemBuilder: (context, ind) {
-        if (ind < moviesList.length) {
-          Movie popMovie = moviesList[ind];
+        if (ind < tvShowsList.length) {
+          TvShow popTvShow = tvShowsList[ind];
           return InkWell(
             onTap: () {
-              print(" tapped on ${moviesList[ind].id} ");
-              onMovieTap(moviesList[ind].id, 'movie');
+              print(" tapped on ${tvShowsList[ind].id} ");
+              onTvShowTap(tvShowsList[ind].id, 'tv');
             },
             child: Container(
               height: 300.0,
@@ -536,7 +462,7 @@ class MovieGridWidget extends StatelessWidget {
                       height: 260.0,
                       width: 200.0,
                       child: Image.network(
-                        "https://image.tmdb.org/t/p/w500${popMovie.posterPath}",
+                        "https://image.tmdb.org/t/p/w500${popTvShow.posterPath}",
                         fit: BoxFit.contain,
                       ),
                     ),
@@ -544,9 +470,9 @@ class MovieGridWidget extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      popMovie.title,
+                      popTvShow.originalName,
                       textAlign: TextAlign.justify,
-                      style: namesTextStyle,
+                      style: Theme.of(context).primaryTextTheme.headline4,
                     ),
                   ),
                 ],
@@ -555,10 +481,18 @@ class MovieGridWidget extends StatelessWidget {
           );
         } else {
           return Container(
+            height: 260.0,
+            width: 150.0,
             child: IconButton(
               icon: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Icon(Icons.arrow_right), Text("Load More")],
+                children: [
+                  Icon(Icons.arrow_right,
+                      color: Theme.of(context).primaryColorLight),
+                  Text(
+                    "Load More",
+                    style: Theme.of(context).primaryTextTheme.headline5,
+                  )
+                ],
               ),
               onPressed: () {
                 loadMore();
@@ -621,7 +555,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                               top: 12.0, bottom: 12.0, left: 12.0),
                           child: ListTile(
                             onTap: () {
-                              model.onMovieTap(
+                              model.onItemTap(
                                 result['item'].id,
                                 result['media_type'],
                               );
