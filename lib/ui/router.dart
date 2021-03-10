@@ -10,6 +10,7 @@ import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 import 'package:whatnext/ui/views/tv_show_details.dart';
 import 'package:whatnext/ui/views/watchlist_view.dart';
+import 'package:whatnext/ui/views/reset_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   final arguments = settings.arguments;
@@ -69,6 +70,11 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: ProfileView(),
+      );
+    case ResetPasswordViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: ResetView(),
       );
     default:
       return MaterialPageRoute(
