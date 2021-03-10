@@ -110,4 +110,9 @@ class AuthenticationService {
 
     return user != null;
   }
+
+  //Service function to rest password uusing email
+  Future<void> resetPassword(String email) async {
+    await _firebaseAuth.sendPasswordResetEmail(email: email);
+  }
 }
