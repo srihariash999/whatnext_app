@@ -78,12 +78,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: ThemesView(),
+      );
 
     case ResetPasswordViewRoute:
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: ResetView(),
-
       );
     default:
       return MaterialPageRoute(
