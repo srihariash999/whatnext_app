@@ -33,8 +33,8 @@ class _BusyButtonState extends State<BusyButton> {
               vertical: widget.busy ? 10 : 10),
           decoration: BoxDecoration(
             color: widget.enabled
-                ? Theme.of(context).accentColor
-                : Theme.of(context).accentColor,
+                ? Theme.of(context).primaryColorLight
+                : Theme.of(context).primaryColorLight,
             borderRadius: BorderRadius.circular(5),
           ),
           child: !widget.busy

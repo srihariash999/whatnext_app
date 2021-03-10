@@ -85,12 +85,12 @@ class HomeViewModel extends BaseModel {
 
   navigateToFriends() {
     print(" friends");
-    _navigationService.navigateTo(ThemesViewRoute);
+    _navigationService.navigateTo(FriendsViewRoute);
   }
 
   navigateToTheme() {
     print(" theme");
-    _navigationService.navigateTo(FriendsViewRoute);
+    _navigationService.navigateTo(ThemesViewRoute);
   }
 
   navigateToProfile() {
