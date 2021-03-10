@@ -12,7 +12,7 @@ What next is a social platform to track your movie and tv shows consumption and 
 
 ## Features:
 
-This project is still in development stage. So, feature requests are welcome. Feel free to open an issue if you have something in mind or if something is not working right, it might make a large impact 💓
+This project is still in development stage. So, feature requests are welcome. Feel free to open an issue if you have something in mind or if something is not working right. it might make a large impact 💓
 
 - [x] Make watch lists with watching status.
 - [x] Movies and Tv Shows listing (popular ones are shown cuurrently)
