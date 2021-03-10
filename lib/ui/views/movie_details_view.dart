@@ -1,14 +1,18 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:whatnext/models/genre_card.dart';
 import 'package:whatnext/models/movie_details.dart';
+import 'package:whatnext/ui/shared/app_colors.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:whatnext/ui/widgets/expansion_list.dart';
 import 'package:whatnext/viewmodels/movie_details_view_model.dart';
 
+var formatter = DateFormat.yMMMd('en_US');
 class MovieDetailsView extends StatelessWidget {
   final int id;
   MovieDetailsView({@required this.id});
@@ -268,6 +272,7 @@ class MovieDetailsView extends StatelessWidget {
                                     .primaryTextTheme
                                     .headline1,
                               ),
+                              verticalSpaceTiny,
                               Container(
                                 height: 20.0,
                                 child: Text(
@@ -276,6 +281,48 @@ class MovieDetailsView extends StatelessWidget {
                                   style: Theme.of(context)
                                       .primaryTextTheme
                                       .headline4,
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding / 2),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: _md.genres.length,
+                                    itemBuilder: (context, index) => GenreCard(
+                                      genre: _md.genres[index].name,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      '${formatter.format(DateTime.parse(_md.releaseDate))}',
+                                      style: TextStyle(color: kTextLightColor),
+                                    ),
+                                    SizedBox(width: kDefaultPadding),
+                                    _md.adult
+                                        ? Text(
+                                            "A +",
+                                            style: TextStyle(
+                                                color: kTextLightColor),
+                                          )
+                                        : Text(
+                                            "PG-13",
+                                            style: TextStyle(
+                                                color: kTextLightColor),
+                                          ),
+                                    SizedBox(width: kDefaultPadding),
+                                    Text(
+                                      _md.runtime.toString() + " min",
+                                      style: TextStyle(color: kTextLightColor),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
