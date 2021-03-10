@@ -3,16 +3,15 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-import 'package:whatnext/models/genre_card.dart';
+import 'package:whatnext/ui/widgets/genre_card.dart';
 import 'package:whatnext/models/movie_details.dart';
-import 'package:whatnext/ui/shared/app_colors.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:whatnext/ui/widgets/expansion_list.dart';
 import 'package:whatnext/viewmodels/movie_details_view_model.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
+
 class MovieDetailsView extends StatelessWidget {
   final int id;
   MovieDetailsView({@required this.id});
@@ -34,14 +33,14 @@ class MovieDetailsView extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          height: kIsWeb ? 550.0 : 350.0,
+                          height: 350.0,
                           width: double.maxFinite,
                           decoration: BoxDecoration(),
                           clipBehavior: Clip.antiAlias,
                           child: Stack(
                             children: [
                               Container(
-                                height: kIsWeb ? 550.0 : 350.0,
+                                height: 350.0,
                                 width: double.maxFinite,
                                 decoration: BoxDecoration(
                                   color: Colors.black54,
@@ -57,8 +56,7 @@ class MovieDetailsView extends StatelessWidget {
                                             _md.backdropPath
                                         : "https://image.tmdb.org/t/p/w500" +
                                             _md.posterPath,
-                                    fit:
-                                        kIsWeb ? BoxFit.contain : BoxFit.cover),
+                                    fit: BoxFit.cover),
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
@@ -303,25 +301,29 @@ class MovieDetailsView extends StatelessWidget {
                                   children: <Widget>[
                                     Text(
                                       '${formatter.format(DateTime.parse(_md.releaseDate))}',
-                                      style: TextStyle(color: kTextLightColor),
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .headline5,
                                     ),
                                     SizedBox(width: kDefaultPadding),
                                     _md.adult
                                         ? Text(
                                             "A +",
-                                            style: TextStyle(
-                                                color: kTextLightColor),
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline5,
                                           )
                                         : Text(
                                             "PG-13",
-                                            style: TextStyle(
-                                                color: kTextLightColor),
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline5,
                                           ),
                                     SizedBox(width: kDefaultPadding),
-                                    Text(
-                                      _md.runtime.toString() + " min",
-                                      style: TextStyle(color: kTextLightColor),
-                                    ),
+                                    Text(_md.runtime.toString() + " min",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline5),
                                   ],
                                 ),
                               ),

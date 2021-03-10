@@ -37,11 +37,12 @@ dependencies:
   provider: ^4.3.3
   stacked: ^1.9.1+2
   provider_architecture: ^1.1.1+1
-  stacked_themes: ^0.2.2+2
+  shared_preferences: ^0.5.12+4
   cloud_firestore: ^0.16.0+1
   tmdb_api: ^1.2.5
-  dio: ^3.0.10
+  dio: ^3.0.10  
   intl: ^0.16.1
+  flutter_phoenix: ^1.0.0
 
 
 dev_dependencies:
