@@ -14,8 +14,12 @@ class WatchlistViewModel extends BaseModel {
   List _currentUserWatchlist = [];
   List get currentUserWatchlist => _currentUserWatchlist;
 
-  onMovieSelect(int id) {
-    _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+  onMovieSelect(int id, String mediaType) {
+    if (mediaType == "movie") {
+      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+    } else {
+      _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
+    }
   }
 
   getColor(String status) {
@@ -31,6 +35,8 @@ class WatchlistViewModel extends BaseModel {
   Future<void> onInit() async {
     setBusy(true);
 
+    await _authenticationService.populateCurrentUserWatchList(
+        _authenticationService.currentUser.userName);
     _currentUserWatchlist = _authenticationService.currentUserWatchList;
     print(" cuw : $_currentUserWatchlist");
     setBusy(false);

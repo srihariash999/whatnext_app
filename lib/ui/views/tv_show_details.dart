@@ -5,8 +5,8 @@ import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-// import 'package:whatnext/ui/widgets/expansion_list.dart';
+
+import 'package:whatnext/ui/widgets/expansion_list.dart';
 import 'package:whatnext/viewmodels/tv_show_details_view_model.dart';
 
 class TvShowDetailsView extends StatelessWidget {
@@ -30,14 +30,14 @@ class TvShowDetailsView extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          height: kIsWeb ? 550.0 : 350.0,
+                          height: 350.0,
                           width: double.maxFinite,
                           decoration: BoxDecoration(),
                           clipBehavior: Clip.antiAlias,
                           child: Stack(
                             children: [
                               Container(
-                                height: kIsWeb ? 550.0 : 350.0,
+                                height: 350.0,
                                 width: double.maxFinite,
                                 decoration: BoxDecoration(
                                   color: Colors.black54,
@@ -53,8 +53,7 @@ class TvShowDetailsView extends StatelessWidget {
                                             _tvd.backdropPath
                                         : "https://image.tmdb.org/t/p/w500" +
                                             _tvd.posterPath,
-                                    fit:
-                                        kIsWeb ? BoxFit.contain : BoxFit.cover),
+                                    fit: BoxFit.cover),
                               ),
                               Container(
                                 alignment: Alignment.topLeft,
@@ -148,7 +147,7 @@ class TvShowDetailsView extends StatelessWidget {
                                                           ),
                                                         ),
                                                         onPressed: () {
-                                                          // model.onAddTap();
+                                                          model.onAddTap();
                                                         },
                                                       ),
                                                       verticalSpaceMedium,
@@ -199,19 +198,19 @@ class TvShowDetailsView extends StatelessWidget {
                                                           ),
                                                           Container(
                                                             width: 150.0,
-                                                            // child:
-                                                            //     ExpansionList<
-                                                            //         String>(
-                                                            //   items: [
-                                                            //     "Watching",
-                                                            //     "Watched",
-                                                            //     "Want to watch"
-                                                            //   ],
-                                                            //   title:
-                                                            //       model.choice,
-                                                            //   onItemSelected: model
-                                                            //       .changeChoice,
-                                                            // ),
+                                                            child:
+                                                                ExpansionList<
+                                                                    String>(
+                                                              items: [
+                                                                "Watching",
+                                                                "Watched",
+                                                                "Want to watch"
+                                                              ],
+                                                              title:
+                                                                  model.choice,
+                                                              onItemSelected: model
+                                                                  .changeChoice,
+                                                            ),
                                                           ),
                                                         ],
                                                       ),
@@ -240,7 +239,7 @@ class TvShowDetailsView extends StatelessWidget {
                                                           ),
                                                         ),
                                                         onPressed: () {
-                                                          // model.onAddTap();
+                                                          model.onAddTap();
                                                         },
                                                       ),
                                                       verticalSpaceMedium,
@@ -248,7 +247,6 @@ class TvShowDetailsView extends StatelessWidget {
                                                   ),
                                           ),
                                         );
-                                        // model.onAddTap(context);
                                       },
                                     ),
                                   ),

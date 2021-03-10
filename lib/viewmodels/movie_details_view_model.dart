@@ -44,7 +44,7 @@ class MovieDetailsViewModel extends BaseModel {
     print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
       print(">>>>>>>>>>>${element['movieId']}");
-      if (element['movieId'] == movieId) {
+      if (element['id'] == movieId) {
         print(" found movie");
         _isMovieAdded = true;
         setState();
@@ -84,9 +84,12 @@ class MovieDetailsViewModel extends BaseModel {
         setState();
       } else {
         var s = await _firestoreService.addToUserWatchList(
-            movie: _movieDetails,
+            name: _movieDetails.title,
+            id: _movieDetails.id,
+            posterPath: _movieDetails.posterPath,
             userName: _authenticationService.currentUser.userName,
-            status: _choice);
+            status: _choice,
+            type: 'movie');
 
         if (s['res'] == true) {
           await _authenticationService.populateCurrentUserWatchList(
