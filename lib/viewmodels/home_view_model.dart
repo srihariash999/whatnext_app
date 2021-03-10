@@ -1,6 +1,7 @@
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/movie.dart';
+import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
@@ -26,8 +27,8 @@ class HomeViewModel extends BaseModel {
   String _userName = " ...  ";
   String get userName => _userName;
 
-  List<Movie> _searchResults = [];
-  List<Movie> get searchResults => _searchResults;
+  List<Map<String, dynamic>> _searchResults = [];
+  List<Map<String, dynamic>> get searchResults => _searchResults;
 
   bool _searchResultLoading = false;
   bool get searchResultLoading => _searchResultLoading;
@@ -103,7 +104,14 @@ class HomeViewModel extends BaseModel {
       print(" sres : $sRes");
 
       for (var i in sRes['results']) {
-        _searchResults.add(Movie.fromJson(i));
+        _searchResults.add(
+          {
+            'media_type': i['media_type'],
+            'item': i['media_type'] == 'movie'
+                ? Movie.fromJson(i)
+                : TvShow.fromJson(i),
+          },
+        );
       }
       _prevQuery = query;
       setState();
@@ -121,8 +129,12 @@ class HomeViewModel extends BaseModel {
     print(" toprated movies : $_topRatedMoviesList");
   }
 
-  onMovieTap(int id) {
-    _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+  onMovieTap(int id, String mediaType) {
+    if (mediaType == "movie") {
+      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+    } else {
+      _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
+    }
   }
 
   loadMorePopularMovies() async {

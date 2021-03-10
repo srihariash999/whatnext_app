@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
-import 'package:whatnext/ui/shared/shared_styles.dart';
+
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/viewmodels/watchlist_view_model.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 
 class WatchlistView extends StatelessWidget {
   @override
@@ -70,96 +69,45 @@ class WatchlistView extends StatelessWidget {
               ],
             ),
             verticalSpaceMedium,
-            kIsWeb
-                ? Expanded(
-                    child: GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 5),
-                      itemCount: model.currentUserWatchlist.length,
-                      itemBuilder: (context, ind) {
-                        var popMovie = model.currentUserWatchlist[ind];
-                        return InkWell(
-                          onTap: () {
-                            print(
-                                " tapped on ${model.currentUserWatchlist[ind].id} ");
-                            model.onMovieSelect(
-                                model.currentUserWatchlist[ind].id);
-                          },
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: model.onInit,
+                child: GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3, childAspectRatio: 0.70),
+                  children: model.currentUserWatchlist.map((item) {
+                    return Padding(
+                      padding: const EdgeInsets.only(
+                          left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
+                      child: InkWell(
+                        onTap: () {
+                          model.onMovieSelect(item['id'], item['type']);
+                        },
+                        child: Container(
+                          padding: EdgeInsets.only(
+                              top: 6.0, bottom: 6.0, left: 6.0, right: 6.0),
+                          decoration: BoxDecoration(
+                              color: model.getColor(
+                                item['status'].toString(),
+                              ),
+                              borderRadius: BorderRadius.circular(15.0)),
                           child: Container(
-                            height: 300.0,
-                            width: 200.0,
-                            padding: EdgeInsets.only(left: 12.5, right: 12.5),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 260.0,
-                                    width: 200.0,
-                                    child: Image.network(
-                                      "https://image.tmdb.org/t/p/w500${model.currentUserWatchlist[ind]['poster']}",
-                                      fit: BoxFit.contain,
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    popMovie.title,
-                                    textAlign: TextAlign.justify,
-                                    style: namesTextStyle,
-                                  ),
-                                ),
-                              ],
+                            clipBehavior: Clip.antiAlias,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            alignment: Alignment.center,
+                            child: Image.network(
+                              "https://image.tmdb.org/t/p/w500${item['poster']}",
+                              fit: BoxFit.contain,
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  )
-                : Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: model.onInit,
-                      child: GridView(
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3, childAspectRatio: 0.70),
-                        children: model.currentUserWatchlist.map((movie) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
-                            child: InkWell(
-                              onTap: () {
-                                model.onMovieSelect(movie['movieId']);
-                              },
-                              child: Container(
-                                padding: EdgeInsets.only(
-                                    top: 6.0,
-                                    bottom: 6.0,
-                                    left: 6.0,
-                                    right: 6.0),
-                                decoration: BoxDecoration(
-                                    color: model.getColor(
-                                      movie['status'].toString(),
-                                    ),
-                                    borderRadius: BorderRadius.circular(15.0)),
-                                child: Container(
-                                  clipBehavior: Clip.antiAlias,
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(15.0)),
-                                  alignment: Alignment.center,
-                                  child: Image.network(
-                                    "https://image.tmdb.org/t/p/w500${movie['poster']}",
-                                    fit: BoxFit.contain,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }).toList(),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ),
           ],
         ),
       ),

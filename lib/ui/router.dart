@@ -8,6 +8,7 @@ import 'package:whatnext/ui/views/people_profile_view.dart';
 import 'package:whatnext/ui/views/profile_view.dart';
 import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
+import 'package:whatnext/ui/views/tv_show_details.dart';
 import 'package:whatnext/ui/views/watchlist_view.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
@@ -42,6 +43,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: MovieDetailsView(
+          id: arguments,
+        ),
+      );
+    case TvShowDetailsViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: TvShowDetailsView(
           id: arguments,
         ),
       );

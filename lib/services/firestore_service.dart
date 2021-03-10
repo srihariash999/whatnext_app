@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
-import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
@@ -42,10 +41,14 @@ class FirestoreService {
     }
   }
 
-  addToUserWatchList(
-      {@required MovieDetails movie,
-      @required String userName,
-      @required String status}) async {
+  addToUserWatchList({
+    @required String name,
+    @required int id,
+    @required String posterPath,
+    @required String userName,
+    @required String status,
+    @required String type,
+  }) async {
     try {
       var userWatchList =
           await _instance.collection("watchLists").doc(userName).get();
@@ -53,10 +56,11 @@ class FirestoreService {
       List _toUpdate = userWatchList.data()['watchList'] ?? [];
       _toUpdate.add(
         {
-          'movieId': movie.id,
-          'name': movie.title,
-          'poster': movie.posterPath,
-          "status": status
+          'id': id,
+          'name': name,
+          'poster': posterPath,
+          "status": status,
+          "type": type,
         },
       );
 
@@ -72,7 +76,7 @@ class FirestoreService {
     }
   }
 
-  removeFromUserWatchList(MovieDetails movie, String userName) async {
+  removeFromUserWatchList(var item, String userName) async {
     try {
       var userWatchList =
           await _instance.collection("watchLists").doc(userName).get();
@@ -81,7 +85,7 @@ class FirestoreService {
 
       var bb;
       for (var i in _toUpdate) {
-        if (i['movieId'] == movie.id) {
+        if (i['id'] == item.id) {
           bb = i;
           break;
         }

@@ -1,5 +1,5 @@
 import 'package:whatnext/locator.dart';
-import 'package:whatnext/models/movie_details.dart';
+import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
 import 'package:whatnext/services/firestore_service.dart';
@@ -9,7 +9,7 @@ import 'package:whatnext/services/tmdb_service.dart';
 
 import 'package:whatnext/viewmodels/base_model.dart';
 
-class MovieDetailsViewModel extends BaseModel {
+class TvShowDetailsViewModel extends BaseModel {
   final TmdbService _tmdbService = locator<TmdbService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AuthenticationService _authenticationService =
@@ -17,11 +17,11 @@ class MovieDetailsViewModel extends BaseModel {
 
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
-  bool _isMovieAdded = false;
-  bool get isMovieAdded => _isMovieAdded;
+  bool _isTvShowAdded = false;
+  bool get isMovieAdded => _isTvShowAdded;
 
-  MovieDetails _movieDetails = MovieDetails();
-  MovieDetails get movieDetails => _movieDetails;
+  TvShowDetails _tvShowDetails = TvShowDetails();
+  TvShowDetails get movieDetails => _tvShowDetails;
 
   String _choice = "Select a choice";
   String get choice => _choice;
@@ -33,27 +33,27 @@ class MovieDetailsViewModel extends BaseModel {
     setBusy(true);
     print("id : $id");
 
-    var det = await _tmdbService.fetchMovieDetails(id);
+    var det = await _tmdbService.fetchTvShowDetails(id);
     print("det : $det");
-    _movieDetails = MovieDetails.fromJson(det);
-    await ifMovieAdded(id);
+    _tvShowDetails = TvShowDetails.fromJson(det);
+    // await ifMovieAdded(id);
     setBusy(false);
   }
 
-  ifMovieAdded(int movieId) async {
+  ifTvShowAdded(int tvId) async {
     print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
-      print(">>>>>>>>>>>${element['movieId']}");
-      if (element['id'] == movieId) {
+      print(">>>>>>>>>>>${element['id']}");
+      if (element['id'] == tvId) {
         print(" found movie");
-        _isMovieAdded = true;
+        _isTvShowAdded = true;
         setState();
         return;
       }
     }
     await _authenticationService.populateCurrentUserWatchList(
         _authenticationService.currentUser.userName);
-    _isMovieAdded = false;
+    _isTvShowAdded = false;
     setState();
     return;
   }
@@ -64,17 +64,17 @@ class MovieDetailsViewModel extends BaseModel {
   }
 
   onAddTap() async {
-    if (_isMovieAdded) {
+    if (_isTvShowAdded) {
       var s = await _firestoreService.removeFromUserWatchList(
-        _movieDetails,
+        _tvShowDetails,
         _authenticationService.currentUser.userName,
       );
 
       if (s['res'] == true) {
         await _authenticationService.populateCurrentUserWatchList(
             _authenticationService.currentUser.userName);
-        ifMovieAdded(_movieDetails.id);
-        _isMovieAdded = false;
+        ifTvShowAdded(_tvShowDetails.id);
+        _isTvShowAdded = false;
         setState();
         _navigationService.pop();
       }
@@ -84,18 +84,18 @@ class MovieDetailsViewModel extends BaseModel {
         setState();
       } else {
         var s = await _firestoreService.addToUserWatchList(
-            name: _movieDetails.title,
-            id: _movieDetails.id,
-            posterPath: _movieDetails.posterPath,
+            name: _tvShowDetails.originalName,
+            id: _tvShowDetails.id,
+            posterPath: _tvShowDetails.posterPath,
+            type: 'tv',
             userName: _authenticationService.currentUser.userName,
-            status: _choice,
-            type: 'movie');
+            status: _choice);
 
         if (s['res'] == true) {
           await _authenticationService.populateCurrentUserWatchList(
               _authenticationService.currentUser.userName);
-          ifMovieAdded(_movieDetails.id);
-          _isMovieAdded = true;
+          ifTvShowAdded(_tvShowDetails.id);
+          _isTvShowAdded = true;
           setState();
           _navigationService.pop();
         }

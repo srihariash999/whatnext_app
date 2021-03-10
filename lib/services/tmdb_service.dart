@@ -9,7 +9,7 @@ class TmdbService {
   }
 
   fetchSearchResultsFromTmdb(String query) async {
-    return await tmdb.v3.search.queryMovies(query);
+    return await tmdb.v3.search.queryMulti(query);
   }
 
   fetchTopRatedMoviesFromTmdb(int page) async {
@@ -18,5 +18,9 @@ class TmdbService {
 
   fetchMovieDetails(int id) async {
     return await tmdb.v3.movies.getDetails(id);
+  }
+
+  fetchTvShowDetails(int id) async {
+    return await tmdb.v3.tv.getDetails(id);
   }
 }
