@@ -34,7 +34,7 @@ class FirestoreService {
     try {
       var userData =
           await _instance.collection("watchLists").doc(userName).get();
-      print(" user watch list : ****** : ${userData.data()}");
+      // print(" user watch list : ****** : ${userData.data()}");
       return userData.data()['watchList'];
     } catch (e) {
       return e.message;

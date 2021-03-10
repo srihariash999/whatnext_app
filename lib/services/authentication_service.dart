@@ -30,7 +30,7 @@ class AuthenticationService {
   populateCurrentUserWatchList(String userName) async {
     if (userName != null) {
       var res = await _firestoreService.getUserWatchList(userName);
-      print(" ***** \n\n\n  $res \n\n\n****");
+      // print(" ***** \n\n\n  $res \n\n\n****");
       _currentUserWatchList = res;
     }
   }
