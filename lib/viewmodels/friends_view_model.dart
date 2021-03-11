@@ -116,6 +116,7 @@ class FriendsViewModel extends BaseModel {
   }
 
   friendAction(UserModel user, FriendStatus fs) async {
+    print(" rec fs : $fs");
     // ~ ~ ~ follow a person.
     if (fs == FriendStatus.available) {
       // intention : update the interested user's followers list and current user's following list
@@ -144,14 +145,14 @@ class FriendsViewModel extends BaseModel {
       );
 
       await _fireStoreService.updateUserFriends(_toUser);
-
+      print(
+          " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
       _allUsers[_allUsers.indexOf(user)] = _toUser;
       _allUsersToDisplay[_allUsersToDisplay.indexOf(user)] = _toUser;
-      if (fs == FriendStatus.available) {
-        _usersFriendStatus[_allUsers.indexOf(user)] = FriendStatus.following;
-        _usersFriendStatusToDisplay[_allUsersToDisplay.indexOf(user)] =
-            FriendStatus.following;
-      }
+
+      _usersFriendStatus[_allUsers.indexOf(user)] = FriendStatus.following;
+      _usersFriendStatusToDisplay[_allUsersToDisplay.indexOf(user)] =
+          FriendStatus.following;
 
       setState();
     }
@@ -162,6 +163,13 @@ class FriendsViewModel extends BaseModel {
       UserModel _currUser = _authenticationService.currentUser;
 
       UserModel _toUser = user;
+
+      print(" before \n");
+      print("all users : $_allUsers");
+      print("all users to disp: $_allUsersToDisplay");
+      print("all friends: $_usersFriendStatus");
+      print("friend disp: $_usersFriendStatusToDisplay");
+      print("**** \n");
 
       var _itemToRemove;
 
@@ -195,11 +203,21 @@ class FriendsViewModel extends BaseModel {
 
       await _fireStoreService.updateUserFriends(_currUser);
 
+      print(
+          " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
+
       _allUsers[_allUsers.indexOf(user)] = _toUser;
       _allUsersToDisplay[_allUsersToDisplay.indexOf(user)] = _toUser;
       _usersFriendStatus[_allUsers.indexOf(user)] = FriendStatus.available;
-      _usersFriendStatusToDisplay[_allUsers.indexOf(user)] =
+      _usersFriendStatusToDisplay[_allUsersToDisplay.indexOf(user)] =
           FriendStatus.available;
+
+      print(" after \n");
+      print("all users : $_allUsers");
+      print("all users to disp: $_allUsersToDisplay");
+      print("all friends: $_usersFriendStatus");
+      print("friend disp: $_usersFriendStatusToDisplay");
+      print("**** \n");
 
       setState();
     }
