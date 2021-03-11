@@ -9,7 +9,7 @@ import 'package:whatnext/ui/views/profile_view.dart';
 import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 import 'package:whatnext/ui/views/themes_view.dart';
-import 'package:whatnext/ui/views/tv_show_details.dart';
+import 'package:whatnext/ui/views/tv_show_details_view.dart';
 import 'package:whatnext/ui/views/watchlist_view.dart';
 import 'package:whatnext/ui/views/reset_view.dart';
 

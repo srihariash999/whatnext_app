@@ -38,7 +38,10 @@ class WatchlistView extends StatelessWidget {
                     Container(
                       height: 16.0,
                       width: 16.0,
-                      color: Colors.yellow[200],
+                      decoration: BoxDecoration(
+                        color: Colors.red[600],
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
                     )
                   ],
                 ),
@@ -50,7 +53,10 @@ class WatchlistView extends StatelessWidget {
                     Container(
                       height: 16.0,
                       width: 16.0,
-                      color: Colors.orange[200],
+                      decoration: BoxDecoration(
+                        color: Colors.yellow[600],
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
                     )
                   ],
                 ),
@@ -62,7 +68,10 @@ class WatchlistView extends StatelessWidget {
                     Container(
                       height: 16.0,
                       width: 16.0,
-                      color: Colors.green[200],
+                      decoration: BoxDecoration(
+                        color: Colors.green[600],
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
                     )
                   ],
                 ),
@@ -78,27 +87,28 @@ class WatchlistView extends StatelessWidget {
                   children: model.currentUserWatchlist.map((item) {
                     return Padding(
                       padding: const EdgeInsets.only(
-                          left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
+                          left: 8.0, right: 8.0, top: 10.0, bottom: 10.0),
                       child: InkWell(
                         onTap: () {
                           model.onMovieSelect(item['id'], item['type']);
                         },
-                        child: Container(
-                          padding: EdgeInsets.only(
-                              top: 6.0, bottom: 6.0, left: 6.0, right: 6.0),
-                          decoration: BoxDecoration(
-                              color: model.getColor(
-                                item['status'].toString(),
-                              ),
-                              borderRadius: BorderRadius.circular(15.0)),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
                           child: Container(
                             clipBehavior: Clip.antiAlias,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15.0)),
+                              border: Border(
+                                left: BorderSide(
+                                    color: model.getColor(
+                                      item['status'].toString(),
+                                    ),
+                                    width: 5.0),
+                              ),
+                            ),
                             alignment: Alignment.center,
                             child: Image.network(
                               "https://image.tmdb.org/t/p/w500${item['poster']}",
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                             ),
                           ),
                         ),

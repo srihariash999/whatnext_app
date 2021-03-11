@@ -45,7 +45,7 @@ class SignUpViewModel extends BaseModel {
     if (result is bool) {
       if (result) {
         // _authenticationService.isUserLoggedIn();
-        _navigationService.navigateReplacement(HomeViewRoute);
+        _navigationService.navigateReplacement(LoginViewRoute);
       } else {
         await _dialogService.showDialog(
           title: 'Sign Up Failure',

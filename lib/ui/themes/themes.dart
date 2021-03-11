@@ -85,6 +85,11 @@ ThemeData getDarkTheme() => ThemeData(
           fontWeight: FontWeight.w300,
           fontSize: 14.0,
         ),
+        headline6: TextStyle(
+          color: Color(0xFFf2e9e4),
+          fontWeight: FontWeight.w300,
+          fontSize: 12.0,
+        ),
         bodyText1: TextStyle(
           color: Color(0xFFf2e9e4),
           fontWeight: FontWeight.w400,

@@ -24,11 +24,11 @@ class WatchlistViewModel extends BaseModel {
 
   getColor(String status) {
     if (status == "Watching") {
-      return Colors.orange[200];
+      return Colors.yellow[600];
     } else if (status == "Watched") {
-      return Colors.green[200];
+      return Colors.green[600];
     } else {
-      return Colors.yellow[200];
+      return Colors.red[600];
     }
   }
 
