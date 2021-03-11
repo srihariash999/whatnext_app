@@ -62,46 +62,54 @@ class HomeView extends StatelessWidget {
                       onTap: () {
                         model.switchTabs('movie');
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Movies',
-                            style: Theme.of(context).primaryTextTheme.headline1,
-                          ),
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.easeInCirc,
-                            height: 4.0,
-                            width: 35.0,
-                            color: model.tabType == 'movie'
-                                ? Theme.of(context).primaryColorLight
-                                : Theme.of(context).backgroundColor,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Movies',
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline1,
+                            ),
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.easeInCirc,
+                              height: 4.0,
+                              width: 35.0,
+                              color: model.tabType == 'movie'
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).backgroundColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     InkWell(
                       onTap: () {
                         model.switchTabs('tv');
                       },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Text(
-                            'Tv Shows',
-                            style: Theme.of(context).primaryTextTheme.headline1,
-                          ),
-                          AnimatedContainer(
-                            duration: Duration(milliseconds: 400),
-                            curve: Curves.easeInCirc,
-                            height: 4.0,
-                            width: 35.0,
-                            color: model.tabType == 'tv'
-                                ? Theme.of(context).primaryColorLight
-                                : Theme.of(context).backgroundColor,
-                          ),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 8.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Text(
+                              'TV Shows',
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline1,
+                            ),
+                            AnimatedContainer(
+                              duration: Duration(milliseconds: 400),
+                              curve: Curves.easeInCirc,
+                              height: 4.0,
+                              width: 35.0,
+                              color: model.tabType == 'tv'
+                                  ? Theme.of(context).primaryColorLight
+                                  : Theme.of(context).backgroundColor,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -237,59 +245,84 @@ class DrawerWidget extends StatelessWidget {
         viewModelBuilder: () => HomeViewModel(),
         onModelReady: (model) => model.getUserName(),
         builder: (context, model, child) {
-          return Drawer(
+          return SafeArea(
             child: Container(
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                children: [
-                  DrawerHeader(
-                    child: InkWell(
-                      onTap: () {
-                        model.navigateToProfile();
-                      },
-                      child: Container(
-                        color: Theme.of(context).primaryColor,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Container(
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.white,
-                                child: Icon(Icons.person),
-                              ),
+              width: MediaQuery.of(context).size.width * 0.80,
+              child: Drawer(
+                child: Container(
+                  color: Theme.of(context).backgroundColor,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: () {
+                            model.navigateToProfile();
+                          },
+                          child: Container(
+                            color: Theme.of(context).primaryColor,
+                            padding: EdgeInsets.all(12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    child: Icon(Icons.person),
+                                  ),
+                                ),
+                                Container(
+                                  child: Text(
+                                    model.userName,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4,
+                                  ),
+                                ),
+                                Container(
+                                  alignment: Alignment.center,
+                                  child: Icon(
+                                    Icons.arrow_right_rounded,
+                                    color: Theme.of(context).primaryColorLight,
+                                    size: 36.0,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              child: Text(
-                                model.userName,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline4,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Column(
-                    children: [
+                      verticalSpaceMedium,
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
                           onTap: model.navigateToFriends,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Find People",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline2,
-                              ),
-                              horizontalSpaceMedium,
+                              horizontalSpaceSmall,
                               Icon(Icons.people_alt_outlined,
                                   color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Find People",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Search for other users and follow them.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -299,17 +332,30 @@ class DrawerWidget extends StatelessWidget {
                         child: InkWell(
                           onTap: model.navigateToTheme,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Themes",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline2,
-                              ),
-                              horizontalSpaceMedium,
-                              Icon(Icons.color_lens,
+                              horizontalSpaceSmall,
+                              Icon(Icons.color_lens_sharp,
                                   color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Themes",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Change the appearance of the app.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -319,17 +365,30 @@ class DrawerWidget extends StatelessWidget {
                         child: InkWell(
                           onTap: model.navigateToWatchList,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "WatchList",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline2,
-                              ),
-                              horizontalSpaceMedium,
+                              horizontalSpaceSmall,
                               Icon(Icons.movie_creation_outlined,
                                   color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Watchlist",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "View and change your watchlist.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
@@ -339,24 +398,37 @@ class DrawerWidget extends StatelessWidget {
                         child: InkWell(
                           onTap: model.logout,
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                "Logout",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline2,
-                              ),
-                              horizontalSpaceMedium,
+                              horizontalSpaceSmall,
                               Icon(Icons.exit_to_app,
                                   color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Logout",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Logout from this account.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
                       )
                     ],
-                  )
-                ],
+                  ),
+                ),
               ),
             ),
           );
@@ -394,6 +466,10 @@ class MovieListWidget extends StatelessWidget {
               height: 300.0,
               width: 200.0,
               padding: EdgeInsets.only(left: 12.5, right: 12.5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              clipBehavior: Clip.antiAlias,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -401,17 +477,23 @@ class MovieListWidget extends StatelessWidget {
                     child: Container(
                       height: 260.0,
                       width: 200.0,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      clipBehavior: Clip.antiAlias,
                       child: Image.network(
                         "https://image.tmdb.org/t/p/w500${popMovie.posterPath}",
                         fit: BoxFit.contain,
                       ),
                     ),
                   ),
-                  Padding(
+                  Container(
+                    height: 40.0,
+                    alignment: Alignment.center,
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       popMovie.title,
-                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).primaryTextTheme.headline4,
                     ),
                   ),
@@ -475,24 +557,32 @@ class TvShowListWidget extends StatelessWidget {
               height: 300.0,
               width: 200.0,
               padding: EdgeInsets.only(left: 12.5, right: 12.5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              clipBehavior: Clip.antiAlias,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Container(
-                      height: 260.0,
-                      width: 200.0,
-                      child: Image.network(
-                        "https://image.tmdb.org/t/p/w500${popTvShow.posterPath}",
-                        fit: BoxFit.contain,
-                      ),
+                  Container(
+                    height: 260.0,
+                    width: 200.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Image.network(
+                      "https://image.tmdb.org/t/p/w500${popTvShow.posterPath}",
+                      fit: BoxFit.cover,
                     ),
                   ),
-                  Padding(
+                  Container(
+                    height: 40.0,
+                    alignment: Alignment.center,
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                       popTvShow.originalName,
-                      textAlign: TextAlign.justify,
+                      overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).primaryTextTheme.headline4,
                     ),
                   ),

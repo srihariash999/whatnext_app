@@ -1,13 +1,17 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 
 import 'package:whatnext/ui/widgets/expansion_list.dart';
+import 'package:whatnext/ui/widgets/genre_card.dart';
 import 'package:whatnext/viewmodels/tv_show_details_view_model.dart';
+
+var formatter = DateFormat.yMMMd('en_US');
 
 class TvShowDetailsView extends StatelessWidget {
   final int id;
@@ -173,7 +177,7 @@ class TvShowDetailsView extends StatelessWidget {
                                                       ),
                                                       verticalSpaceMedium,
                                                       Text(
-                                                        "Add this movie to watchlist",
+                                                        "Add this tv show to watchlist",
                                                         style:
                                                             sideHeadingTextStyle
                                                                 .copyWith(
@@ -276,6 +280,58 @@ class TvShowDetailsView extends StatelessWidget {
                                       .headline4,
                                 ),
                               ),
+                              Padding(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding / 2),
+                                child: SizedBox(
+                                  height: 36,
+                                  child: SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      children: _tvd.genres
+                                          .map(
+                                            (genre) => GenreCard(
+                                              genre: genre.name,
+                                            ),
+                                          )
+                                          .toList(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      '${formatter.format(DateTime.parse(_tvd.firstAirDate))}',
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .headline5,
+                                    ),
+                                    SizedBox(width: kDefaultPadding),
+                                    Text(
+                                        _tvd.numberOfSeasons > 1
+                                            ? _tvd.numberOfSeasons.toString() +
+                                                " Seasons"
+                                            : _tvd.numberOfSeasons.toString() +
+                                                " Season",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline5),
+                                    SizedBox(width: kDefaultPadding),
+                                    Text(
+                                        _tvd.numberOfEpisodes > 1
+                                            ? _tvd.numberOfSeasons.toString() +
+                                                " Episodes"
+                                            : _tvd.numberOfSeasons.toString() +
+                                                " Episode",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline5),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -300,6 +356,34 @@ class TvShowDetailsView extends StatelessWidget {
                                     .headline4,
                               ),
                             ),
+                            verticalSpaceMedium,
+                            Container(
+                              height: 30.0,
+                              child: Row(
+                                children: [
+                                  horizontalSpaceSmall,
+                                  Text(
+                                    "Languages",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  horizontalSpaceMedium,
+                                  Expanded(
+                                    child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: _tvd.languages.length,
+                                      itemBuilder: (context, index) =>
+                                          GenreCard(
+                                        genre: _tvd.languages[index],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            verticalSpaceMedium,
                           ],
                         ),
                       ],
