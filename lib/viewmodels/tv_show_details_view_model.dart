@@ -29,6 +29,9 @@ class TvShowDetailsViewModel extends BaseModel {
   bool _showError = false;
   bool get showError => _showError;
 
+  bool _isBeingAdded = false;
+  bool get isBeingAdded => _isBeingAdded;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -36,7 +39,7 @@ class TvShowDetailsViewModel extends BaseModel {
     var det = await _tmdbService.fetchTvShowDetails(id);
     print("det : $det");
     _tvShowDetails = TvShowDetails.fromJson(det);
-    // await ifMovieAdded(id);
+    await ifTvShowAdded(id);
     setBusy(false);
   }
 
@@ -64,40 +67,48 @@ class TvShowDetailsViewModel extends BaseModel {
   }
 
   onAddTap() async {
-    if (_isTvShowAdded) {
-      var s = await _firestoreService.removeFromUserWatchList(
-        _tvShowDetails,
-        _authenticationService.currentUser.userName,
-      );
-
-      if (s['res'] == true) {
-        await _authenticationService.populateCurrentUserWatchList(
-            _authenticationService.currentUser.userName);
-        ifTvShowAdded(_tvShowDetails.id);
-        _isTvShowAdded = false;
+    if (!_isBeingAdded) {
+      if (_isTvShowAdded) {
+        _isBeingAdded = true;
         setState();
-        _navigationService.pop();
-      }
-    } else {
-      if (_choice == "Select a choice") {
-        _showError = true;
-        setState();
-      } else {
-        var s = await _firestoreService.addToUserWatchList(
-            name: _tvShowDetails.originalName,
-            id: _tvShowDetails.id,
-            posterPath: _tvShowDetails.posterPath,
-            type: 'tv',
-            userName: _authenticationService.currentUser.userName,
-            status: _choice);
+        var s = await _firestoreService.removeFromUserWatchList(
+          _tvShowDetails,
+          _authenticationService.currentUser.userName,
+        );
 
         if (s['res'] == true) {
           await _authenticationService.populateCurrentUserWatchList(
               _authenticationService.currentUser.userName);
           ifTvShowAdded(_tvShowDetails.id);
-          _isTvShowAdded = true;
+          _isTvShowAdded = false;
+          _isBeingAdded = false;
           setState();
           _navigationService.pop();
+        }
+      } else {
+        if (_choice == "Select a choice") {
+          _showError = true;
+          setState();
+        } else {
+          _isBeingAdded = true;
+          setState();
+          var s = await _firestoreService.addToUserWatchList(
+              name: _tvShowDetails.originalName,
+              id: _tvShowDetails.id,
+              posterPath: _tvShowDetails.posterPath,
+              type: 'tv',
+              userName: _authenticationService.currentUser.userName,
+              status: _choice);
+
+          if (s['res'] == true) {
+            await _authenticationService.populateCurrentUserWatchList(
+                _authenticationService.currentUser.userName);
+            ifTvShowAdded(_tvShowDetails.id);
+            _isTvShowAdded = true;
+            _isBeingAdded = false;
+            setState();
+            _navigationService.pop();
+          }
         }
       }
     }
