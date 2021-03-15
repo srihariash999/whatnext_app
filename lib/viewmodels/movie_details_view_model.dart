@@ -29,6 +29,9 @@ class MovieDetailsViewModel extends BaseModel {
   bool _showError = false;
   bool get showError => _showError;
 
+  bool _isBeingAdded = false;
+  bool get isBeingAdded => _isBeingAdded;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -64,40 +67,53 @@ class MovieDetailsViewModel extends BaseModel {
   }
 
   onAddTap() async {
-    if (_isMovieAdded) {
-      var s = await _firestoreService.removeFromUserWatchList(
-        _movieDetails,
-        _authenticationService.currentUser.userName,
-      );
+    if (!_isBeingAdded) {
+      print(" on tap pressed");
+      if (_isMovieAdded) {
+        _isBeingAdded = true;
+        setState();
 
-      if (s['res'] == true) {
-        await _authenticationService.populateCurrentUserWatchList(
-            _authenticationService.currentUser.userName);
-        ifMovieAdded(_movieDetails.id);
-        _isMovieAdded = false;
-        setState();
-        _navigationService.pop();
-      }
-    } else {
-      if (_choice == "Select a choice") {
-        _showError = true;
-        setState();
-      } else {
-        var s = await _firestoreService.addToUserWatchList(
-            name: _movieDetails.title,
-            id: _movieDetails.id,
-            posterPath: _movieDetails.posterPath,
-            userName: _authenticationService.currentUser.userName,
-            status: _choice,
-            type: 'movie');
+        var s = await _firestoreService.removeFromUserWatchList(
+          _movieDetails,
+          _authenticationService.currentUser.userName,
+        );
 
         if (s['res'] == true) {
           await _authenticationService.populateCurrentUserWatchList(
               _authenticationService.currentUser.userName);
           ifMovieAdded(_movieDetails.id);
-          _isMovieAdded = true;
+          _isMovieAdded = false;
+          _isBeingAdded = false;
+
           setState();
           _navigationService.pop();
+        }
+      } else {
+        if (_choice == "Select a choice") {
+          _showError = true;
+          setState();
+        } else {
+          _isBeingAdded = true;
+          setState();
+
+          var s = await _firestoreService.addToUserWatchList(
+              name: _movieDetails.title,
+              id: _movieDetails.id,
+              posterPath: _movieDetails.posterPath,
+              userName: _authenticationService.currentUser.userName,
+              status: _choice,
+              type: 'movie');
+
+          if (s['res'] == true) {
+            await _authenticationService.populateCurrentUserWatchList(
+                _authenticationService.currentUser.userName);
+            ifMovieAdded(_movieDetails.id);
+            _isMovieAdded = true;
+            _isBeingAdded = false;
+
+            setState();
+            _navigationService.pop();
+          }
         }
       }
     }
