@@ -1,4 +1,7 @@
+import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
+import 'package:whatnext/models/tv_credit.dart';
+import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
@@ -32,6 +35,15 @@ class TvShowDetailsViewModel extends BaseModel {
   bool _isBeingAdded = false;
   bool get isBeingAdded => _isBeingAdded;
 
+  List<TvCredit> _creditsList = [];
+  List<TvCredit> get creditList => _creditsList;
+
+  List<TvShow> _similarTvShows = [];
+  List<TvShow> get similarTvShows => _similarTvShows;
+
+  List<TvShow> _recommendedTvShows = [];
+  List<TvShow> get recommendedTvShows => _recommendedTvShows;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -41,6 +53,9 @@ class TvShowDetailsViewModel extends BaseModel {
     _tvShowDetails = TvShowDetails.fromJson(det);
     await ifTvShowAdded(id);
     setBusy(false);
+    getCast(id);
+    getSimilarTvShows(id);
+    getRecommendedTvShows(id);
   }
 
   ifTvShowAdded(int tvId) async {
@@ -61,9 +76,42 @@ class TvShowDetailsViewModel extends BaseModel {
     return;
   }
 
+  getCast(int id) async {
+    var castRes = await _tmdbService.fetchTvCast(id);
+
+    for (var i in castRes['cast']) {
+      _creditsList.add(TvCredit.fromJson(i));
+    }
+    setState();
+  }
+
+  getSimilarTvShows(int id) async {
+    var similarRes = await _tmdbService.fetchSimilarTvShows(id);
+
+    for (var i in similarRes['results']) {
+      _similarTvShows.add(TvShow.fromJson(i));
+    }
+    setState();
+  }
+
+  getRecommendedTvShows(int id) async {
+    var recommendedRes = await _tmdbService.fetchTvShowRecommendations(id);
+
+    for (var i in recommendedRes['results']) {
+      _recommendedTvShows.add(TvShow.fromJson(i));
+    }
+    setState();
+  }
+
   changeChoice(String choice) {
     _choice = choice;
     setState();
+  }
+
+  onTvShowTap(int id, String mediaType) {
+   
+      _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
+    
   }
 
   onAddTap() async {

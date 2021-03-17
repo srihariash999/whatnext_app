@@ -7,10 +7,10 @@ class TmdbService {
   fetchPopularMoviesFromTmdb(int page) async {
     return await tmdb.v3.movies.getPouplar(page: page ?? 1);
   }
+
   fetchTopRatedMoviesFromTmdb(int page) async {
     return await tmdb.v3.movies.getTopRated(page: page ?? 1);
   }
-
 
   fetchPopularTvShowsFromTmdb(int page) async {
     return await tmdb.v3.tv.getPouplar(page: page ?? 1);
@@ -20,17 +20,39 @@ class TmdbService {
     return await tmdb.v3.tv.getTopRated(page: page ?? 1);
   }
 
-
   fetchSearchResultsFromTmdb(String query) async {
     return await tmdb.v3.search.queryMulti(query);
   }
 
-  
   fetchMovieDetails(int id) async {
     return await tmdb.v3.movies.getDetails(id);
   }
 
   fetchTvShowDetails(int id) async {
     return await tmdb.v3.tv.getDetails(id);
+  }
+
+  fetchMovieCast(int id) async {
+    return await tmdb.v3.movies.getCredits(id);
+  }
+
+  fetchTvCast(int id) async {
+    return await tmdb.v3.tv.getCredits(id);
+  }
+
+  fetchSimilarMovies(int id) async {
+    return await tmdb.v3.movies.getSimilar(id);
+  }
+
+  fetchMovieRecommendations(int id) async {
+    return await tmdb.v3.movies.getRecommended(id);
+  }
+
+  fetchSimilarTvShows(int id) async {
+    return await tmdb.v3.tv.getSimilar(id);
+  }
+
+  fetchTvShowRecommendations(int id) async {
+    return await tmdb.v3.tv.getRecommendations(id);
   }
 }

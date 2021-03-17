@@ -3,11 +3,13 @@ import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:whatnext/models/movie_credit.dart';
 import 'package:whatnext/ui/widgets/genre_card.dart';
 import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/expansion_list.dart';
+import 'package:whatnext/ui/widgets/movies_list_widget.dart';
 import 'package:whatnext/viewmodels/movie_details_view_model.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
@@ -45,8 +47,8 @@ class MovieDetailsView extends StatelessWidget {
                                 decoration: BoxDecoration(
                                   color: Colors.black54,
                                   borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(100.0),
-                                    bottomRight: Radius.circular(100.0),
+                                    bottomLeft: Radius.circular(25.0),
+                                    bottomRight: Radius.circular(25.0),
                                   ),
                                 ),
                                 clipBehavior: Clip.antiAlias,
@@ -373,12 +375,164 @@ class MovieDetailsView extends StatelessWidget {
                             ),
                           ],
                         ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Cast and Credits',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 160.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: model.creditList
+                                      .map(
+                                        (credit) => MovieCreditWidget(
+                                          credit: credit,
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Recommended Movies',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 180.0,
+                              child: model.recommendedMovies.length > 0
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: MovieListWidget(
+                                        height: 180.0,
+                                        width: 140.0,
+                                        moviesList: model.recommendedMovies,
+                                        loadMore: () {},
+                                        direction: Axis.horizontal,
+                                        onMovieTap: model.onMovieTap,
+                                      ),
+                                    )
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'No recommended movies found',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline4
+                                            .copyWith(
+                                                fontWeight: FontWeight.w300),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Similar Movies',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 180.0,
+                              child: model.similarMovies.length > 0
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: MovieListWidget(
+                                        height: 180.0,
+                                        width: 140.0,
+                                        moviesList: model.similarMovies,
+                                        loadMore: () {},
+                                        direction: Axis.horizontal,
+                                        onMovieTap: model.onMovieTap,
+                                      ),
+                                    )
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'No similar movies found',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline4
+                                            .copyWith(
+                                                fontWeight: FontWeight.w300),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
                       ],
                     ),
                   ),
                 ),
         );
       },
+    );
+  }
+}
+
+class MovieCreditWidget extends StatelessWidget {
+  final MovieCredit credit;
+  const MovieCreditWidget({Key key, @required this.credit}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 125.0,
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        children: [
+          Container(
+            height: 80.0,
+            width: 80.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+            ),
+            clipBehavior: Clip.antiAlias,
+            child: Image.network(
+              "https://image.tmdb.org/t/p/w185/${credit.profilePath}",
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            credit.name,
+            style: Theme.of(context).primaryTextTheme.headline5,
+          ),
+          Text(
+            "as",
+            style: Theme.of(context).primaryTextTheme.headline5,
+          ),
+          Text(
+            credit.character,
+            style: Theme.of(context).primaryTextTheme.headline5,
+          ),
+        ],
+      ),
     );
   }
 }
