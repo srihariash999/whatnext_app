@@ -37,7 +37,8 @@ class WatchlistViewModel extends BaseModel {
 
     await _authenticationService.populateCurrentUserWatchList(
         _authenticationService.currentUser.userName);
-    _currentUserWatchlist = _authenticationService.currentUserWatchList;
+    _currentUserWatchlist =
+        _authenticationService.currentUserWatchList.reversed.toList();
     print(" cuw : $_currentUserWatchlist");
     setBusy(false);
   }

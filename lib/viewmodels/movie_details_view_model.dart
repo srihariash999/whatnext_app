@@ -1,4 +1,7 @@
+import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
+import 'package:whatnext/models/movie.dart';
+import 'package:whatnext/models/movie_credit.dart';
 import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
@@ -32,6 +35,15 @@ class MovieDetailsViewModel extends BaseModel {
   bool _isBeingAdded = false;
   bool get isBeingAdded => _isBeingAdded;
 
+  List<MovieCredit> _creditsList = [];
+  List<MovieCredit> get creditList => _creditsList;
+
+  List<Movie> _similarMovies = [];
+  List<Movie> get similarMovies => _similarMovies;
+
+  List<Movie> _recommendedMovies = [];
+  List<Movie> get recommendedMovies => _recommendedMovies;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -41,6 +53,36 @@ class MovieDetailsViewModel extends BaseModel {
     _movieDetails = MovieDetails.fromJson(det);
     await ifMovieAdded(id);
     setBusy(false);
+    getCast(id);
+    getSimilarMovies(id);
+    getRecommendedMovies(id);
+  }
+
+  getCast(int id) async {
+    var castRes = await _tmdbService.fetchMovieCast(id);
+
+    for (var i in castRes['cast']) {
+      _creditsList.add(MovieCredit.fromJson(i));
+    }
+    setState();
+  }
+
+  getSimilarMovies(int id) async {
+    var similarRes = await _tmdbService.fetchSimilarMovies(id);
+
+    for (var i in similarRes['results']) {
+      _similarMovies.add(Movie.fromJson(i));
+    }
+    setState();
+  }
+
+  getRecommendedMovies(int id) async {
+    var recommendedRes = await _tmdbService.fetchMovieRecommendations(id);
+
+    for (var i in recommendedRes['results']) {
+      _recommendedMovies.add(Movie.fromJson(i));
+    }
+    setState();
   }
 
   ifMovieAdded(int movieId) async {
@@ -64,6 +106,10 @@ class MovieDetailsViewModel extends BaseModel {
   changeChoice(String choice) {
     _choice = choice;
     setState();
+  }
+
+  onMovieTap(int id, String mediaType) {
+    _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
   }
 
   onAddTap() async {

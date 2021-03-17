@@ -2,10 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-import 'package:whatnext/models/movie.dart';
-import 'package:whatnext/models/tv_show.dart';
 
 import 'package:whatnext/ui/shared/ui_helpers.dart';
+import 'package:whatnext/ui/widgets/movies_list_widget.dart';
+import 'package:whatnext/ui/widgets/tv_shows_list_widget.dart';
 // import 'package:whatnext/ui/views/movie_details_view.dart';
 
 import 'package:whatnext/viewmodels/home_view_model.dart';
@@ -148,6 +148,9 @@ class HomeView extends StatelessWidget {
                               onMovieTap: model.onItemTap,
                               loadMore: model.loadMorePopularMovies,
                               direction: Axis.horizontal,
+                              height: 300.0,
+                              width: 200.0,
+                              showLoadMore: true,
                             ),
                           ),
                           verticalSpaceSmall,
@@ -168,6 +171,9 @@ class HomeView extends StatelessWidget {
                               direction: Axis.horizontal,
                               onMovieTap: model.onItemTap,
                               loadMore: model.loadMoreTopRatedMovies,
+                              height: 300.0,
+                              width: 200.0,
+                              showLoadMore: true,
                             ),
                           ),
                         ],
@@ -199,6 +205,9 @@ class HomeView extends StatelessWidget {
                               onTvShowTap: model.onItemTap,
                               loadMore: model.loadMorePopularTvShows,
                               direction: Axis.horizontal,
+                              height: 300.0,
+                              width: 200.0,
+                              showLoadMore: true,
                             ),
                           ),
                           verticalSpaceSmall,
@@ -215,10 +224,14 @@ class HomeView extends StatelessWidget {
                           Container(
                             height: 300,
                             child: TvShowListWidget(
-                                tvShowsList: model.topRatedTvShowsList,
-                                direction: Axis.horizontal,
-                                onTvShowTap: model.onItemTap,
-                                loadMore: model.loadMoreTopRatedTvShows),
+                              tvShowsList: model.topRatedTvShowsList,
+                              direction: Axis.horizontal,
+                              onTvShowTap: model.onItemTap,
+                              loadMore: model.loadMoreTopRatedTvShows,
+                              height: 300.0,
+                              width: 200.0,
+                              showLoadMore: true,
+                            ),
                           ),
                         ],
                       ),
@@ -433,186 +446,6 @@ class DrawerWidget extends StatelessWidget {
             ),
           );
         });
-  }
-}
-
-class MovieListWidget extends StatelessWidget {
-  final List moviesList;
-  final Function onMovieTap;
-  final Function loadMore;
-  final Axis direction;
-  const MovieListWidget({
-    @required this.moviesList,
-    @required this.onMovieTap,
-    @required this.loadMore,
-    @required this.direction,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: direction,
-      itemCount: moviesList.length + 1,
-      itemBuilder: (context, ind) {
-        if (ind < moviesList.length) {
-          Movie popMovie = moviesList[ind];
-          return InkWell(
-            onTap: () {
-              print(" tapped on ${moviesList[ind].id} ");
-              onMovieTap(moviesList[ind].id, 'movie');
-            },
-            child: Container(
-              height: 300.0,
-              width: 200.0,
-              padding: EdgeInsets.only(left: 12.5, right: 12.5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Container(
-                      height: 260.0,
-                      width: 200.0,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: Image.network(
-                        "https://image.tmdb.org/t/p/w500${popMovie.posterPath}",
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    height: 40.0,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      popMovie.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return Container(
-            height: 260.0,
-            width: 150.0,
-            child: IconButton(
-              icon: Row(
-                children: [
-                  Icon(Icons.arrow_right,
-                      color: Theme.of(context).primaryColorLight),
-                  Text(
-                    "Load More",
-                    style: Theme.of(context).primaryTextTheme.headline5,
-                  )
-                ],
-              ),
-              onPressed: () {
-                loadMore();
-              },
-            ),
-          );
-        }
-      },
-    );
-  }
-}
-
-class TvShowListWidget extends StatelessWidget {
-  final List tvShowsList;
-  final Function onTvShowTap;
-  final Function loadMore;
-  final Axis direction;
-  const TvShowListWidget({
-    @required this.tvShowsList,
-    @required this.onTvShowTap,
-    @required this.loadMore,
-    @required this.direction,
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView.builder(
-      scrollDirection: direction,
-      itemCount: tvShowsList.length + 1,
-      itemBuilder: (context, ind) {
-        if (ind < tvShowsList.length) {
-          TvShow popTvShow = tvShowsList[ind];
-          return InkWell(
-            onTap: () {
-              print(" tapped on ${tvShowsList[ind].id} ");
-              onTvShowTap(tvShowsList[ind].id, 'tv');
-            },
-            child: Container(
-              height: 300.0,
-              width: 200.0,
-              padding: EdgeInsets.only(left: 12.5, right: 12.5),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
-              clipBehavior: Clip.antiAlias,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 260.0,
-                    width: 200.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Image.network(
-                      "https://image.tmdb.org/t/p/w500${popTvShow.posterPath}",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Container(
-                    height: 40.0,
-                    alignment: Alignment.center,
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      popTvShow.originalName,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).primaryTextTheme.headline4,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          );
-        } else {
-          return Container(
-            height: 260.0,
-            width: 150.0,
-            child: IconButton(
-              icon: Row(
-                children: [
-                  Icon(Icons.arrow_right,
-                      color: Theme.of(context).primaryColorLight),
-                  Text(
-                    "Load More",
-                    style: Theme.of(context).primaryTextTheme.headline5,
-                  )
-                ],
-              ),
-              onPressed: () {
-                loadMore();
-              },
-            ),
-          );
-        }
-      },
-    );
   }
 }
 
