@@ -3,6 +3,7 @@ import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/movie.dart';
 import 'package:whatnext/models/movie_credit.dart';
 import 'package:whatnext/models/movie_details.dart';
+import 'package:whatnext/models/video.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
 import 'package:whatnext/services/firestore_service.dart';
@@ -44,6 +45,9 @@ class MovieDetailsViewModel extends BaseModel {
   List<Movie> _recommendedMovies = [];
   List<Movie> get recommendedMovies => _recommendedMovies;
 
+  Video _video;
+  Video get video => _video;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -56,6 +60,7 @@ class MovieDetailsViewModel extends BaseModel {
     getCast(id);
     getSimilarMovies(id);
     getRecommendedMovies(id);
+    getVideo(id);
   }
 
   getCast(int id) async {
@@ -81,6 +86,18 @@ class MovieDetailsViewModel extends BaseModel {
 
     for (var i in recommendedRes['results']) {
       _recommendedMovies.add(Movie.fromJson(i));
+    }
+    setState();
+  }
+
+  getVideo(int id) async {
+    var videoRes = await _tmdbService.fetchVideosofMovie(id);
+
+    for (var i in videoRes['results']) {
+      if (i['type'] == "Trailer" && i['site'] == "YouTube") {
+        _video = Video.fromJson(i);
+        break;
+      }
     }
     setState();
   }
@@ -112,12 +129,16 @@ class MovieDetailsViewModel extends BaseModel {
     _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
   }
 
+  navigateToVideoPlayer() {
+    _navigationService.navigateTo(VideoPlayerViewRoute, arguments: _video.key);
+  }
+
   onAddTap() async {
     if (!_isBeingAdded) {
       print(" on tap pressed");
       if (_isMovieAdded) {
         _isBeingAdded = true;
-        setState();
+        setState(); 
 
         var s = await _firestoreService.removeFromUserWatchList(
           _movieDetails,

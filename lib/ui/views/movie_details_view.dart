@@ -25,7 +25,7 @@ class MovieDetailsView extends StatelessWidget {
       onModelReady: (model) => model.onInit(id),
       builder: (context, model, child) {
         MovieDetails _md = model.movieDetails;
-        print(" &&&  ${_md.backdropPath.toString()}");
+        // print(" &&&  ${_md.backdropPath.toString()}");
         return Scaffold(
           key: _scaffoldKey,
           body: model.busy
@@ -352,17 +352,68 @@ class MovieDetailsView extends StatelessWidget {
                             ],
                           ),
                         ),
+                        model.video != null ? verticalSpaceMedium : Container(),
+                        model.video != null
+                            ? Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      border: Border.all(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          width: 0.5),
+                                    ),
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Theme.of(context)
+                                                    .backgroundColor),
+                                      ),
+                                      onPressed: () {
+                                        model.navigateToVideoPlayer();
+                                      },
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            'Watch Trailer',
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline4
+                                                .copyWith(
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                          horizontalSpaceMedium,
+                                          Icon(
+                                            Icons.forward_outlined,
+                                            color: Theme.of(context)
+                                                .primaryColorLight,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Container(),
                         verticalSpaceMedium,
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'OverView',
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline3
-                                  .copyWith(fontWeight: FontWeight.w500),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'OverView',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -380,12 +431,15 @@ class MovieDetailsView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Cast and Credits',
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline3
-                                  .copyWith(fontWeight: FontWeight.w500),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Cast and Credits',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
                             ),
                             Container(
                               height: 160.0,
@@ -410,12 +464,15 @@ class MovieDetailsView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Recommended Movies',
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline3
-                                  .copyWith(fontWeight: FontWeight.w500),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Recommended Movies',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
                             ),
                             Container(
                               height: 180.0,
@@ -450,12 +507,15 @@ class MovieDetailsView extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              'Similar Movies',
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline3
-                                  .copyWith(fontWeight: FontWeight.w500),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Similar Movies',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
                             ),
                             Container(
                               height: 180.0,

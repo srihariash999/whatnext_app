@@ -55,4 +55,8 @@ class TmdbService {
   fetchTvShowRecommendations(int id) async {
     return await tmdb.v3.tv.getRecommendations(id);
   }
+
+  fetchVideosofMovie(int movieId) async {
+    return await tmdb.v3.movies.getVideos(movieId);
+  }
 }
