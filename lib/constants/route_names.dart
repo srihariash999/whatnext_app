@@ -10,8 +10,7 @@ const String PersonProfileViewRoute = "PersonProfileView";
 const String StartupViewRoute = "StartupView";
 
 const String ThemesViewRoute = "ThemesView";
-
+const String VideoPlayerViewRoute = "VideoPlayerView";
 const String ResetPasswordViewRoute = "ResetView";
-
 
 // Generate the views here

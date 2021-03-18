@@ -10,6 +10,7 @@ import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 import 'package:whatnext/ui/views/themes_view.dart';
 import 'package:whatnext/ui/views/tv_show_details_view.dart';
+import 'package:whatnext/ui/views/video_player_view.dart';
 import 'package:whatnext/ui/views/watchlist_view.dart';
 import 'package:whatnext/ui/views/reset_view.dart';
 
@@ -78,6 +79,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: ThemesView(),
+      );
+
+    case VideoPlayerViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: VideoPlayerView(
+          videoId: arguments,
+        ),
       );
 
     case ResetPasswordViewRoute:

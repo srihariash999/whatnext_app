@@ -48,6 +48,7 @@ class FriendsView extends StatelessWidget {
                         child: TextField(
                           controller: _searchController,
                           onChanged: (val) => model.searchFilter(val),
+                          style: Theme.of(context).primaryTextTheme.headline4,
                           decoration: InputDecoration(
                             hintText: "Search a user",
                             hintStyle:

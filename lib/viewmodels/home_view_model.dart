@@ -158,7 +158,7 @@ class HomeViewModel extends BaseModel {
 
   onItemTap(int id, String mediaType) {
     if (mediaType == "movie") {
-      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);  
     } else {
       _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
     }
