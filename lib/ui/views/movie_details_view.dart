@@ -365,7 +365,7 @@ class MovieDetailsView extends StatelessWidget {
                                               .primaryColorLight,
                                           width: 0.5),
                                     ),
-                                    child: ElevatedButton(
+                                    child: TextButton(
                                       style: ButtonStyle(
                                         backgroundColor:
                                             MaterialStateProperty.all(
@@ -422,6 +422,50 @@ class MovieDetailsView extends StatelessWidget {
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .headline4,
+                              ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Images',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: model.pictures
+                                      .map(
+                                        (pic) => Padding(
+                                          padding:
+                                              const EdgeInsets.symmetric(horizontal: 12.0),
+                                          child: Container(
+                                            height: 240.0,
+                                            clipBehavior: Clip.antiAlias,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        16.0)),
+                                            child: Image.network(
+                                                "https://image.tmdb.org/t/p/w780/${pic.filePath}",
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
                               ),
                             ),
                           ],

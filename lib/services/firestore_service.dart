@@ -3,11 +3,10 @@ import 'package:flutter/foundation.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
+  //firestore instance to user multiple times.
   FirebaseFirestore _instance = FirebaseFirestore.instance;
 
-  // final CollectionReference _usersCollectionReference =
-  //     FirebaseFirestore.instance.collection("users");
-
+  // Method to create a user object in the firestore collection 'users' after successful signup (through firebase auth).
   Future createUser(UserModel user) async {
     try {
       await _instance.collection("users").doc(user.userName).set(user.toJson());
@@ -20,27 +19,29 @@ class FirestoreService {
     }
   }
 
+  // Method to get a user object from firestore collection 'users' using username.
   Future getUser(String userName) async {
     try {
       var userData = await _instance.collection("users").doc(userName).get();
-      print(" user Dataa : ${userData.data()}");
       return UserModel.fromData(userData.data());
     } catch (e) {
       return e.message;
     }
   }
 
+  //Method to get userWatchList item from firestore collection 'watchlists' using user's username.
   Future getUserWatchList(String userName) async {
     try {
       var userData =
           await _instance.collection("watchLists").doc(userName).get();
-      // print(" user watch list : ****** : ${userData.data()}");
+
       return userData.data()['watchList'];
     } catch (e) {
       return e.message;
     }
   }
 
+  // Method to add an item (movie/tv) to a user's watchlist in firestore collection.
   addToUserWatchList({
     @required String name,
     @required int id,
@@ -64,7 +65,6 @@ class FirestoreService {
         },
       );
 
-      print(" users watch list : $_toUpdate");
       await _instance
           .collection("watchLists")
           .doc(userName)
@@ -76,6 +76,7 @@ class FirestoreService {
     }
   }
 
+  // Method to remove an item (movie/tv) to a user's watchlist in firestore collection.
   removeFromUserWatchList(var item, String userName) async {
     try {
       var userWatchList =
@@ -103,6 +104,7 @@ class FirestoreService {
     }
   }
 
+  //  Method to update the whole user object. (name is slightly misleading, will refactor in future)
   updateUserFriends(UserModel user) async {
     try {
       await _instance
@@ -116,13 +118,9 @@ class FirestoreService {
     }
   }
 
+  //Method to get a list of all users available.
   Future<List<QueryDocumentSnapshot>> getAllUsers() async {
-    // await _instance.clearPersistence();
     try {
-      // var usersList2 = await _instance.doc('users').get();
-      // var x = usersList2.data().toString();
-      // print(x);
-
       var usersList = await _instance.collection("users").get();
 
       return usersList.docs;

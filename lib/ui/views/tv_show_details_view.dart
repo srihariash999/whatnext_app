@@ -374,148 +374,202 @@ class TvShowDetailsView extends StatelessWidget {
                                     .headline4,
                               ),
                             ),
-                            verticalSpaceMedium,
-                            // Container(
-                            //   height: 30.0,
-                            //   child: Row(
-                            //     children: [
-                            //       Text(
-                            //         "Languages",
-                            //         style: Theme.of(context)
-                            //             .primaryTextTheme
-                            //             .headline3
-                            //             .copyWith(fontWeight: FontWeight.w500),
-                            //       ),
-                            //       horizontalSpaceMedium,
-                            //       Expanded(
-                            //         child: ListView.builder(
-                            //           scrollDirection: Axis.horizontal,
-                            //           itemCount: _tvd.languages.length,
-                            //           itemBuilder: (context, index) =>
-                            //               GenreCard(
-                            //             genre: _tvd.languages[index],
-                            //           ),
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
-                            // verticalSpaceMedium,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Cast and Credits',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline3
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                ),
-                                Container(
-                                  height: 160.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: ListView(
-                                      scrollDirection: Axis.horizontal,
-                                      children: model.creditList
-                                          .map(
-                                            (credit) => TvShowCreditWidget(
-                                              credit: credit,
-                                            ),
-                                          )
-                                          .toList(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpaceMedium,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Recommended TV Shows',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline3
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                ),
-                                Container(
-                                  height: 180.0,
-                                  child: model.recommendedTvShows.length > 0
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: TvShowListWidget(
-                                            height: 180.0,
-                                            width: 140.0,
-                                            tvShowsList:
-                                                model.recommendedTvShows,
-                                            loadMore: () {},
-                                            direction: Axis.horizontal,
-                                            onTvShowTap: model.onTvShowTap,
-                                          ),
-                                        )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'No recommended TV Shows found',
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .headline4
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                          ),
-                                        ),
-                                ),
-                              ],
-                            ),
-                            verticalSpaceMedium,
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Similar TV Shows',
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .headline3
-                                      .copyWith(fontWeight: FontWeight.w500),
-                                ),
-                                Container(
-                                  height: 180.0,
-                                  child: model.similarTvShows.length > 0
-                                      ? Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: TvShowListWidget(
-                                            height: 180.0,
-                                            width: 140.0,
-                                            tvShowsList: model.similarTvShows,
-                                            loadMore: () {},
-                                            direction: Axis.horizontal,
-                                            onTvShowTap: model.onTvShowTap,
-                                          ),
-                                        )
-                                      : Container(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'No similar TV Shows found',
-                                            style: Theme.of(context)
-                                                .primaryTextTheme
-                                                .headline4
-                                                .copyWith(
-                                                    fontWeight:
-                                                        FontWeight.w300),
-                                          ),
-                                        ),
-                                ),
-                              ],
-                            ),
-                            verticalSpaceMedium,
                           ],
                         ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Images',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                            model.pictures.length > 0
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: model.pictures
+                                            .map(
+                                              (pic) => Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 12.0),
+                                                child: Container(
+                                                  height: 240.0,
+                                                  clipBehavior: Clip.antiAlias,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              16.0)),
+                                                  child: Image.network(
+                                                      "https://image.tmdb.org/t/p/w780/${pic.filePath}",
+                                                      fit: BoxFit.cover),
+                                                ),
+                                              ),
+                                            )
+                                            .toList(),
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'No pictures to show',
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .headline4
+                                          .copyWith(
+                                              fontWeight: FontWeight.w300),
+                                    ),
+                                  ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        // Container(
+                        //   height: 30.0,
+                        //   child: Row(
+                        //     children: [
+                        //       Text(
+                        //         "Languages",
+                        //         style: Theme.of(context)
+                        //             .primaryTextTheme
+                        //             .headline3
+                        //             .copyWith(fontWeight: FontWeight.w500),
+                        //       ),
+                        //       horizontalSpaceMedium,
+                        //       Expanded(
+                        //         child: ListView.builder(
+                        //           scrollDirection: Axis.horizontal,
+                        //           itemCount: _tvd.languages.length,
+                        //           itemBuilder: (context, index) =>
+                        //               GenreCard(
+                        //             genre: _tvd.languages[index],
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Cast and Credits',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 160.0,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListView(
+                                  scrollDirection: Axis.horizontal,
+                                  children: model.creditList
+                                      .map(
+                                        (credit) => TvShowCreditWidget(
+                                          credit: credit,
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Recommended TV Shows',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 180.0,
+                              child: model.recommendedTvShows.length > 0
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TvShowListWidget(
+                                        height: 180.0,
+                                        width: 140.0,
+                                        tvShowsList: model.recommendedTvShows,
+                                        loadMore: () {},
+                                        direction: Axis.horizontal,
+                                        onTvShowTap: model.onTvShowTap,
+                                      ),
+                                    )
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'No recommended TV Shows found',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline4
+                                            .copyWith(
+                                                fontWeight: FontWeight.w300),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Similar TV Shows',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline3
+                                  .copyWith(fontWeight: FontWeight.w500),
+                            ),
+                            Container(
+                              height: 180.0,
+                              child: model.similarTvShows.length > 0
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: TvShowListWidget(
+                                        height: 180.0,
+                                        width: 140.0,
+                                        tvShowsList: model.similarTvShows,
+                                        loadMore: () {},
+                                        direction: Axis.horizontal,
+                                        onTvShowTap: model.onTvShowTap,
+                                      ),
+                                    )
+                                  : Container(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'No similar TV Shows found',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline4
+                                            .copyWith(
+                                                fontWeight: FontWeight.w300),
+                                      ),
+                                    ),
+                            ),
+                          ],
+                        ),
+                        verticalSpaceMedium,
                       ],
                     ),
                   ),

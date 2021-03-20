@@ -84,20 +84,22 @@ class HomeViewModel extends BaseModel {
   }
 
   navigateToFriends() {
-    print(" friends");
+    _navigationService.pop();
     _navigationService.navigateTo(FriendsViewRoute);
   }
 
   navigateToTheme() {
-    print(" theme");
+    _navigationService.pop();
     _navigationService.navigateTo(ThemesViewRoute);
   }
 
   navigateToProfile() {
+    _navigationService.pop();
     _navigationService.navigateTo(ProfileViewRoute);
   }
 
   navigateToWatchList() {
+    _navigationService.pop();
     _navigationService.navigateTo(WatchListViewRoute);
   }
 
@@ -158,7 +160,7 @@ class HomeViewModel extends BaseModel {
 
   onItemTap(int id, String mediaType) {
     if (mediaType == "movie") {
-      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);  
+      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
     } else {
       _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
     }

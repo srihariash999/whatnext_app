@@ -3,6 +3,7 @@ import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/movie.dart';
 import 'package:whatnext/models/movie_credit.dart';
 import 'package:whatnext/models/movie_details.dart';
+import 'package:whatnext/models/picture.dart';
 import 'package:whatnext/models/video.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
@@ -48,6 +49,9 @@ class MovieDetailsViewModel extends BaseModel {
   Video _video;
   Video get video => _video;
 
+  List<Picture> _pictures = [];
+  List<Picture> get pictures => _pictures;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -61,6 +65,7 @@ class MovieDetailsViewModel extends BaseModel {
     getSimilarMovies(id);
     getRecommendedMovies(id);
     getVideo(id);
+    getPictures(id);
   }
 
   getCast(int id) async {
@@ -102,6 +107,18 @@ class MovieDetailsViewModel extends BaseModel {
     setState();
   }
 
+  getPictures(int id) async {
+    var picturesRes = await _tmdbService.fetchMoviePictures(id);
+    print("picres: $picturesRes");
+    for (var i in picturesRes['backdrops']) {
+      _pictures.add(Picture.fromJson(i));
+    }
+    for (var i in picturesRes['posters']) {
+      _pictures.add(Picture.fromJson(i));
+    }
+    setState();
+  }
+
   ifMovieAdded(int movieId) async {
     print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
@@ -138,7 +155,7 @@ class MovieDetailsViewModel extends BaseModel {
       print(" on tap pressed");
       if (_isMovieAdded) {
         _isBeingAdded = true;
-        setState(); 
+        setState();
 
         var s = await _firestoreService.removeFromUserWatchList(
           _movieDetails,

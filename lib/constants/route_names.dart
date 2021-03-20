@@ -1,3 +1,5 @@
+// These are constants for the route names ;
+
 const String LoginViewRoute = "LoginView";
 const String SignUpViewRoute = "SignUp";
 const String HomeViewRoute = "HomeView";
@@ -12,5 +14,3 @@ const String StartupViewRoute = "StartupView";
 const String ThemesViewRoute = "ThemesView";
 const String VideoPlayerViewRoute = "VideoPlayerView";
 const String ResetPasswordViewRoute = "ResetView";
-
-// Generate the views here
