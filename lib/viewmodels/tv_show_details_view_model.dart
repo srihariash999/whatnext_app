@@ -1,5 +1,6 @@
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
+import 'package:whatnext/models/picture.dart';
 import 'package:whatnext/models/tv_credit.dart';
 import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/models/tv_show_details.dart';
@@ -44,24 +45,26 @@ class TvShowDetailsViewModel extends BaseModel {
   List<TvShow> _recommendedTvShows = [];
   List<TvShow> get recommendedTvShows => _recommendedTvShows;
 
+  List<Picture> _pictures = [];
+  List<Picture> get pictures => _pictures;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
 
     var det = await _tmdbService.fetchTvShowDetails(id);
-    print("det : $det");
+
     _tvShowDetails = TvShowDetails.fromJson(det);
     await ifTvShowAdded(id);
     setBusy(false);
     getCast(id);
     getSimilarTvShows(id);
     getRecommendedTvShows(id);
+    getPictures(id);
   }
 
   ifTvShowAdded(int tvId) async {
-    print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
-      print(">>>>>>>>>>>${element['id']}");
       if (element['id'] == tvId) {
         print(" found movie");
         _isTvShowAdded = true;
@@ -103,15 +106,25 @@ class TvShowDetailsViewModel extends BaseModel {
     setState();
   }
 
+  getPictures(int id) async {
+    var picturesRes = await _tmdbService.fetchTvPictures(id);
+
+    for (var i in picturesRes['backdrops']) {
+      _pictures.add(Picture.fromJson(i));
+    }
+    for (var i in picturesRes['posters']) {
+      _pictures.add(Picture.fromJson(i));
+    }
+    setState();
+  }
+
   changeChoice(String choice) {
     _choice = choice;
     setState();
   }
 
   onTvShowTap(int id, String mediaType) {
-   
-      _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
-    
+    _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
   }
 
   onAddTap() async {

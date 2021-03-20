@@ -1,8 +1,12 @@
 import 'package:tmdb_api/tmdb_api.dart';
 import 'package:whatnext/constants/api_keys.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class TmdbService {
   TMDB tmdb = TMDB(ApiKeys('$v3', '$v4'));
+
+  var client = http.Client();
 
   fetchPopularMoviesFromTmdb(int page) async {
     return await tmdb.v3.movies.getPouplar(page: page ?? 1);
@@ -58,5 +62,26 @@ class TmdbService {
 
   fetchVideosofMovie(int movieId) async {
     return await tmdb.v3.movies.getVideos(movieId);
+  }
+
+  fetchMoviePictures(int movieId) async {
+    return await tmdb.v3.movies
+        .getImages(movieId, includeImageLanguage: 'en,null');
+  }
+
+  fetchTvPictures(int tvId) async {
+    try {
+      var response = await client.get(
+          'https://api.themoviedb.org/3/tv/$tvId/images?api_key=$v3&include_image_language=en,null');
+      var jsonResponse = convert.jsonDecode(response.body);
+      return jsonResponse;
+    } catch (e) {
+      print(" error while getting tv images");
+      return {
+        'id': 0,
+        'backdrops': [],
+        'posters': [],
+      };
+    }
   }
 }

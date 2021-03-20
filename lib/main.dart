@@ -17,13 +17,14 @@ void main() async {
   await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF4a4e69),
+      statusBarColor: Color(0xFF4a4e69).withOpacity(0.8),
     ),
   );
   // Register all the models and services before the app starts
   setupLocator();
 
   runApp(
+    // Wrapped wih phoenix to facilitate programtically restarting the app.
     Phoenix(
       child: MyApp(),
     ),

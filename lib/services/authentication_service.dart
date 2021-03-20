@@ -3,34 +3,42 @@ import 'package:flutter/foundation.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/models/user.dart';
-// import 'package:flutter/foundation.dart' show kIsWeb;
 
 class AuthenticationService {
+  //firebase auth instance
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  // This varible will hold the details of current user for use throughout the app
   UserModel _currentUser;
+
+  // Getter for private variable _currentUser
   UserModel get currentUser => _currentUser;
 
+  // This variable will hold the details of the watchlist for the current user for use theoughout the app
   List _currentUserWatchList = [];
+
+  // Getter for the private field _currentUserWatchList
   List get currentUserWatchList => _currentUserWatchList;
 
+  // Locating the firestore service to use it.
   final _firestoreService = locator<FirestoreService>();
 
+  //Setter for the private variable _currentUser
   setCurrentUser(UserModel user) => _currentUser = user;
 
+  // Private method to populate the variable _currentUser after getting it from firebase.
   _populateCurrentUser(User user) async {
     if (user != null) {
-      // print(" ***** \n\n\n  jeee-boom-ba \n\n\n****");
-      // print(" ${user.displayName}");
       var res = await _firestoreService.getUser(user.displayName);
-      // print(" ***** \n\n\n  $res \n\n\n****");
       _currentUser = res;
     }
   }
 
+  // Method to set the value of _currentUserWatchlist after getting it from firebase.
   populateCurrentUserWatchList(String userName) async {
     if (userName != null) {
       var res = await _firestoreService.getUserWatchList(userName);
-      // print(" ***** \n\n\n  $res \n\n\n****");
+
       _currentUserWatchList = res;
     }
   }
@@ -43,7 +51,7 @@ class AuthenticationService {
     try {
       var authResult = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      print(" logged in user : ${authResult.user}");
+
       await _populateCurrentUser(
           authResult.user); // Populate the user information
 
@@ -87,26 +95,19 @@ class AuthenticationService {
     }
   }
 
+  // Service function to perform the logout action.
   logout() async {
     await _firebaseAuth.signOut();
-    // print(" current user : ${_firebaseAuth.currentUser}");
     return _firebaseAuth.currentUser == null;
   }
 
   // Function returns true if the user is logged in , else ofc returns false
   Future<bool> isUserLoggedIn() async {
     var user = _firebaseAuth.currentUser;
-    // print(" is this web : $kIsWeb");
-    // var user = kIsWeb
-    //     ? await _firebaseAuth.authStateChanges().last
-    //     : _firebaseAuth.currentUser;
-    print(" user in isUseroggedIn func : $user");
 
     await _populateCurrentUser(user);
-    // Populate the user information
-
-    await populateCurrentUserWatchList(user != null ? user.displayName : null);
     // populate the user's watchlist
+    await populateCurrentUserWatchList(user != null ? user.displayName : null);
 
     return user != null;
   }
