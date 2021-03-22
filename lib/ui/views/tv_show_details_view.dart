@@ -100,178 +100,217 @@ class TvShowDetailsView extends StatelessWidget {
                                           height: 30,
                                         ),
                                       )
-                                    : Container(
-                                        height: 36.0,
-                                        width: 36.0,
-                                        padding: EdgeInsets.only(right: 4.0),
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                        ),
-                                        child: Center(
-                                          child: IconButton(
-                                            icon: Icon(
-                                                model.isMovieAdded
-                                                    ? Icons.check
-                                                    : Icons.add,
-                                                size: 20.0,
-                                                color: Colors.black),
-                                            onPressed: () {
-                                              _scaffoldKey.currentState
-                                                  .showBottomSheet(
-                                                (context) => Container(
-                                                  width: double.infinity,
-                                                  decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          width: 0.5)),
-                                                  child: model.isMovieAdded
-                                                      ? Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            verticalSpaceSmall,
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  height: 5.0,
-                                                                  width: 16.0,
-                                                                  color: Colors
-                                                                      .black54,
-                                                                )
-                                                              ],
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                            TextButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty.all(
-                                                                        Colors.red[
-                                                                            300]),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                        .only(
-                                                                    left: 24.0,
-                                                                    right: 24.0,
-                                                                    top: 8.0,
-                                                                    bottom:
-                                                                        8.0),
-                                                                child: Text(
-                                                                  "Remove from watchlist",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                model
-                                                                    .onAddTap();
-                                                              },
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                          ],
-                                                        )
-                                                      : Column(
-                                                          mainAxisSize:
-                                                              MainAxisSize.min,
-                                                          children: [
-                                                            verticalSpaceSmall,
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Container(
-                                                                  height: 5.0,
-                                                                  width: 16.0,
-                                                                  color: Colors
-                                                                      .black54,
-                                                                )
-                                                              ],
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                            Text(
-                                                              "Add this tv show to watchlist",
-                                                              style: sideHeadingTextStyle
-                                                                  .copyWith(
-                                                                      fontSize:
-                                                                          20.0),
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceEvenly,
-                                                              children: [
-                                                                Text(
-                                                                  "Select a status ",
-                                                                  style: namesTextStyle.copyWith(
-                                                                      fontSize:
-                                                                          18.0,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w300),
-                                                                ),
-                                                                Container(
-                                                                  width: 150.0,
-                                                                  child:
-                                                                      ExpansionList<
-                                                                          String>(
-                                                                    items: [
-                                                                      "Watching",
-                                                                      "Watched",
-                                                                      "Want to watch"
-                                                                    ],
-                                                                    title: model
-                                                                        .choice,
-                                                                    onItemSelected:
-                                                                        model
-                                                                            .changeChoice,
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                            TextButton(
-                                                              style:
-                                                                  ButtonStyle(
-                                                                backgroundColor:
-                                                                    MaterialStateProperty.all(
-                                                                        Colors.blue[
-                                                                            300]),
-                                                              ),
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                        .only(
-                                                                    left: 24.0,
-                                                                    right: 24.0,
-                                                                    top: 8.0,
-                                                                    bottom:
-                                                                        8.0),
-                                                                child: Text(
-                                                                  "Add to watchlist",
-                                                                  style: TextStyle(
-                                                                      color: Colors
-                                                                          .white),
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                model
-                                                                    .onAddTap();
-                                                              },
-                                                            ),
-                                                            verticalSpaceMedium,
-                                                          ],
-                                                        ),
-                                                ),
-                                              );
-                                            },
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Container(
+                                            height: 36.0,
+                                            width: 42.0,
+                                            padding:
+                                                EdgeInsets.only(right: 8.0),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: Center(
+                                              child: IconButton(
+                                                onPressed: () {
+                                                  model.onShareTap();
+                                                },
+                                                icon: Icon(Icons.share),
+                                              ),
+                                            ),
                                           ),
-                                        ),
+                                          horizontalSpaceMedium,
+                                          Container(
+                                            height: 36.0,
+                                            width: 36.0,
+                                            padding:
+                                                EdgeInsets.only(right: 4.0),
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.white,
+                                            ),
+                                            child: Center(
+                                              child: IconButton(
+                                                icon: Icon(
+                                                    model.isMovieAdded
+                                                        ? Icons.check
+                                                        : Icons.add,
+                                                    size: 20.0,
+                                                    color: Colors.black),
+                                                onPressed: () {
+                                                  _scaffoldKey.currentState
+                                                      .showBottomSheet(
+                                                    (context) => Container(
+                                                      width: double.infinity,
+                                                      decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                              width: 0.5)),
+                                                      child: model.isMovieAdded
+                                                          ? Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                verticalSpaceSmall,
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Container(
+                                                                      height:
+                                                                          5.0,
+                                                                      width:
+                                                                          16.0,
+                                                                      color: Colors
+                                                                          .black54,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                TextButton(
+                                                                  style:
+                                                                      ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            Colors.red[300]),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            24.0,
+                                                                        right:
+                                                                            24.0,
+                                                                        top:
+                                                                            8.0,
+                                                                        bottom:
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      "Remove from watchlist",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.white),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    model
+                                                                        .onAddTap();
+                                                                  },
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                              ],
+                                                            )
+                                                          : Column(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                verticalSpaceSmall,
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .center,
+                                                                  children: [
+                                                                    Container(
+                                                                      height:
+                                                                          5.0,
+                                                                      width:
+                                                                          16.0,
+                                                                      color: Colors
+                                                                          .black54,
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                Text(
+                                                                  "Add this tv show to watchlist",
+                                                                  style: sideHeadingTextStyle
+                                                                      .copyWith(
+                                                                          fontSize:
+                                                                              20.0),
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Text(
+                                                                      "Select a status ",
+                                                                      style: namesTextStyle.copyWith(
+                                                                          fontSize:
+                                                                              18.0,
+                                                                          fontWeight:
+                                                                              FontWeight.w300),
+                                                                    ),
+                                                                    Container(
+                                                                      width:
+                                                                          150.0,
+                                                                      child: ExpansionList<
+                                                                          String>(
+                                                                        items: [
+                                                                          "Watching",
+                                                                          "Watched",
+                                                                          "Want to watch"
+                                                                        ],
+                                                                        title: model
+                                                                            .choice,
+                                                                        onItemSelected:
+                                                                            model.changeChoice,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                TextButton(
+                                                                  style:
+                                                                      ButtonStyle(
+                                                                    backgroundColor:
+                                                                        MaterialStateProperty.all(
+                                                                            Colors.blue[300]),
+                                                                  ),
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                            .only(
+                                                                        left:
+                                                                            24.0,
+                                                                        right:
+                                                                            24.0,
+                                                                        top:
+                                                                            8.0,
+                                                                        bottom:
+                                                                            8.0),
+                                                                    child: Text(
+                                                                      "Add to watchlist",
+                                                                      style: TextStyle(
+                                                                          color:
+                                                                              Colors.white),
+                                                                    ),
+                                                                  ),
+                                                                  onPressed:
+                                                                      () {
+                                                                    model
+                                                                        .onAddTap();
+                                                                  },
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                              ],
+                                                            ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                          horizontalSpaceSmall,
+                                        ],
                                       ),
                               ),
                             ],
