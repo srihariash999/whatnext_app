@@ -2,22 +2,36 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
+import 'package:tcard/tcard.dart';
 
 import 'package:whatnext/ui/shared/ui_helpers.dart';
+import 'package:whatnext/ui/widgets/feed_card.dart';
 import 'package:whatnext/ui/widgets/movies_list_widget.dart';
 import 'package:whatnext/ui/widgets/tv_shows_list_widget.dart';
+import 'package:whatnext/viewmodels/feed_view_model.dart';
 // import 'package:whatnext/ui/views/movie_details_view.dart';
 
 import 'package:whatnext/viewmodels/home_view_model.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
 
-class HomeView extends StatelessWidget {
+class HomeView extends StatefulWidget {
   const HomeView({Key key}) : super(key: key);
 
   @override
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView>
+    with TickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
-    print(Theme.of(context).backgroundColor);
+    super.build(context);
+    TabController _tabController = TabController(length: 2, vsync: this);
+
     return ViewModelProvider<HomeViewModel>.withConsumer(
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) => model.onInit(),
@@ -30,6 +44,25 @@ class HomeView extends StatelessWidget {
           return Scaffold(
             // key: locator<SnackbarService>().scaffoldKey,
             backgroundColor: Theme.of(context).backgroundColor,
+            bottomNavigationBar: TabBar(
+              indicatorWeight: 3.0,
+              indicatorColor: Colors.red,
+              controller: _tabController,
+              tabs: [
+                Tab(
+                  icon: Text(
+                    'Feed 🍴',
+                    style: Theme.of(context).primaryTextTheme.headline2,
+                  ),
+                ),
+                Tab(
+                  icon: Text(
+                    'Explore 🧭',
+                    style: Theme.of(context).primaryTextTheme.headline2,
+                  ),
+                ),
+              ],
+            ),
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColor,
               title: Container(
@@ -52,197 +85,316 @@ class HomeView extends StatelessWidget {
             ),
 
             drawer: DrawerWidget(),
-            body: Column(
+            body: TabBarView(
+              controller: _tabController,
+              physics: NeverScrollableScrollPhysics(),
               children: [
-                verticalSpaceSmall,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        model.switchTabs('movie');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Movies',
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline1,
-                            ),
-                            AnimatedContainer(
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.easeInCirc,
-                              height: 4.0,
-                              width: 35.0,
-                              color: model.tabType == 'movie'
-                                  ? Theme.of(context).primaryColorLight
-                                  : Theme.of(context).backgroundColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        model.switchTabs('tv');
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              'TV Shows',
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline1,
-                            ),
-                            AnimatedContainer(
-                              duration: Duration(milliseconds: 400),
-                              curve: Curves.easeInCirc,
-                              height: 4.0,
-                              width: 35.0,
-                              color: model.tabType == 'tv'
-                                  ? Theme.of(context).primaryColorLight
-                                  : Theme.of(context).backgroundColor,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                verticalSpaceMedium,
-                AnimatedCrossFade(
-                  duration: Duration(milliseconds: 600),
-                  reverseDuration: Duration(milliseconds: 600),
-                  crossFadeState: model.tabType == 'movie'
-                      ? CrossFadeState.showFirst
-                      : CrossFadeState.showSecond,
-                  firstCurve: Curves.easeInCirc,
-                  secondCurve: Curves.easeInCirc,
-                  firstChild: RefreshIndicator(
-                    onRefresh: model.onInit,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.76,
-                      child: ListView(
-                        children: [
-                          verticalSpaceSmall,
-                          Container(
-                            padding: EdgeInsets.only(left: 16.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Popular Movies",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline2,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            height: 300,
-                            width: 200.0,
-                            child: MovieListWidget(
-                              moviesList: model.popularMoviesList,
-                              onMovieTap: model.onItemTap,
-                              loadMore: model.loadMorePopularMovies,
-                              direction: Axis.horizontal,
-                              height: 300.0,
-                              width: 200.0,
-                              showLoadMore: true,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            padding: EdgeInsets.only(left: 16.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Top Rated Movies",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline2,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            height: 300,
-                            child: MovieListWidget(
-                              moviesList: model.topRatedMoviesList,
-                              direction: Axis.horizontal,
-                              onMovieTap: model.onItemTap,
-                              loadMore: model.loadMoreTopRatedMovies,
-                              height: 300.0,
-                              width: 200.0,
-                              showLoadMore: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  secondChild: RefreshIndicator(
-                    onRefresh: model.onInit,
-                    child: Container(
-                      height: MediaQuery.of(context).size.height * 0.76,
-                      child: ListView(
-                        children: [
-                          verticalSpaceSmall,
-                          Container(
-                            padding: EdgeInsets.only(left: 16.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Popular Tv Shows",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline2,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            height: 300,
-                            width: 200.0,
-                            child: TvShowListWidget(
-                              tvShowsList: model.popularTvShowsList,
-                              onTvShowTap: model.onItemTap,
-                              loadMore: model.loadMorePopularTvShows,
-                              direction: Axis.horizontal,
-                              height: 300.0,
-                              width: 200.0,
-                              showLoadMore: true,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            padding: EdgeInsets.only(left: 16.0),
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Top Rated Tv Shows",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline2,
-                            ),
-                          ),
-                          verticalSpaceSmall,
-                          Container(
-                            height: 300,
-                            child: TvShowListWidget(
-                              tvShowsList: model.topRatedTvShowsList,
-                              direction: Axis.horizontal,
-                              onTvShowTap: model.onItemTap,
-                              loadMore: model.loadMoreTopRatedTvShows,
-                              height: 300.0,
-                              width: 200.0,
-                              showLoadMore: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
+                FeedPageWidget(),
+                ExplorePageWidget(
+                  model: model,
+                )
               ],
             ),
           );
         }
       },
+    );
+  }
+}
+
+class FeedPageWidget extends StatefulWidget {
+  const FeedPageWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  _FeedPageWidgetState createState() => _FeedPageWidgetState();
+}
+
+class _FeedPageWidgetState extends State<FeedPageWidget>
+    with AutomaticKeepAliveClientMixin<FeedPageWidget> {
+  @override
+  bool get wantKeepAlive => true;
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    return ViewModelProvider<FeedViewModel>.withConsumer(
+      viewModelBuilder: () => FeedViewModel(),
+      onModelReady: (model) => model.onInit(),
+      builder: (context, model, child) {
+        if (model.busy) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        model.moveBack();
+                      },
+                      child: Text('Back'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        model.refresh();
+                      },
+                      child: Text('Refresh'),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        model.moveForward();
+                      },
+                      child: Text('Forward'),
+                    ),
+                  ],
+                ),
+                verticalSpaceMedium,
+                model.feedList.length > 0
+                    ? TCard(
+                        cards: model.feedList
+                            .map(
+                              (feedItem) => InkWell(
+                                onTap: () {
+                                  model.onItemTap(feedItem.id, feedItem.type);
+                                },
+                                child: FeedCardWidget(feed: feedItem),
+                              ),
+                            )
+                            .toList(),
+                        size: Size(360, 480),
+                        controller: model.controller,
+                        // onForward: (index, info) {
+                        //   print(index);
+                        // },
+                        // onBack: (index, info) {
+                        //   print(index);
+                        // },
+                        onEnd: () {
+                          model.reachedEnd();
+                        },
+                      )
+                    : Container(
+                        height: 300.0,
+                        width: 400.0,
+                        color: Theme.of(context).primaryColorLight,
+                        alignment: Alignment.center,
+                        child: Text(
+                          "No feed to show",
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .headline3
+                              .copyWith(
+                                  color: Theme.of(context).backgroundColor,
+                                  fontWeight: FontWeight.w400),
+                        ),
+                      ),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+}
+
+class ExplorePageWidget extends StatelessWidget {
+  final model;
+  const ExplorePageWidget({
+    Key key,
+    @required this.model,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        verticalSpaceSmall,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            InkWell(
+              onTap: () {
+                model.switchTabs('movie');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Movies',
+                      style: Theme.of(context).primaryTextTheme.headline1,
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      curve: Curves.easeInCirc,
+                      height: 4.0,
+                      width: 35.0,
+                      color: model.tabType == 'movie'
+                          ? Theme.of(context).primaryColorLight
+                          : Theme.of(context).backgroundColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            InkWell(
+              onTap: () {
+                model.switchTabs('tv');
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      'TV Shows',
+                      style: Theme.of(context).primaryTextTheme.headline1,
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 400),
+                      curve: Curves.easeInCirc,
+                      height: 4.0,
+                      width: 35.0,
+                      color: model.tabType == 'tv'
+                          ? Theme.of(context).primaryColorLight
+                          : Theme.of(context).backgroundColor,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+        verticalSpaceMedium,
+        Expanded(
+          child: AnimatedCrossFade(
+            duration: Duration(milliseconds: 600),
+            reverseDuration: Duration(milliseconds: 600),
+            crossFadeState: model.tabType == 'movie'
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            firstCurve: Curves.easeInCirc,
+            secondCurve: Curves.easeInCirc,
+            firstChild: RefreshIndicator(
+              onRefresh: model.onInit,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.76,
+                child: ListView(
+                  children: [
+                    verticalSpaceSmall,
+                    Container(
+                      padding: EdgeInsets.only(left: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Popular Movies",
+                        style: Theme.of(context).primaryTextTheme.headline2,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      height: 300,
+                      width: 200.0,
+                      child: MovieListWidget(
+                        moviesList: model.popularMoviesList,
+                        onMovieTap: model.onItemTap,
+                        loadMore: model.loadMorePopularMovies,
+                        direction: Axis.horizontal,
+                        height: 300.0,
+                        width: 200.0,
+                        showLoadMore: true,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      padding: EdgeInsets.only(left: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Top Rated Movies",
+                        style: Theme.of(context).primaryTextTheme.headline2,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      height: 300,
+                      child: MovieListWidget(
+                        moviesList: model.topRatedMoviesList,
+                        direction: Axis.horizontal,
+                        onMovieTap: model.onItemTap,
+                        loadMore: model.loadMoreTopRatedMovies,
+                        height: 300.0,
+                        width: 200.0,
+                        showLoadMore: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            secondChild: RefreshIndicator(
+              onRefresh: model.onInit,
+              child: Container(
+                height: MediaQuery.of(context).size.height * 0.76,
+                child: ListView(
+                  children: [
+                    verticalSpaceSmall,
+                    Container(
+                      padding: EdgeInsets.only(left: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Popular Tv Shows",
+                        style: Theme.of(context).primaryTextTheme.headline2,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      height: 300,
+                      width: 200.0,
+                      child: TvShowListWidget(
+                        tvShowsList: model.popularTvShowsList,
+                        onTvShowTap: model.onItemTap,
+                        loadMore: model.loadMorePopularTvShows,
+                        direction: Axis.horizontal,
+                        height: 300.0,
+                        width: 200.0,
+                        showLoadMore: true,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      padding: EdgeInsets.only(left: 16.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Top Rated Tv Shows",
+                        style: Theme.of(context).primaryTextTheme.headline2,
+                      ),
+                    ),
+                    verticalSpaceSmall,
+                    Container(
+                      height: 300,
+                      child: TvShowListWidget(
+                        tvShowsList: model.topRatedTvShowsList,
+                        direction: Axis.horizontal,
+                        onTvShowTap: model.onItemTap,
+                        loadMore: model.loadMoreTopRatedTvShows,
+                        height: 300.0,
+                        width: 200.0,
+                        showLoadMore: true,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
