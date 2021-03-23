@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/picture.dart';
@@ -5,7 +9,7 @@ import 'package:whatnext/models/tv_credit.dart';
 import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
-
+import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
@@ -125,6 +129,27 @@ class TvShowDetailsViewModel extends BaseModel {
 
   onTvShowTap(int id, String mediaType) {
     _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
+  }
+
+  onShareTap() async {
+    _isBeingAdded = true;
+    setState();
+    try {
+      var request = await HttpClient().getUrl(Uri.parse(
+          'https://image.tmdb.org/t/p/w500${_tvShowDetails.posterPath}'));
+      var response = await request.close();
+      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      await Share.file('${_tvShowDetails.originalName}',
+          '${_tvShowDetails.name}.png', bytes, 'image/jpg',
+          text:
+              "Checkout this tv show '${_tvShowDetails.name}' at : https://whatnext.app/t/${_tvShowDetails.id} ");
+    } catch (e) {
+      print('error: $e');
+    }
+    _isBeingAdded = false;
+    setState();
+
+    return;
   }
 
   onAddTap() async {

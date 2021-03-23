@@ -1,3 +1,8 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/movie.dart';
@@ -140,6 +145,27 @@ class MovieDetailsViewModel extends BaseModel {
   changeChoice(String choice) {
     _choice = choice;
     setState();
+  }
+
+  onShareTap() async {
+    _isBeingAdded = true;
+    setState();
+    try {
+      var request = await HttpClient().getUrl(Uri.parse(
+          'https://image.tmdb.org/t/p/w500${_movieDetails.posterPath}'));
+      var response = await request.close();
+      Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      await Share.file('${_movieDetails.title}', '${_movieDetails.title}.png',
+          bytes, 'image/jpg',
+          text:
+              "Checkout this movie '${_movieDetails.title}' at : https://whatnext.app/m/${_movieDetails.id} ");
+    } catch (e) {
+      print('error: $e');
+    }
+    _isBeingAdded = false;
+    setState();
+
+    return;
   }
 
   onMovieTap(int id, String mediaType) {
