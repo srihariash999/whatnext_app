@@ -51,13 +51,13 @@ class FeedViewModel extends BaseModel {
     try {
       var res = await _firestoreService.getAllFeed();
       for (var i in res) {
-        print("\n\n  feed: ${i.data()}  \n\n");
+        // print("\n\n  feed: ${i.data()}  \n\n");
         _feedList.add(Feed.fromJson(i.data()));
       }
     } catch (e) {
       print("error adding feed: $e");
     }
-    print(" feedlist: $_feedList");
+    // print(" feedlist: $_feedList");
     setBusy(false);
   }
 }

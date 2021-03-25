@@ -64,7 +64,7 @@ class TvShowListWidget extends StatelessWidget {
                     alignment: Alignment.center,
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      popTvShow.originalName,
+                      popTvShow.name,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).primaryTextTheme.headline4,
                     ),

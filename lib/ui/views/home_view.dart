@@ -659,7 +659,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
                             title: Text(
                               result['media_type'] == 'movie'
                                   ? result['item'].title
-                                  : result['item'].originalName,
+                                  : result['item'].name,
                               style: Theme.of(context)
                                   .primaryTextTheme
                                   .headline3
