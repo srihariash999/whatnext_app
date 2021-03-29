@@ -322,7 +322,7 @@ class TvShowDetailsView extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Text(
-                                _tvd.originalName,
+                                _tvd.name,
                                 style: Theme.of(context)
                                     .primaryTextTheme
                                     .headline1,
@@ -379,7 +379,7 @@ class TvShowDetailsView extends StatelessWidget {
                                     SizedBox(width: kDefaultPadding),
                                     Text(
                                         _tvd.numberOfEpisodes > 1
-                                            ? _tvd.numberOfSeasons.toString() +
+                                            ? _tvd.numberOfEpisodes.toString() +
                                                 " Episodes"
                                             : _tvd.numberOfSeasons.toString() +
                                                 " Episode",

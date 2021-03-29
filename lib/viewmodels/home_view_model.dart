@@ -1,5 +1,6 @@
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
+import 'package:whatnext/models/feed.dart';
 import 'package:whatnext/models/movie.dart';
 import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/services/authentication_service.dart';
@@ -21,6 +22,12 @@ class HomeViewModel extends BaseModel {
 
   int _popPage2 = 1;
   int _topPage2 = 1;
+
+  String _pageType = "";
+  String get pageType => _pageType;
+
+  int _bottomIndex = 0;
+  int get bottomIndex => _bottomIndex;
 
   String _tabType = "";
   String get tabType => _tabType;
@@ -48,9 +55,17 @@ class HomeViewModel extends BaseModel {
   List<TvShow> _topRatedTvShowsList = [];
   List<TvShow> get topRatedTvShowsList => _topRatedTvShowsList;
 
+  List<Feed> _feedList = [];
+  List<Feed> get feedList => _feedList;
+
+  bool _feedLoading = false;
+  bool get feedLoading => _feedLoading;
+
   Future<void> onInit() async {
     setBusy(true);
     _tabType = 'movie';
+    _pageType = 'feed';
+    setBusy(false);
     fetchPopularMovies();
     setState();
     fetchTopRatedMovies();
@@ -59,7 +74,6 @@ class HomeViewModel extends BaseModel {
     setState();
     fetchTopRatedTvShows();
     setState();
-    setBusy(false);
   }
 
   getUserName() {
@@ -74,6 +88,12 @@ class HomeViewModel extends BaseModel {
 
   switchTabs(String tabName) {
     _tabType = tabName;
+    setState();
+  }
+
+  switchPages(int index) {
+    _bottomIndex = index;
+    print("_bottom Index : $_bottomIndex");
     setState();
   }
 

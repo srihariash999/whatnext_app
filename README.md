@@ -22,7 +22,7 @@ This project is still in development stage. So, feature requests are welcome. Fe
 - [ ] UI polishing to look decent.
 - [ ] Send suggestions and messages to other users.
 - [ ] Invite people to the app via other mediums.
-- [ ] Share a movie/Tv show to other apps.
+- [x] Share a movie/Tv show to other apps.
 - [ ] Add comments or thoughts to the watchlist items visible to user's friends or all.
 - [ ] Create a feed with the updates from people user follows.
 

@@ -70,6 +70,18 @@ class FirestoreService {
           .doc(userName)
           .update({'watchList': _toUpdate});
 
+      await _instance.collection("feed").add(
+        {
+          'userName': userName,
+          'id': id,
+          'name': name,
+          'poster': posterPath,
+          "status": status,
+          "type": type,
+          'addedOn': DateTime.now().toString(),
+        },
+      );
+
       return {'res': true, 'message': 'user watchlist updated'};
     } catch (e) {
       return {'res': false, 'message': e.message};
@@ -124,6 +136,15 @@ class FirestoreService {
       var usersList = await _instance.collection("users").get();
 
       return usersList.docs;
+    } catch (e) {
+      return e.message;
+    }
+  }
+
+  Future<List<QueryDocumentSnapshot>> getAllFeed() async {
+    try {
+      var feedList = await _instance.collection("feed").get();
+      return feedList.docs;
     } catch (e) {
       return e.message;
     }
