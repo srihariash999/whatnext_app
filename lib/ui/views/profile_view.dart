@@ -272,6 +272,7 @@ class ProfileView extends StatelessWidget {
                                 horizontalSpaceMedium,
                                 horizontalSpaceMedium,
                                 Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
                                       people['fullName'],

@@ -21,7 +21,7 @@ void main() async {
   await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF4a4e69).withOpacity(0.8),
+      statusBarColor: Colors.white70,
     ),
   );
   // Register all the models and services before the app starts

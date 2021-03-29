@@ -14,6 +14,9 @@ class FeedViewModel extends BaseModel {
   List<Feed> _feedList = [];
   List<Feed> get feedList => _feedList;
 
+  String _viewType = "list";
+  String get viewType => _viewType;
+
   TCardController _controller = TCardController();
   TCardController get controller => _controller;
   Future<void> onInit() async {
@@ -28,13 +31,40 @@ class FeedViewModel extends BaseModel {
     _controller.back();
   }
 
-  refresh() {
-    getFeed();
+  reset() {
     _controller.reset();
+    setState();
+  }
+
+  Future<void> refresh() async {
+    _feedList.clear();
+    setState();
+    try {
+      var res = await _firestoreService.getAllFeed();
+      for (var i in res) {
+        // print("\n\n  feed: ${i.data()}  \n\n");
+        _feedList.add(Feed.fromJson(i.data()));
+      }
+      _feedList = _feedList.reversed.toList();
+    } catch (e) {
+      print("error adding feed: $e");
+    }
+    // _controller.reset();
+    setState();
   }
 
   reachedEnd() {
     _controller.back();
+  }
+
+  switchView() {
+    if (_viewType == "card") {
+      _viewType = 'list';
+      setState();
+    } else {
+      _viewType = 'card';
+      setState();
+    }
   }
 
   onItemTap(int id, String mediaType) {
@@ -54,6 +84,7 @@ class FeedViewModel extends BaseModel {
         // print("\n\n  feed: ${i.data()}  \n\n");
         _feedList.add(Feed.fromJson(i.data()));
       }
+      _feedList = _feedList.reversed.toList();
     } catch (e) {
       print("error adding feed: $e");
     }

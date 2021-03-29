@@ -26,6 +26,9 @@ class HomeViewModel extends BaseModel {
   String _pageType = "";
   String get pageType => _pageType;
 
+  int _bottomIndex = 0;
+  int get bottomIndex => _bottomIndex;
+
   String _tabType = "";
   String get tabType => _tabType;
 
@@ -88,8 +91,9 @@ class HomeViewModel extends BaseModel {
     setState();
   }
 
-  switchPages(String pageName) {
-    _pageType = pageName;
+  switchPages(int index) {
+    _bottomIndex = index;
+    print("_bottom Index : $_bottomIndex");
     setState();
   }
 

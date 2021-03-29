@@ -30,16 +30,21 @@ class TvShow {
 
   TvShow.fromJson(Map<String, dynamic> json) {
     posterPath = json['poster_path'];
-    popularity = json['popularity'].toDouble();
+    popularity =
+        json['popularity'] != null ? json['popularity'].toDouble() : 0.0;
     id = json['id'];
     overview = json['overview'];
     backdropPath = json['backdrop_path'];
-    voteAverage = json['vote_average'].toDouble();
+    voteAverage =
+        json['vote_average'] != null ? json['vote_average'].toDouble() : 0.0;
     firstAirDate = json['first_air_date'];
-    originCountry = json['origin_country'].cast<String>();
-    genreIds = json['genre_ids'].cast<int>();
+    originCountry = json['origin_country'] != null
+        ? json['origin_country'].cast<String>()
+        : null;
+    genreIds = json['genre_ids'] != null ? json['genre_ids'].cast<int>() : null;
     originalLanguage = json['original_language'];
-    voteCount = json['vote_count'].toDouble();
+    voteCount =
+        json['vote_count'] != null ? json['vote_count'].toDouble() : 0.0;
     name = json['name'];
     originalName = json['original_name'];
   }

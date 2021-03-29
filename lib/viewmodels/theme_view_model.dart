@@ -9,6 +9,9 @@ class ThemesViewModel extends BaseModel {
 
   ThemeData get theme => _td;
 
+  int _themeIndex = 0;
+  int get themeIndex => _themeIndex;
+
   onInit() async {
     setBusy(true);
     await getSavedTheme();
@@ -19,7 +22,9 @@ class ThemesViewModel extends BaseModel {
 
   getSavedTheme() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-
+    _themeIndex = _prefs.getInt('theme');
+    setState();
+    print(" this is theme indexz: $_themeIndex");
     _td = getThemes().elementAt(_prefs.getInt('theme') ?? 0);
     print(" this is td : $_td");
     setState();
@@ -27,10 +32,10 @@ class ThemesViewModel extends BaseModel {
 
   setTheme(int index, BuildContext context) async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
-    print(index);
+
     _prefs.setInt('theme', index);
     _td = getThemes().elementAt(_prefs.getInt('theme') ?? 0);
-    print("theme set : $_td");
+
     setState();
     Phoenix.rebirth(context);
   }
