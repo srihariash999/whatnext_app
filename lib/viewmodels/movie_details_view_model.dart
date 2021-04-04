@@ -19,6 +19,7 @@ import 'package:whatnext/services/tmdb_service.dart';
 
 import 'package:whatnext/viewmodels/base_model.dart';
 
+
 class MovieDetailsViewModel extends BaseModel {
   final TmdbService _tmdbService = locator<TmdbService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -26,7 +27,7 @@ class MovieDetailsViewModel extends BaseModel {
       locator<AuthenticationService>();
 
   final FirestoreService _firestoreService = locator<FirestoreService>();
-
+  
   bool _isMovieAdded = false;
   bool get isMovieAdded => _isMovieAdded;
 
