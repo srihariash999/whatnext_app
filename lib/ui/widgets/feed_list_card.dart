@@ -5,6 +5,7 @@ import 'package:whatnext/models/feed.dart';
 var formatter = DateFormat.yMMMd('en_US');
 
 class FeedListCardWidget extends StatelessWidget {
+  // Feed object to use the data from. 
   final Feed feed;
 
   const FeedListCardWidget({Key key, @required this.feed}) : super(key: key);
