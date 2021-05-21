@@ -42,7 +42,13 @@ This project is still in development stage. So, feature requests are welcome. Fe
 ```
 $ flutter pub get
 ```
-5. Add your API key in a file named 'api_keys.dart' inside /lib/constants  (details for this will be updated soon in another file)
+5. Add your API key in a file named 'api_keys.dart' inside /lib/constants 
+ 
+```
+const String v3 = "XXXXXXXXX";
+const String v4 = "XXXXXXXXX";
+
+```
 
 6. Setup up a project in firebase using structure specified (details will be provided soon) and link your app with firebase. (google-services.json) 
 
