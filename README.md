@@ -42,7 +42,7 @@ This project is still in development stage. So, feature requests are welcome. Fe
 ```
 $ flutter pub get
 ```
-5. Add your API key in a file named 'api_keys.dart' inside /lib/constants 
+5. Add your TMDB API keys in a file named 'api_keys.dart' and place it inside /lib/constants 
  
 ```
 const String v3 = "XXXXXXXXX";
