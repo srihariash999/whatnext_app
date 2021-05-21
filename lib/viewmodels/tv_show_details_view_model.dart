@@ -67,6 +67,7 @@ class TvShowDetailsViewModel extends BaseModel {
     getPictures(id);
   }
 
+// This function determines whether the tv show is added in the user's list or not.
   ifTvShowAdded(int tvId) async {
     for (var element in _authenticationService.currentUserWatchList) {
       if (element['id'] == tvId) {
@@ -150,6 +151,51 @@ class TvShowDetailsViewModel extends BaseModel {
     setState();
 
     return;
+  }
+
+  onTvStatusChange() async {
+    //escape multiple presses of the same button.
+    if (!_isBeingAdded) {
+      //Signal busy status.
+      _isBeingAdded = true;
+      setState();
+
+      //Remove the tv show from the user's list.
+
+      var s = await _firestoreService.removeFromUserWatchList(
+        _tvShowDetails,
+        _authenticationService.currentUser.userName,
+      );
+
+      if (s['res'] == true) {
+        await _authenticationService.populateCurrentUserWatchList(
+            _authenticationService.currentUser.userName);
+        ifTvShowAdded(_tvShowDetails.id);
+      }
+
+      //Now add the tv show to the user's list again, with updated staus.
+
+      s = await _firestoreService.addToUserWatchList(
+          name: _tvShowDetails.originalName,
+          id: _tvShowDetails.id,
+          posterPath: _tvShowDetails.posterPath,
+          type: 'tv',
+          userName: _authenticationService.currentUser.userName,
+          status: _choice);
+
+      if (s['res'] == true) {
+        await _authenticationService.populateCurrentUserWatchList(
+            _authenticationService.currentUser.userName);
+        ifTvShowAdded(_tvShowDetails.id);
+
+        // set the bool, that says the tv show is added.
+        _isTvShowAdded = true;
+        //indicate that the state is not busy anymore.
+        _isBeingAdded = false;
+        setState();
+        _navigationService.pop();
+      }
+    }
   }
 
   onAddTap() async {

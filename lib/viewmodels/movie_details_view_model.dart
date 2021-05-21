@@ -19,7 +19,6 @@ import 'package:whatnext/services/tmdb_service.dart';
 
 import 'package:whatnext/viewmodels/base_model.dart';
 
-
 class MovieDetailsViewModel extends BaseModel {
   final TmdbService _tmdbService = locator<TmdbService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -27,7 +26,7 @@ class MovieDetailsViewModel extends BaseModel {
       locator<AuthenticationService>();
 
   final FirestoreService _firestoreService = locator<FirestoreService>();
-  
+
   bool _isMovieAdded = false;
   bool get isMovieAdded => _isMovieAdded;
 
@@ -125,6 +124,7 @@ class MovieDetailsViewModel extends BaseModel {
     setState();
   }
 
+  // this function determines if a movie is added to watchlist or not.
   ifMovieAdded(int movieId) async {
     print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
@@ -175,6 +175,50 @@ class MovieDetailsViewModel extends BaseModel {
 
   navigateToVideoPlayer() {
     _navigationService.navigateTo(VideoPlayerViewRoute, arguments: _video.key);
+  }
+
+  onChangeMovieStatus() async {
+    // Escape multiple presses of the button before the action is completed.
+    if (!_isBeingAdded) {
+      // Set the state to indicate busy.
+      _isBeingAdded = true;
+      setState();
+
+      // remove the old item from user's watchlist.
+
+      var s = await _firestoreService.removeFromUserWatchList(
+        _movieDetails,
+        _authenticationService.currentUser.userName,
+      );
+
+      // update the user's watchlist.
+      if (s['res'] == true) {
+        await _authenticationService.populateCurrentUserWatchList(
+            _authenticationService.currentUser.userName);
+        ifMovieAdded(_movieDetails.id);
+      }
+
+      // add the movie in user's watchlist with whatever status they want.
+
+      s = await _firestoreService.addToUserWatchList(
+          name: _movieDetails.title,
+          id: _movieDetails.id,
+          posterPath: _movieDetails.posterPath,
+          userName: _authenticationService.currentUser.userName,
+          status: _choice,
+          type: 'movie');
+
+      if (s['res'] == true) {
+        await _authenticationService.populateCurrentUserWatchList(
+            _authenticationService.currentUser.userName);
+        ifMovieAdded(_movieDetails.id);
+        _isMovieAdded = true;
+        _isBeingAdded = false;
+
+        setState();
+        _navigationService.pop();
+      }
+    }
   }
 
   onAddTap() async {

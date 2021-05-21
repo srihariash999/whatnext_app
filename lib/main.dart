@@ -1,8 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:provider_architecture/_viewmodel_provider.dart';
 // import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/managers/deep_link_manager.dart';
 import 'package:whatnext/services/dialog_service.dart';

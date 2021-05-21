@@ -145,8 +145,22 @@ class MovieDetailsView extends StatelessWidget {
                                                     (context) => Container(
                                                       width: double.infinity,
                                                       decoration: BoxDecoration(
-                                                          border: Border.all(
-                                                              width: 0.5)),
+                                                        border: Border.all(
+                                                          width: 0.5,
+                                                          color: Colors.black
+                                                              .withOpacity(
+                                                                  0.30),
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  20.0),
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  20.0),
+                                                        ),
+                                                      ),
                                                       child: model.isMovieAdded
                                                           ? Column(
                                                               mainAxisSize:
@@ -161,13 +175,78 @@ class MovieDetailsView extends StatelessWidget {
                                                                   children: [
                                                                     Container(
                                                                       height:
-                                                                          5.0,
+                                                                          4.0,
                                                                       width:
-                                                                          16.0,
+                                                                          28.0,
                                                                       color: Colors
                                                                           .black54,
                                                                     )
                                                                   ],
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Container(
+                                                                      width:
+                                                                          150.0,
+                                                                      child: ExpansionList<
+                                                                          String>(
+                                                                        items: [
+                                                                          "Watching",
+                                                                          "Watched",
+                                                                          "Want to watch"
+                                                                        ],
+                                                                        title: model
+                                                                            .choice,
+                                                                        onItemSelected:
+                                                                            model.changeChoice,
+                                                                      ),
+                                                                    ),
+                                                                    TextButton(
+                                                                      style:
+                                                                          ButtonStyle(
+                                                                        backgroundColor:
+                                                                            MaterialStateProperty.all(Colors.blue[300]),
+                                                                      ),
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsets.only(
+                                                                            left:
+                                                                                24.0,
+                                                                            right:
+                                                                                24.0,
+                                                                            top:
+                                                                                8.0,
+                                                                            bottom:
+                                                                                8.0),
+                                                                        child:
+                                                                            Text(
+                                                                          "Update Status",
+                                                                          style:
+                                                                              TextStyle(color: Colors.white),
+                                                                        ),
+                                                                      ),
+                                                                      onPressed:
+                                                                          () {
+                                                                        model
+                                                                            .onChangeMovieStatus();
+                                                                      },
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                                verticalSpaceMedium,
+                                                                Text(
+                                                                  "or",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.7),
+                                                                  ),
                                                                 ),
                                                                 verticalSpaceMedium,
                                                                 TextButton(
@@ -302,6 +381,18 @@ class MovieDetailsView extends StatelessWidget {
                                                                 verticalSpaceMedium,
                                                               ],
                                                             ),
+                                                    ),
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.only(
+                                                        topLeft:
+                                                            Radius.circular(
+                                                                22.0),
+                                                        topRight:
+                                                            Radius.circular(
+                                                                22.0),
+                                                      ),
                                                     ),
                                                   );
                                                   // model.onAddTap(context);
