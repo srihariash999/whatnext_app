@@ -23,9 +23,6 @@ class HomeViewModel extends BaseModel {
   int _popPage2 = 1;
   int _topPage2 = 1;
 
-  String _pageType = "";
-  String get pageType => _pageType;
-
   int _bottomIndex = 0;
   int get bottomIndex => _bottomIndex;
 
@@ -64,7 +61,6 @@ class HomeViewModel extends BaseModel {
   Future<void> onInit() async {
     setBusy(true);
     _tabType = 'movie';
-    _pageType = 'feed';
     setBusy(false);
     fetchPopularMovies();
     setState();

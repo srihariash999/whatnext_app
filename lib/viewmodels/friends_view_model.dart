@@ -72,16 +72,16 @@ class FriendsViewModel extends BaseModel {
 
     for (var i in snap) {
       // print(i.data());
-      var data = i.data();
+      Object data = i.data();
       if (i['userName'] != _authenticationService.currentUser.userName) {
         UserModel u = UserModel(
-            id: data['id'],
-            fullName: data['fullName'],
-            email: data['email'],
-            userRole: data['userRole'],
-            userName: data['userName'],
-            followersList: data['followersList'],
-            followingList: data['followingList']);
+            id: (data as Map)['id'],
+            fullName: (data as Map)['fullName'],
+            email: (data as Map)['email'],
+            userRole: (data as Map)['userRole'],
+            userName: (data as Map)['userName'],
+            followersList: (data as Map)['followersList'],
+            followingList: (data as Map)['followingList']);
         FriendStatus f = getFriendStatus(u);
         _allUsers.add(u);
         _allUsersToDisplay.add(u);
@@ -90,13 +90,13 @@ class FriendsViewModel extends BaseModel {
         setState();
       } else {
         _authenticationService.setCurrentUser(UserModel(
-            id: data['id'],
-            fullName: data['fullName'],
-            email: data['email'],
-            userRole: data['userRole'],
-            userName: data['userName'],
-            followersList: data['followersList'],
-            followingList: data['followingList']));
+            id: (data as Map)['id'],
+            fullName: (data as Map)['fullName'],
+            email: (data as Map)['email'],
+            userRole: (data as Map)['userRole'],
+            userName: (data as Map)['userName'],
+            followersList: (data as Map)['followersList'],
+            followingList: (data as Map)['followingList']));
       }
     }
     // print(" users list : $usersList");

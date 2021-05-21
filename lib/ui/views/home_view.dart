@@ -59,7 +59,7 @@ class HomeView extends StatelessWidget {
                         icon: Column(
                           children: [
                             Text(
-                              'Feed 🍴',
+                              'Explore 🧭',
                               style:
                                   Theme.of(context).primaryTextTheme.headline2,
                             ),
@@ -75,13 +75,13 @@ class HomeView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        label: 'Feed',
+                        label: 'Explore',
                       ),
                       BottomNavigationBarItem(
                         icon: Column(
                           children: [
                             Text(
-                              'Explore 🧭',
+                              'Feed 🍴',
                               style:
                                   Theme.of(context).primaryTextTheme.headline2,
                             ),
@@ -97,16 +97,16 @@ class HomeView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        label: 'Explore',
-                      )
+                        label: 'Feed',
+                      ),
                     ],
                   ),
                   body: model.bottomIndex == 0
-                      ? FeedPageWidget(
-                          model: model2,
-                        )
-                      : ExplorePageWidget(
+                      ? ExplorePageWidget(
                           model: model,
+                        )
+                      : FeedPageWidget(
+                          model: model2,
                         ),
                 );
               }
