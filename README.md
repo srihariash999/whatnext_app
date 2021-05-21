@@ -56,6 +56,21 @@ $ flutter run
 
 See the [contributor's guide!](contributing.md)
 
+
+## Screenshots
+ <img src="./Screenshots/home.png" width="250"> | <img src="./Screenshots/feed.png" width="250"> |  <img src="./Screenshots/feed2.png" width="250">
+
+
+  <img src="./Screenshots/drawer.png" width="250"> | <img src="./Screenshots/watchlist.png" width="250"> |  <img src="./Screenshots/add.png" width="250">  
+
+
+  <img src="./Screenshots/search.png" width="250"> | <img src="./Screenshots/profile.png" width="250"> |  <img src="./Screenshots/themes.png" width="250">  
+
+
+
+
+
+
 ## Questions or issues ?
 
 If you have general question about the project. Feel free to open an issue regarding your query/issue.
