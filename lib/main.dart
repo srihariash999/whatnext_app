@@ -107,11 +107,12 @@ class MyApp extends StatelessWidget {
               } else {
                 return MaterialApp(
                   title: 'What Next ?',
-                  debugShowCheckedModeBanner: true,
                   scaffoldMessengerKey:
                       locator<SnackbarService>().scaffoldMessengerKey,
                   key: locator<SnackbarService>().scaffoldKey,
                   theme: model.theme,
+                  debugShowCheckedModeBanner: false,
+                  navigatorKey: locator<NavigationService>().navigationKey,
                   home: Material(
                     child: Scaffold(
                       body: theType == 'movie'
