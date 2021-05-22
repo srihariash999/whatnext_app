@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:esys_flutter_share/esys_flutter_share.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
@@ -156,10 +157,35 @@ class MovieDetailsViewModel extends BaseModel {
           'https://image.tmdb.org/t/p/w500${_movieDetails.posterPath}'));
       var response = await request.close();
       Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+
+      final DynamicLinkParameters parameters = DynamicLinkParameters(
+        uriPrefix: 'https://whatnext.page.link',
+        link: Uri.parse(
+            'https://whatnext.page.link/details?type=movie&id=${_movieDetails.id}'),
+        androidParameters: AndroidParameters(
+          packageName: 'app.zepplaud.whatnext',
+          minimumVersion: 0,
+        ),
+        dynamicLinkParametersOptions: DynamicLinkParametersOptions(
+          shortDynamicLinkPathLength: ShortDynamicLinkPathLength.short,
+        ),
+        iosParameters: IosParameters(
+          bundleId: 'app.zepplaud.whatnext',
+          minimumVersion: '0',
+        ),
+      );
+
+      Uri url;
+
+      final ShortDynamicLink shortLink = await parameters.buildShortLink();
+      url = shortLink.shortUrl;
+
+      print("I am the deep link");
+      print(url.toString());
+
       await Share.file('${_movieDetails.title}', '${_movieDetails.title}.png',
           bytes, 'image/jpg',
-          text:
-              "Checkout this movie '${_movieDetails.title}' at : https://whatnext.app/m/${_movieDetails.id} ");
+          text: "Checkout this movie '${_movieDetails.title}' at : $url ");
     } catch (e) {
       print('error: $e');
     }

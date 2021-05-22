@@ -5,12 +5,16 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 // import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/managers/deep_link_manager.dart';
+// import 'package:whatnext/models/movie_details.dart';
+// import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/snackbar_service.dart';
-import 'package:whatnext/ui/views/movie_detail_deepLink.dart';
+import 'package:whatnext/ui/views/movie_details_view.dart';
+// import 'package:whatnext/ui/views/movie_detail_deepLink.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
-import 'package:whatnext/ui/views/tv_detail_deeplink.dart';
+import 'package:whatnext/ui/views/tv_show_details_view.dart';
+// import 'package:whatnext/ui/views/tv_detail_deeplink.dart';
 import 'package:whatnext/viewmodels/theme_view_model.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
@@ -40,7 +44,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelProvider<DeepLinkManager>.withConsumer(
       viewModelBuilder: () => DeepLinkManager(),
-      onModelReady: (model) => model.deepLinkInit(),
+      onModelReady: (model) => model.initDynamicLinks(),
       builder: (context, model, child) {
         if (model.deepLink == false) {
           return ViewModelProvider<ThemesViewModel>.withConsumer(
@@ -81,21 +85,89 @@ class MyApp extends StatelessWidget {
             },
           );
         } else {
-          return MaterialApp(
-            title: 'What Next ?',
-            debugShowCheckedModeBanner: true,
-            scaffoldMessengerKey:
-                locator<SnackbarService>().scaffoldMessengerKey,
-            key: locator<SnackbarService>().scaffoldKey,
-            home: Material(
-              child: Scaffold(
-                body: model.mediaType == 'movie'
-                    ? MovieDetailsDeepLink(id: model.id)
-                    : TvDetailDeepLink(id: model.id),
-              ),
-            ),
-            onGenerateRoute: generateRoute,
+          var theType = model.mediaType;
+          var theId = model.id;
+          return ViewModelProvider<ThemesViewModel>.withConsumer(
+            viewModelBuilder: () => ThemesViewModel(),
+            onModelReady: (model) => model.onInit(),
+            builder: (context, model, child) {
+              print(" this build is trigggggoooo");
+              if (model.busy) {
+                return MaterialApp(
+                  title: 'What Next ?',
+                  debugShowCheckedModeBanner: false,
+                  home: Scaffold(
+                    body: Container(
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  ),
+                );
+              } else {
+                return MaterialApp(
+                  title: 'What Next ?',
+                  debugShowCheckedModeBanner: true,
+                  scaffoldMessengerKey:
+                      locator<SnackbarService>().scaffoldMessengerKey,
+                  key: locator<SnackbarService>().scaffoldKey,
+                  theme: model.theme,
+                  home: Material(
+                    child: Scaffold(
+                      body: theType == 'movie'
+                          ? MovieDetailsView(id: theId)
+                          : TvShowDetailsView(id: theId),
+                    ),
+                  ),
+                  onGenerateRoute: generateRoute,
+                );
+              }
+            },
           );
+
+          // return ViewModelProvider<ThemesViewModel>.withConsumer(
+          //   viewModelBuilder: () => ThemesViewModel(),
+          //   onModelReady: (model) => model.onInit(),
+          //   builder: (context, model, child) {
+          //     print(" this build is trigggggoooo");
+          //     if (model.busy) {
+          //       return MaterialApp(
+          //         title: 'What Next ?',
+          //         debugShowCheckedModeBanner: false,
+          //         home: Scaffold(
+          //           body: Container(
+          //             child: Center(
+          //               child: CircularProgressIndicator(),
+          //             ),
+          //           ),
+          //         ),
+          //       );
+          //     } else {
+          //       return MaterialApp(
+          //         title: 'What Next ?',
+          //         builder: (context, child) => Navigator(
+          //           key: locator<DialogService>().dialogNavigationKey,
+          //           onGenerateRoute: (settings) => MaterialPageRoute(
+          //               builder: (context) => DialogManager(child: child)),
+          //         ),
+          //         debugShowCheckedModeBanner: false,
+          //         navigatorKey: locator<NavigationService>().navigationKey,
+          //         scaffoldMessengerKey:
+          //             locator<SnackbarService>().scaffoldMessengerKey,
+          //         key: locator<SnackbarService>().scaffoldKey,
+          //         theme: model.theme,
+          //         home: Material(
+          //           child: Scaffold(
+          //             body: theType == 'movie'
+          //                 ? MovieDetailsView(id: theId)
+          //                 : TvShowDetails(id: theId),
+          //           ),
+          //         ),
+          //         onGenerateRoute: generateRoute,
+          //       );
+          //     }
+          //   },
+          // );
         }
       },
     );

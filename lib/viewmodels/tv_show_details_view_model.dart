@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
@@ -140,10 +141,33 @@ class TvShowDetailsViewModel extends BaseModel {
           'https://image.tmdb.org/t/p/w500${_tvShowDetails.posterPath}'));
       var response = await request.close();
       Uint8List bytes = await consolidateHttpClientResponseBytes(response);
+      final DynamicLinkParameters parameters = DynamicLinkParameters(
+        uriPrefix: 'https://whatnext.page.link',
+        link: Uri.parse(
+            'https://whatnext.page.link/details?type=tv&id=${_tvShowDetails.id}'),
+        androidParameters: AndroidParameters(
+          packageName: 'app.zepplaud.whatnext',
+          minimumVersion: 0,
+        ),
+        dynamicLinkParametersOptions: DynamicLinkParametersOptions(
+          shortDynamicLinkPathLength: ShortDynamicLinkPathLength.short,
+        ),
+        iosParameters: IosParameters(
+          bundleId: 'app.zepplaud.whatnext',
+          minimumVersion: '0',
+        ),
+      );
+
+      Uri url;
+
+      final ShortDynamicLink shortLink = await parameters.buildShortLink();
+      url = shortLink.shortUrl;
+
+      print("I am the deep link");
+      print(url.toString());
       await Share.file('${_tvShowDetails.originalName}',
           '${_tvShowDetails.name}.png', bytes, 'image/jpg',
-          text:
-              "Checkout this tv show '${_tvShowDetails.name}' at : https://whatnext.app/t/${_tvShowDetails.id} ");
+          text: "Checkout this tv show '${_tvShowDetails.name}' at : $url ");
     } catch (e) {
       print('error: $e');
     }
