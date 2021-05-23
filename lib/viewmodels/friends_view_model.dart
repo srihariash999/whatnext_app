@@ -36,8 +36,9 @@ class FriendsViewModel extends BaseModel {
       for (var i in _authenticationService.currentUser.followersList) {
         _currentUserFollowers.add(i['userName']);
       }
-      setBusy(false);
+
       await getAllUsers();
+      setBusy(false);
     }
   }
 
@@ -155,6 +156,7 @@ class FriendsViewModel extends BaseModel {
           FriendStatus.following;
 
       setState();
+      return true;
     }
     // ~ ~ ~ unfollow a person.
     else if (fs == FriendStatus.following) {
@@ -220,6 +222,7 @@ class FriendsViewModel extends BaseModel {
       print("**** \n");
 
       setState();
+      return true;
     }
   }
 }

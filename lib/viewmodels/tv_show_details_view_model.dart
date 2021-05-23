@@ -53,6 +53,8 @@ class TvShowDetailsViewModel extends BaseModel {
   List<Picture> _pictures = [];
   List<Picture> get pictures => _pictures;
 
+  bool _isChanged = false;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -216,6 +218,7 @@ class TvShowDetailsViewModel extends BaseModel {
         _isTvShowAdded = true;
         //indicate that the state is not busy anymore.
         _isBeingAdded = false;
+        _isChanged = true;
         setState();
         _navigationService.pop();
       }
@@ -238,6 +241,7 @@ class TvShowDetailsViewModel extends BaseModel {
           ifTvShowAdded(_tvShowDetails.id);
           _isTvShowAdded = false;
           _isBeingAdded = false;
+          _isChanged = true;
           setState();
           _navigationService.pop();
         }
@@ -262,6 +266,7 @@ class TvShowDetailsViewModel extends BaseModel {
             ifTvShowAdded(_tvShowDetails.id);
             _isTvShowAdded = true;
             _isBeingAdded = false;
+            _isChanged = true;
             setState();
             _navigationService.pop();
           }
@@ -271,6 +276,6 @@ class TvShowDetailsViewModel extends BaseModel {
   }
 
   onBackTap() {
-    _navigationService.pop();
+    _navigationService.pop(arguments: _isChanged);
   }
 }

@@ -58,6 +58,8 @@ class MovieDetailsViewModel extends BaseModel {
   List<Picture> _pictures = [];
   List<Picture> get pictures => _pictures;
 
+  bool _isChanged = false;
+
   Future onInit(int id) async {
     setBusy(true);
     print("id : $id");
@@ -240,7 +242,7 @@ class MovieDetailsViewModel extends BaseModel {
         ifMovieAdded(_movieDetails.id);
         _isMovieAdded = true;
         _isBeingAdded = false;
-
+        _isChanged = true;
         setState();
         _navigationService.pop();
       }
@@ -265,7 +267,7 @@ class MovieDetailsViewModel extends BaseModel {
           ifMovieAdded(_movieDetails.id);
           _isMovieAdded = false;
           _isBeingAdded = false;
-
+          _isChanged = true;
           setState();
           _navigationService.pop();
         }
@@ -291,7 +293,7 @@ class MovieDetailsViewModel extends BaseModel {
             ifMovieAdded(_movieDetails.id);
             _isMovieAdded = true;
             _isBeingAdded = false;
-
+            _isChanged = true;
             setState();
             _navigationService.pop();
           }
@@ -301,6 +303,6 @@ class MovieDetailsViewModel extends BaseModel {
   }
 
   onBackTap() {
-    _navigationService.pop();
+    _navigationService.pop(arguments: _isChanged);
   }
 }
