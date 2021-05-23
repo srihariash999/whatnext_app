@@ -6,8 +6,8 @@ class NavigationService {
   GlobalKey<NavigatorState> get navigationKey => _navigationKey;
 
   //Method to pop the topmost route from the nav stack.
-  void pop() {
-    return _navigationKey.currentState.pop();
+  void pop({dynamic arguments}) {
+    return _navigationKey.currentState.pop(arguments);
   }
 
   // Method to navigate to a given routename with given arguments.

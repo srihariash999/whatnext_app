@@ -23,7 +23,7 @@ class FriendsView extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
-            title: Text("Friends Page",
+            title: Text("Find People",
                 style: Theme.of(context).primaryTextTheme.headline1),
             actions: [
               IconButton(
@@ -99,8 +99,12 @@ class FriendsView extends StatelessWidget {
                               onTap: () {
                                 model.navigateToPeopleProfileView(u.userName);
                               },
-                              child: Card(
-                                elevation: 1.4,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).splashColor,
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                margin: EdgeInsets.all(4.0),
                                 child: Padding(
                                   padding: const EdgeInsets.all(12.0),
                                   child: Row(
@@ -131,29 +135,12 @@ class FriendsView extends StatelessWidget {
                                       ),
                                       Expanded(
                                         flex: 2,
-                                        child: InkWell(
-                                          onTap: () {
-                                            model.friendAction(u, fri);
-                                          },
-                                          child: Container(
-                                            alignment: Alignment.center,
-                                            padding: EdgeInsets.all(8.0),
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                width: 1.0,
-                                                color: Theme.of(context)
-                                                    .primaryColorLight,
-                                              ),
-                                            ),
-                                            child: Text(
-                                              _toShow,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .bodyText1,
-                                            ),
-                                          ),
-                                        ),
-                                      )
+                                        child: FriendStatusWidget(
+                                            u: u,
+                                            fri: fri,
+                                            model: model,
+                                            toShow: _toShow),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -167,6 +154,76 @@ class FriendsView extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class FriendStatusWidget extends StatefulWidget {
+  const FriendStatusWidget({
+    Key key,
+    @required String toShow,
+    @required FriendStatus fri,
+    @required this.model,
+    @required UserModel u,
+  })  : _toShow = toShow,
+        _u = u,
+        _fri = fri,
+        super(key: key);
+
+  final String _toShow;
+  final UserModel _u;
+  final FriendStatus _fri;
+  final FriendsViewModel model;
+
+  @override
+  _FriendStatusWidgetState createState() => _FriendStatusWidgetState();
+}
+
+class _FriendStatusWidgetState extends State<FriendStatusWidget> {
+  bool _localLoading = false;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      splashColor: Colors.transparent,
+      onTap: () async {
+        setState(() {
+          _localLoading = true;
+        });
+        await widget.model.friendAction(widget._u, widget._fri);
+        setState(() {
+          _localLoading = false;
+        });
+      },
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Card(
+          color: Theme.of(context).primaryColorLight,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: _localLoading
+              ? Container(
+                  width: 50.0,
+                  child: LinearProgressIndicator(),
+                )
+              : Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(12.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.0),
+                  ),
+                  child: Text(
+                    widget._toShow,
+                    style: TextStyle(
+                      color: Theme.of(context).cardColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+        ),
+      ),
     );
   }
 }

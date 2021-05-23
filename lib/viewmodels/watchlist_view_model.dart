@@ -14,11 +14,19 @@ class WatchlistViewModel extends BaseModel {
   List _currentUserWatchlist = [];
   List get currentUserWatchlist => _currentUserWatchlist;
 
-  onMovieSelect(int id, String mediaType) {
+  onMovieSelect(int id, String mediaType) async {
     if (mediaType == "movie") {
-      _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
+      var n = await _navigationService.navigateTo(MovieDetailsViewRoute,
+          arguments: id);
+      if (n != null && n == true) {
+        onInit();
+      }
     } else {
-      _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
+      var n = await _navigationService.navigateTo(TvShowDetailsViewRoute,
+          arguments: id);
+      if (n != null && n == true) {
+        onInit();
+      }
     }
   }
 
