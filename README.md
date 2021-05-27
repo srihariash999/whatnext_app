@@ -4,7 +4,7 @@
 
 <p float="left">
   
-<img src="./assets/whatnext_logo.png" width="500" height="200"> 
+<img src="./assets/whatnext_logo.png" width="400" height="160"> 
    <a href='https://play.google.com/store/apps/details?id=app.zepplaud.whatnext'><img alt='Get it on Google Play' width="40%" src='https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png'/></a>
 </p>
 
