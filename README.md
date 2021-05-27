@@ -2,6 +2,14 @@
 
 # What next ?
 
+<p float="left">
+  
+<img src="./assets/whatnext_logo.png" width="500" height="200"> 
+   <a href='https://play.google.com/store/apps/details?id=app.zepplaud.whatnext'><img alt='Get it on Google Play' width="40%" src='https://play.google.com/intl/en_gb/badges/static/images/badges/en_badge_web_generic.png'/></a>
+</p>
+
+ 
+
 What next is a social platform to track your movie and tv shows consumption and socialize with your friends to see their watchlists.
 
 ## Tech Stack:
