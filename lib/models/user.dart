@@ -5,14 +5,14 @@ class UserModel {
   String fullName;
   String userName;
   String email;
-  String userRole;
+  // String userRole;
   List<dynamic> followersList;
   List<dynamic> followingList;
   UserModel({
     @required this.id,
     @required this.fullName,
     @required this.email,
-    @required this.userRole,
+    // @required this.userRole,
     @required this.userName,
     @required this.followersList,
     @required this.followingList,
@@ -23,7 +23,7 @@ class UserModel {
         userName = data['userName'],
         fullName = data['fullName'],
         email = data['email'],
-        userRole = data['userRole'],
+        // userRole = data['userRole'],
         followersList = data['followersList'],
         followingList = data['followingList'];
 
@@ -32,7 +32,7 @@ class UserModel {
       'id': id,
       'fullName': fullName,
       'email': email,
-      'userRole': userRole,
+      // 'userRole': userRole,
       'userName': userName,
       'followersList': followersList,
       'followingList': followingList

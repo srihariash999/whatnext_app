@@ -47,6 +47,8 @@ class LoginView extends StatelessWidget {
               placeholder: 'Password',
               password: true,
               controller: passwordController,
+              textInputType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
             ),
             verticalSpaceMedium,
             Row(
@@ -67,7 +69,7 @@ class LoginView extends StatelessWidget {
             ),
             verticalSpaceMedium,
             TextLink(
-              'Create an Account if you\'re new.',
+              'Create an Account if you\'re new',
               onPressed: () {
                 print(" wants to signup");
                 model.navigateToSignUp();

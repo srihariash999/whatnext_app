@@ -108,7 +108,6 @@ class DeepLinkManager extends BaseModel {
       final PendingDynamicLinkData data =
           await FirebaseDynamicLinks.instance.getInitialLink();
 
-      print(" ola hu uber");
       _handleDeepLink(data);
     }
   }

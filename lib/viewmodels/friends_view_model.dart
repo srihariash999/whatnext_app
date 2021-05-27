@@ -79,7 +79,7 @@ class FriendsViewModel extends BaseModel {
             id: (data as Map)['id'],
             fullName: (data as Map)['fullName'],
             email: (data as Map)['email'],
-            userRole: (data as Map)['userRole'],
+            // userRole: (data as Map)['userRole'],
             userName: (data as Map)['userName'],
             followersList: (data as Map)['followersList'],
             followingList: (data as Map)['followingList']);
@@ -94,7 +94,7 @@ class FriendsViewModel extends BaseModel {
             id: (data as Map)['id'],
             fullName: (data as Map)['fullName'],
             email: (data as Map)['email'],
-            userRole: (data as Map)['userRole'],
+            // userRole: (data as Map)['userRole'],
             userName: (data as Map)['userName'],
             followersList: (data as Map)['followersList'],
             followingList: (data as Map)['followingList']));

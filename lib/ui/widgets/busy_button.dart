@@ -34,17 +34,20 @@ class _BusyButtonState extends State<BusyButton> {
           decoration: BoxDecoration(
             color: widget.enabled
                 ? Theme.of(context).primaryColorLight
-                : Theme.of(context).primaryColorLight,
+                : Theme.of(context).primaryColorDark,
             borderRadius: BorderRadius.circular(5),
           ),
           child: !widget.busy
               ? Text(
                   widget.title,
-                  style: buttonTitleTextStyle,
+                  style: buttonTitleTextStyle.copyWith(
+                    color: Theme.of(context).primaryColor,
+                  ),
                 )
               : CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white)),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Theme.of(context).primaryColor)),
         ),
       ),
     );

@@ -9,7 +9,7 @@ ThemeData getLightTheme() => ThemeData(
       accentColor: Colors.white70,
       primaryColor: Color(0XFFfff2f2),
       dialogBackgroundColor: Colors.white70,
-      cardColor: Colors.white70,
+      cardColor: Colors.white.withOpacity(0.7),
       primaryColorLight: Color(0xFF363030),
       scaffoldBackgroundColor: Colors.white,
       primaryTextTheme: TextTheme(
