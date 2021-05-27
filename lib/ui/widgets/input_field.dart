@@ -73,17 +73,17 @@ class _InputFieldState extends State<InputField> {
                   onChanged: widget.onChanged,
                   inputFormatters:
                       widget.formatter != null ? [widget.formatter] : null,
-                  onEditingComplete: () {
-                    if (widget.enterPressed != null) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      widget.enterPressed();
-                    }
-                  },
-                  onFieldSubmitted: (value) {
-                    if (widget.nextFocusNode != null) {
-                      widget.nextFocusNode.requestFocus();
-                    }
-                  },
+                  // onEditingComplete: () {
+                  //   if (widget.enterPressed != null) {
+                  //     FocusScope.of(context).requestFocus(FocusNode());
+                  //     widget.enterPressed();
+                  //   }
+                  // },
+                  // onFieldSubmitted: (value) {
+                  //   if (widget.nextFocusNode != null) {
+                  //     widget.nextFocusNode.requestFocus();
+                  //   }
+                  // },
                   obscureText: isPassword,
                   readOnly: widget.isReadOnly,
                   decoration: InputDecoration.collapsed(
