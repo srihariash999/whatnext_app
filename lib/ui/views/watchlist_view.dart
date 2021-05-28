@@ -75,6 +75,25 @@ class WatchlistView extends StatelessWidget {
                     )
                   ],
                 ),
+                Container(
+                    alignment: Alignment.centerRight,
+                    child: InkWell(
+                      onTap: () {
+                        _reviewsFilterDailogue(context: context, model: model);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          top: 8.0,
+                          bottom: 8.0,
+                          left: 8.0,
+                          right: 12.0,
+                        ),
+                        child: Icon(
+                          Icons.sort,
+                          size: 24,
+                        ),
+                      ),
+                    )),
               ],
             ),
             verticalSpaceMedium,
@@ -122,5 +141,120 @@ class WatchlistView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  _reviewsFilterDailogue({
+    BuildContext context,
+    WatchlistViewModel model,
+  }) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: Colors.white,
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sort movies by',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black.withOpacity(0.70),
+                  ),
+                ),
+                SizedBox(
+                  height: 16.0,
+                ),
+                Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        model.onMovieFilter("Want to watch");
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("Want to watch",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline5),
+                            horizontalSpaceSmall,
+                            Container(
+                              height: 16.0,
+                              width: 16.0,
+                              decoration: BoxDecoration(
+                                color: Colors.red[600],
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        model.onMovieFilter("Watching");
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("Watching",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline5),
+                            horizontalSpaceSmall,
+                            Container(
+                              height: 16.0,
+                              width: 16.0,
+                              decoration: BoxDecoration(
+                                color: Colors.yellow[600],
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        model.onMovieFilter("Watched");
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text("Watched",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline5),
+                            horizontalSpaceSmall,
+                            Container(
+                              height: 16.0,
+                              width: 16.0,
+                              decoration: BoxDecoration(
+                                color: Colors.green[600],
+                                borderRadius: BorderRadius.circular(4.0),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        });
   }
 }
