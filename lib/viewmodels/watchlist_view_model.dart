@@ -12,7 +12,8 @@ class WatchlistViewModel extends BaseModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   List _currentUserWatchlist = [];
-  List get currentUserWatchlist => _currentUserWatchlist;
+  List _currentUserWatchlistTemp = [];
+  List get currentUserWatchlist => _currentUserWatchlistTemp;
 
   onMovieSelect(int id, String mediaType) async {
     if (mediaType == "movie") {
@@ -40,6 +41,16 @@ class WatchlistViewModel extends BaseModel {
     }
   }
 
+  onMovieFilter(String status) async {
+    _currentUserWatchlistTemp = [];
+    for (var i in _currentUserWatchlist) {
+      if (i['status'] == status) {
+        _currentUserWatchlistTemp.add(i);
+      }
+    }
+    setState();
+  }
+
   Future<void> onInit() async {
     setBusy(true);
 
@@ -47,6 +58,7 @@ class WatchlistViewModel extends BaseModel {
         _authenticationService.currentUser.userName);
     _currentUserWatchlist =
         _authenticationService.currentUserWatchList.reversed.toList();
+    _currentUserWatchlistTemp = _currentUserWatchlist;
     print(" cuw : $_currentUserWatchlist");
     setBusy(false);
   }
