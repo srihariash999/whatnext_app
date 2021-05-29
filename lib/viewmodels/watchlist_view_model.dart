@@ -19,12 +19,14 @@ class WatchlistViewModel extends BaseModel {
     if (mediaType == "movie") {
       var n = await _navigationService.navigateTo(MovieDetailsViewRoute,
           arguments: id);
+      // print(' n is : $n');
       if (n != null && n == true) {
         onInit();
       }
     } else {
       var n = await _navigationService.navigateTo(TvShowDetailsViewRoute,
           arguments: id);
+      // print(' n is : $n');
       if (n != null && n == true) {
         onInit();
       }
