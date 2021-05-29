@@ -76,24 +76,26 @@ class WatchlistView extends StatelessWidget {
                   ],
                 ),
                 Container(
-                    alignment: Alignment.centerRight,
-                    child: InkWell(
-                      onTap: () {
-                        _reviewsFilterDailogue(context: context, model: model);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 8.0,
-                          bottom: 8.0,
-                          left: 8.0,
-                          right: 12.0,
-                        ),
-                        child: Icon(
-                          Icons.sort,
-                          size: 24,
-                        ),
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () {
+                      _reviewsFilterDailogue(context: context, model: model);
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 8.0,
+                        bottom: 8.0,
+                        left: 8.0,
+                        right: 12.0,
                       ),
-                    )),
+                      child: Icon(
+                        Icons.sort,
+                        size: 24,
+                        color: Theme.of(context).primaryColorLight,
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
             verticalSpaceMedium,
@@ -180,18 +182,26 @@ class WatchlistView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Want to watch",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5),
-                            horizontalSpaceSmall,
-                            Container(
-                              height: 16.0,
-                              width: 16.0,
-                              decoration: BoxDecoration(
-                                color: Colors.red[600],
-                                borderRadius: BorderRadius.circular(4.0),
+                            Text(
+                              "Want to watch",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline5
+                                  .copyWith(
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 50.0),
+                              child: Container(
+                                height: 16.0,
+                                width: 16.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.red[600],
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
                               ),
                             )
                           ],
@@ -206,18 +216,26 @@ class WatchlistView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Watching",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5),
-                            horizontalSpaceSmall,
-                            Container(
-                              height: 16.0,
-                              width: 16.0,
-                              decoration: BoxDecoration(
-                                color: Colors.yellow[600],
-                                borderRadius: BorderRadius.circular(4.0),
+                            Text(
+                              "Watching",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline5
+                                  .copyWith(
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 50.0),
+                              child: Container(
+                                height: 16.0,
+                                width: 16.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.yellow[600],
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
                               ),
                             )
                           ],
@@ -232,18 +250,26 @@ class WatchlistView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text("Watched",
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5),
-                            horizontalSpaceSmall,
-                            Container(
-                              height: 16.0,
-                              width: 16.0,
-                              decoration: BoxDecoration(
-                                color: Colors.green[600],
-                                borderRadius: BorderRadius.circular(4.0),
+                            Text(
+                              "Watched",
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline5
+                                  .copyWith(
+                                    color: Colors.black.withOpacity(0.7),
+                                  ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(right: 50.0),
+                              child: Container(
+                                height: 16.0,
+                                width: 16.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.green[600],
+                                  borderRadius: BorderRadius.circular(4.0),
+                                ),
                               ),
                             )
                           ],
