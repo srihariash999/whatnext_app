@@ -453,54 +453,101 @@ class MovieDetailsView extends StatelessWidget {
                           model.video != null
                               ? verticalSpaceMedium
                               : Container(),
-                          model.video != null
-                              ? Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        border: Border.all(
-                                            color: Theme.of(context)
-                                                .primaryColorLight,
-                                            width: 0.5),
-                                      ),
-                                      child: TextButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  Theme.of(context)
-                                                      .backgroundColor),
-                                        ),
-                                        onPressed: () {
-                                          model.navigateToVideoPlayer();
-                                        },
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              'Watch Trailer',
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .headline4
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                            ),
-                                            horizontalSpaceMedium,
-                                            Icon(
-                                              Icons.forward_outlined,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              model.video != null
+                                  ? Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          border: Border.all(
                                               color: Theme.of(context)
                                                   .primaryColorLight,
-                                            ),
-                                          ],
+                                              width: 0.5),
+                                        ),
+                                        child: TextButton(
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Theme.of(context)
+                                                        .backgroundColor),
+                                          ),
+                                          onPressed: () {
+                                            model.navigateToVideoPlayer();
+                                          },
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Text(
+                                                'Watch Trailer',
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .headline4
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                              ),
+                                              horizontalSpaceMedium,
+                                              Icon(
+                                                Icons.forward_outlined,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
+                                    )
+                                  : Container(),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    border: Border.all(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        width: 0.5),
+                                  ),
+                                  child: TextButton(
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              Theme.of(context)
+                                                  .backgroundColor),
                                     ),
-                                  ],
-                                )
-                              : Container(),
+                                    onPressed: () {
+                                      model.navigateToReviewsScreen();
+                                    },
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Text(
+                                          'Reviews',
+                                          style: Theme.of(context)
+                                              .primaryTextTheme
+                                              .headline4
+                                              .copyWith(
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                        ),
+                                        horizontalSpaceMedium,
+                                        Icon(
+                                          Icons.forward_outlined,
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                           verticalSpaceMedium,
                           Column(
                             mainAxisAlignment: MainAxisAlignment.start,

@@ -10,6 +10,7 @@ import 'package:whatnext/models/movie.dart';
 import 'package:whatnext/models/movie_credit.dart';
 import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/models/picture.dart';
+import 'package:whatnext/models/review.dart';
 import 'package:whatnext/models/video.dart';
 import 'package:whatnext/services/authentication_service.dart';
 
@@ -17,6 +18,7 @@ import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
 import 'package:whatnext/services/tmdb_service.dart';
+import 'package:whatnext/ui/views/reviews_view.dart';
 
 import 'package:whatnext/viewmodels/base_model.dart';
 
@@ -58,6 +60,9 @@ class MovieDetailsViewModel extends BaseModel {
   List<Picture> _pictures = [];
   List<Picture> get pictures => _pictures;
 
+  List<Review> _reviews = [];
+  List<Review> get reviews => _reviews;
+
   bool _isChanged = false;
 
   Future onInit(int id) async {
@@ -74,6 +79,7 @@ class MovieDetailsViewModel extends BaseModel {
     getRecommendedMovies(id);
     getVideo(id);
     getPictures(id);
+    getReviews(id);
   }
 
   getCast(int id) async {
@@ -124,6 +130,16 @@ class MovieDetailsViewModel extends BaseModel {
     for (var i in picturesRes['posters']) {
       _pictures.add(Picture.fromJson(i));
     }
+    setState();
+  }
+
+  getReviews(int id) async {
+    var reviewsRes = await _tmdbService.fetchReviews(id, 'movie');
+    print("review res : $reviewsRes");
+    for (var i in reviewsRes['results']) {
+      _reviews.add(Review.fromJson(i));
+    }
+
     setState();
   }
 
@@ -203,6 +219,17 @@ class MovieDetailsViewModel extends BaseModel {
 
   navigateToVideoPlayer() {
     _navigationService.navigateTo(VideoPlayerViewRoute, arguments: _video.key);
+  }
+
+  navigateToReviewsScreen() {
+    _navigationService.navigateTo(
+      ReviewsScreenRoute,
+      arguments: ReviewsViewArguments(
+        type: 'movie',
+        reviews: _reviews.reversed.toList(),
+        title: _movieDetails.title,
+      ),
+    );
   }
 
   onChangeMovieStatus() async {

@@ -483,6 +483,64 @@ class TvShowDetailsView extends StatelessWidget {
                             ],
                           ),
                         ),
+
+                        Column(
+                          children: [
+                            verticalSpaceMedium,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                model.reviews.length > 0
+                                    ? Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                            border: Border.all(
+                                                color: Theme.of(context)
+                                                    .primaryColorLight,
+                                                width: 0.5),
+                                          ),
+                                          child: TextButton(
+                                            style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Theme.of(context)
+                                                          .backgroundColor),
+                                            ),
+                                            onPressed: () {
+                                              model.navigateToReviewsScreen();
+                                            },
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  'Reviews',
+                                                  style: Theme.of(context)
+                                                      .primaryTextTheme
+                                                      .headline4
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      ),
+                                                ),
+                                                horizontalSpaceMedium,
+                                                Icon(
+                                                  Icons.forward_outlined,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                          ],
+                        ),
                         verticalSpaceMedium,
                         Column(
                           mainAxisAlignment: MainAxisAlignment.start,
