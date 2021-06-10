@@ -51,8 +51,8 @@ class LoginViewModel extends BaseModel {
   Future resetPassword({@required String email}) async {
     if (email.length < 1) {
       await _dialogService.showDialog(
-        title: 'Login Failure',
-        description: 'Email should not be null',
+        title: 'Error!',
+        description: 'Email should not be empty',
       );
     } else {
       setBusy(true);
@@ -63,6 +63,7 @@ class LoginViewModel extends BaseModel {
         description:
             'A link to reset your password has been sent successfully to your email',
       );
+      _navigationService.pop();
     }
   }
 
