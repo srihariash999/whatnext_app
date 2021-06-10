@@ -6,6 +6,7 @@ import 'package:whatnext/ui/views/login_view.dart';
 import 'package:whatnext/ui/views/movie_details_view.dart';
 import 'package:whatnext/ui/views/people_profile_view.dart';
 import 'package:whatnext/ui/views/profile_view.dart';
+import 'package:whatnext/ui/views/reviews_view.dart';
 import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 import 'package:whatnext/ui/views/themes_view.dart';
@@ -93,6 +94,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: ResetView(),
+      );
+
+    case ReviewsScreenRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: ReviewsView(
+          reviewViewArguments: settings.arguments,
+        ),
       );
     default:
       return MaterialPageRoute(

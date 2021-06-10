@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/picture.dart';
+import 'package:whatnext/models/review.dart';
 import 'package:whatnext/models/tv_credit.dart';
 import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/models/tv_show_details.dart';
@@ -15,6 +16,7 @@ import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
 import 'package:whatnext/services/tmdb_service.dart';
+import 'package:whatnext/ui/views/reviews_view.dart';
 
 import 'package:whatnext/viewmodels/base_model.dart';
 
@@ -53,6 +55,9 @@ class TvShowDetailsViewModel extends BaseModel {
   List<Picture> _pictures = [];
   List<Picture> get pictures => _pictures;
 
+  List<Review> _reviews = [];
+  List<Review> get reviews => _reviews;
+
   bool _isChanged = false;
 
   Future onInit(int id) async {
@@ -68,6 +73,7 @@ class TvShowDetailsViewModel extends BaseModel {
     getSimilarTvShows(id);
     getRecommendedTvShows(id);
     getPictures(id);
+    getReviews(id);
   }
 
 // This function determines whether the tv show is added in the user's list or not.
@@ -126,6 +132,16 @@ class TvShowDetailsViewModel extends BaseModel {
     setState();
   }
 
+  getReviews(int id) async {
+    var reviewsRes = await _tmdbService.fetchReviews(id, 'tv');
+    print("review res : $reviewsRes");
+    for (var i in reviewsRes['results']) {
+      _reviews.add(Review.fromJson(i));
+    }
+
+    setState();
+  }
+
   changeChoice(String choice) {
     _choice = choice;
     setState();
@@ -177,6 +193,17 @@ class TvShowDetailsViewModel extends BaseModel {
     setState();
 
     return;
+  }
+
+  navigateToReviewsScreen() {
+    _navigationService.navigateTo(
+      ReviewsScreenRoute,
+      arguments: ReviewsViewArguments(
+        type: 'movie',
+        reviews: _reviews.reversed.toList(),
+        title: _tvShowDetails.name,
+      ),
+    );
   }
 
   onTvStatusChange() async {

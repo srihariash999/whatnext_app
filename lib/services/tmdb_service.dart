@@ -69,6 +69,14 @@ class TmdbService {
         .getImages(movieId, includeImageLanguage: 'en,null');
   }
 
+  fetchReviews(int id, String type) async {
+    if (type == 'movie') {
+      return await tmdb.v3.movies.getReviews(id);
+    } else {
+      return await tmdb.v3.tv.getReviews(id);
+    }
+  }
+
   fetchTvPictures(int tvId) async {
     try {
       var response = await client.get(
