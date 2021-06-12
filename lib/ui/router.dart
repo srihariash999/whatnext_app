@@ -4,6 +4,7 @@ import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
 import 'package:whatnext/ui/views/movie_details_view.dart';
+import 'package:whatnext/ui/views/new_post_view.dart';
 import 'package:whatnext/ui/views/people_profile_view.dart';
 import 'package:whatnext/ui/views/profile_view.dart';
 import 'package:whatnext/ui/views/reviews_view.dart';
@@ -103,6 +104,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
           reviewViewArguments: settings.arguments,
         ),
       );
+
+    case NewPostViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: NewPostView(),
+      );
+
     default:
       return MaterialPageRoute(
           builder: (_) => Scaffold(

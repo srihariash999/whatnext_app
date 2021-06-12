@@ -160,6 +160,16 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
         ],
         elevation: 0.0,
       ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).backgroundColor,
+        onPressed: () {
+          widget.model.navigateToNewPost();
+        },
+        child: Icon(
+          Icons.post_add_outlined,
+          color: Theme.of(context).primaryColorLight,
+        ),
+      ),
       drawer: DrawerWidget(),
       body: Container(
         child: widget.model.viewType == 'list'
