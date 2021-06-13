@@ -15,3 +15,4 @@ const String VideoPlayerViewRoute = "VideoPlayerView";
 const String ReviewsScreenRoute = "ReviewsView";
 const String ResetPasswordViewRoute = "ResetView";
 const String NewPostViewRoute = "NewPostView";
+const String NewPostItemSearchViewRoute = "NewPostItemSearch";

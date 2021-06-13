@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:whatnext/models/feed.dart';
+import 'package:whatnext/ui/shared/ui_helpers.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
 
 class FeedListCardWidget extends StatelessWidget {
-  // Feed object to use the data from. 
+  // Feed object to use the data from.
   final Feed feed;
 
   const FeedListCardWidget({Key key, @required this.feed}) : super(key: key);
@@ -13,102 +14,122 @@ class FeedListCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding:
-          const EdgeInsets.only(left: 8.0, right: 8.0, top: 4.0, bottom: 4.0),
+          const EdgeInsets.only(left: 12.0, right: 12.0, top: 4.0, bottom: 4.0),
       child: Container(
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorLight,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
+            color: Colors.white.withOpacity(0.80),
+            borderRadius: BorderRadius.circular(12.0),
+            border: Border.all(
+              color: Theme.of(context).primaryColorLight.withOpacity(0.50),
+              width: 0.50,
+            ),
+            boxShadow: [BoxShadow(blurRadius: 2, color: Colors.grey[300])]),
+        padding: EdgeInsets.all(8.0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            Container(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                  SizedBox(
+                    width: 10.0,
+                  ),
+                  Container(
+                    alignment: Alignment.center,
+                    child: CircleAvatar(
+                      backgroundColor: Theme.of(context).primaryColorLight,
+                      radius: 24.0,
+                      child: Icon(
+                        Icons.person,
+                        size: 24.0,
+                        color: Theme.of(context).backgroundColor,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 16.0,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
-                        "@${feed.userName}",
+                        '@${feed.userName ?? ""}',
                         style: Theme.of(context)
                             .primaryTextTheme
                             .headline4
                             .copyWith(
-                              color: Theme.of(context).backgroundColor,
+                              color: Colors.black.withOpacity(0.70),
                               fontWeight: FontWeight.w400,
-                              fontSize: 12.0,
+                              fontSize: 16.0,
                             ),
                       ),
+                      SizedBox(
+                        height: 4.0,
+                      ),
                       Text(
-                        " updated their watchlist ",
+                        '${formatter.format(DateTime.parse(feed.addedOn))}',
                         style: Theme.of(context)
                             .primaryTextTheme
                             .headline4
                             .copyWith(
-                              color: Theme.of(context).backgroundColor,
-                              fontWeight: FontWeight.w300,
+                              color: Colors.black.withOpacity(0.45),
+                              fontWeight: FontWeight.w500,
                               fontSize: 12.0,
                             ),
                       ),
                     ],
                   ),
-                  Container(
-                    padding: EdgeInsets.only(right: 8.0),
-                    child: Text(
-                      '${formatter.format(DateTime.parse(feed.addedOn))}',
-                      style:
-                          Theme.of(context).primaryTextTheme.headline4.copyWith(
-                                color: Theme.of(context).backgroundColor,
-                                fontSize: 12.0,
-                              ),
-                    ),
-                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    height: 160.0,
-                    child: Image.network(
-                      "https://image.tmdb.org/t/p/w500${feed.poster}",
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+            Divider(
+              color: Colors.black.withOpacity(0.30),
+            ),
+            feed.id != null
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Container(
+                        height: 250.0,
+                        width: 140.0,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        clipBehavior: Clip.antiAlias,
+                        child: Image.network(
+                          "https://image.tmdb.org/t/p/w500${feed.poster}",
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                       Text(
                         "${feed.name}",
                         style: Theme.of(context)
                             .primaryTextTheme
-                            .headline4
+                            .headline3
                             .copyWith(
-                              color: Theme.of(context).backgroundColor,
-                              fontWeight: FontWeight.w400,
-                              fontSize: 14.0,
-                            ),
-                      ),
-                      Text(
-                        "(${feed.status})",
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .headline4
-                            .copyWith(
-                              color: Theme.of(context).backgroundColor,
                               fontSize: 12.0,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.black.withOpacity(0.70),
                             ),
                       ),
+                      Divider(
+                        color: Colors.black.withOpacity(0.30),
+                      )
                     ],
                   )
-                ],
+                : Container(),
+            verticalSpaceSmall,
+            Container(
+              padding: EdgeInsets.only(left: 12.0),
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "${feed.postBody}",
+                style: Theme.of(context).primaryTextTheme.headline2.copyWith(
+                      color: Colors.black.withOpacity(0.70),
+                    ),
               ),
             ),
+            verticalSpaceSmall,
           ],
         ),
       ),

@@ -6,6 +6,7 @@ class Feed {
   String status;
   String type;
   String userName;
+  String postBody;
 
   Feed(
       {this.addedOn,
@@ -14,7 +15,8 @@ class Feed {
       this.poster,
       this.status,
       this.type,
-      this.userName});
+      this.userName,
+      this.postBody});
 
   Feed.fromJson(Map<String, dynamic> json) {
     addedOn = json['addedOn'];
@@ -24,6 +26,7 @@ class Feed {
     status = json['status'];
     type = json['type'];
     userName = json['userName'];
+    postBody = json['postBody'];
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +38,7 @@ class Feed {
     data['status'] = this.status;
     data['type'] = this.type;
     data['userName'] = this.userName;
+    data['postBody'] = this.postBody;
     return data;
   }
 }

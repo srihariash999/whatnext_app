@@ -161,13 +161,13 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
         elevation: 0.0,
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).backgroundColor,
+        backgroundColor: Theme.of(context).primaryColorLight,
         onPressed: () {
           widget.model.navigateToNewPost();
         },
         child: Icon(
           Icons.post_add_outlined,
-          color: Theme.of(context).primaryColorLight,
+          color: Theme.of(context).backgroundColor,
         ),
       ),
       drawer: DrawerWidget(),
@@ -178,16 +178,36 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
                 backgroundColor: Theme.of(context).backgroundColor,
                 onRefresh: widget.model.refresh,
                 child: ListView(
-                  children: widget.model.feedList
-                      .map(
-                        (feedItem) => InkWell(
-                          onTap: () {
-                            widget.model.onItemTap(feedItem.id, feedItem.type);
-                          },
-                          child: FeedListCardWidget(feed: feedItem),
-                        ),
-                      )
-                      .toList(),
+                  children: widget.model.feedList.length > 0
+                      ? widget.model.feedList
+                          .map(
+                            (feedItem) => InkWell(
+                              onTap: () {
+                                widget.model
+                                    .onItemTap(feedItem.id, feedItem.type);
+                              },
+                              child: FeedListCardWidget(feed: feedItem),
+                            ),
+                          )
+                          .toList()
+                      : [
+                          Center(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.70,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "No feed to show",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline3
+                                    .copyWith(
+                                        color:
+                                            Theme.of(context).primaryColorLight,
+                                        fontWeight: FontWeight.w400),
+                              ),
+                            ),
+                          )
+                        ],
                 ),
               )
             : Column(
@@ -320,10 +340,19 @@ class ExplorePageWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Movies',
-                        style: Theme.of(context).primaryTextTheme.headline1,
-                      ),
+                      model.tabType == 'movie'
+                          ? Text(
+                              'Movies',
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline1,
+                            )
+                          : Text(
+                              'Movies',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline1
+                                  .copyWith(color: Colors.grey),
+                            ),
                       AnimatedContainer(
                         duration: Duration(milliseconds: 400),
                         curve: Curves.easeInCirc,
@@ -346,10 +375,19 @@ class ExplorePageWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text(
-                        'TV Shows',
-                        style: Theme.of(context).primaryTextTheme.headline1,
-                      ),
+                      model.tabType == 'tv'
+                          ? Text(
+                              'TV Shows',
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline1,
+                            )
+                          : Text(
+                              'TV Shows',
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .headline1
+                                  .copyWith(color: Colors.grey),
+                            ),
                       AnimatedContainer(
                         duration: Duration(milliseconds: 400),
                         curve: Curves.easeInCirc,
@@ -641,6 +679,38 @@ class DrawerWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     "View and change your watchlist.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          child: Row(
+                            children: [
+                              horizontalSpaceSmall,
+                              Icon(Icons.info_outlined,
+                                  color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "About Whatnext?",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Deatils about app & author",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline5

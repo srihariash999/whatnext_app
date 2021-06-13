@@ -75,8 +75,9 @@ class FeedViewModel extends BaseModel {
     }
   }
 
-  navigateToNewPost() {
-    _navigationService.navigateTo(NewPostViewRoute);
+  navigateToNewPost() async {
+    await _navigationService.navigateTo(NewPostViewRoute);
+    getFeed();
   }
 
   getFeed() async {

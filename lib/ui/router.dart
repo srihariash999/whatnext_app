@@ -4,6 +4,7 @@ import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
 import 'package:whatnext/ui/views/movie_details_view.dart';
+import 'package:whatnext/ui/views/new_post_item_select_view.dart';
 import 'package:whatnext/ui/views/new_post_view.dart';
 import 'package:whatnext/ui/views/people_profile_view.dart';
 import 'package:whatnext/ui/views/profile_view.dart';
@@ -109,6 +110,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: NewPostView(),
+      );
+
+    case NewPostItemSearchViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: NewPostItemSearchView(),
       );
 
     default:

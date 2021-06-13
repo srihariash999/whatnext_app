@@ -43,23 +43,28 @@ class FeedCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          Container(
-            height: 250.0,
-            child: Image.network(
-              "https://image.tmdb.org/t/p/w500${feed.poster}",
-              fit: BoxFit.fill,
-            ),
-          ),
+          feed.poster.toString() != 'null'
+              ? Container(
+                  height: 250.0,
+                  child: Image.network(
+                    "https://image.tmdb.org/t/p/w500${feed.poster}",
+                    fit: BoxFit.fill,
+                  ),
+                )
+              : Container(),
+          feed.name != null
+              ? Text(
+                  "${feed.name}",
+                  style: Theme.of(context).primaryTextTheme.headline4.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12.0,
+                      ),
+                )
+              : Container(),
           Text(
-            "${feed.name}",
-            style: Theme.of(context).primaryTextTheme.headline4.copyWith(
-                  color: Theme.of(context).backgroundColor,
-                  fontWeight: FontWeight.w400,
-                ),
-          ),
-          Text(
-            "(${feed.status})",
-            style: Theme.of(context).primaryTextTheme.headline4.copyWith(
+            "${feed.postBody}",
+            style: Theme.of(context).primaryTextTheme.headline3.copyWith(
                   color: Theme.of(context).backgroundColor,
                 ),
           ),

@@ -28,7 +28,7 @@ class LoginViewModel extends BaseModel {
         Fluttertoast.showToast(
             msg: "Login succesful!",
             toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.CENTER,
+            gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
             backgroundColor: Colors.black.withOpacity(0.70),
             textColor: Colors.white,
