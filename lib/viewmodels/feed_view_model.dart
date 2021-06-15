@@ -75,6 +75,11 @@ class FeedViewModel extends BaseModel {
     }
   }
 
+  navigateToNewPost() async {
+    await _navigationService.navigateTo(NewPostViewRoute);
+    getFeed();
+  }
+
   getFeed() async {
     setBusy(true);
     _feedList.clear();

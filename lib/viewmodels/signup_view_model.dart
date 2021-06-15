@@ -44,7 +44,7 @@ class SignUpViewModel extends BaseModel {
       Fluttertoast.showToast(
           msg: "Username is taken !",
           toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
+          gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black.withOpacity(0.70),
           textColor: Colors.white,
@@ -66,7 +66,7 @@ class SignUpViewModel extends BaseModel {
           Fluttertoast.showToast(
               msg: "Signup succesful!",
               toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.CENTER,
+              gravity: ToastGravity.BOTTOM,
               timeInSecForIosWeb: 1,
               backgroundColor: Colors.black.withOpacity(0.70),
               textColor: Colors.white,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/models/user.dart';
 
@@ -70,17 +71,17 @@ class FirestoreService {
           .doc(userName)
           .update({'watchList': _toUpdate});
 
-      await _instance.collection("feed").add(
-        {
-          'userName': userName,
-          'id': id,
-          'name': name,
-          'poster': posterPath,
-          "status": status,
-          "type": type,
-          'addedOn': DateTime.now().toString(),
-        },
-      );
+      // await _instance.collection("feed").add(
+      //   {
+      //     'userName': userName,
+      //     'id': id,
+      //     'name': name,
+      //     'poster': posterPath,
+      //     "status": status,
+      //     "type": type,
+      //     'addedOn': DateTime.now().toString(),
+      //   },
+      // );
 
       return {'res': true, 'message': 'user watchlist updated'};
     } catch (e) {
@@ -147,6 +148,45 @@ class FirestoreService {
       return feedList.docs;
     } catch (e) {
       return e.message;
+    }
+  }
+
+  createNewPost(
+      {@required String name,
+      @required int id,
+      @required String posterPath,
+      @required String userName,
+      @required String postBody,
+      @required String type,
+      @required UserModel user}) async {
+    try {
+      var res = await _instance.collection("feed").add(
+        {
+          'userName': userName,
+          'id': id,
+          'name': name,
+          'poster': posterPath,
+          'postBody': postBody,
+          "type": type,
+          'addedOn': DateTime.now().toString(),
+        },
+      );
+      print(" firestore res: ${res.path}");
+      var userData =
+          await _instance.collection("users").doc(user.userName).get();
+      List feedPosts = [];
+      if (userData.data()['feedPosts'] != null) {
+        feedPosts = userData.data()['feedPosts'];
+      }
+      feedPosts.add(res.path.substring(6));
+      await _instance.collection("users").doc(user.userName).update(
+        {"feedPosts": feedPosts},
+      );
+
+      return {'res': true, 'message': 'post added.'};
+    } catch (e) {
+      print(" error while adding post to feed: $e");
+      return {'res': false, 'message': 'error while adding post !'};
     }
   }
 }
