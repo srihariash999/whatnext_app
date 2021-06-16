@@ -421,11 +421,39 @@ class ExplorePageWidget extends StatelessWidget {
                     children: [
                       verticalSpaceSmall,
                       Container(
-                        padding: EdgeInsets.only(left: 16.0),
+                        padding: EdgeInsets.only(
+                          left: 16.0,
+                          right: 16.0,
+                        ),
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Popular Movies",
-                          style: Theme.of(context).primaryTextTheme.headline2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Popular Movies",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                model.navigateToVerticalMovieView(
+                                    "Popular Movies");
+                              },
+                              child: Text(
+                                "See all",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline2
+                                    .copyWith(
+                                      fontSize: 14.0,
+                                      color: Theme.of(context)
+                                          .primaryColorLight
+                                          .withOpacity(0.70),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       verticalSpaceSmall,
@@ -444,11 +472,39 @@ class ExplorePageWidget extends StatelessWidget {
                       ),
                       verticalSpaceSmall,
                       Container(
-                        padding: EdgeInsets.only(left: 16.0),
+                        padding: EdgeInsets.only(
+                          left: 16.0,
+                          right: 16.0,
+                        ),
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Top Rated Movies",
-                          style: Theme.of(context).primaryTextTheme.headline2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Top Rated Movies",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                model.navigateToVerticalMovieView(
+                                    "Top Rated Movies");
+                              },
+                              child: Text(
+                                "See all",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline2
+                                    .copyWith(
+                                      fontSize: 14.0,
+                                      color: Theme.of(context)
+                                          .primaryColorLight
+                                          .withOpacity(0.70),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       verticalSpaceSmall,
@@ -476,11 +532,39 @@ class ExplorePageWidget extends StatelessWidget {
                     children: [
                       verticalSpaceSmall,
                       Container(
-                        padding: EdgeInsets.only(left: 16.0),
+                        padding: EdgeInsets.only(
+                          left: 16.0,
+                          right: 16.0,
+                        ),
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Popular Tv Shows",
-                          style: Theme.of(context).primaryTextTheme.headline2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Popular Tv Shows",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                model.navigateToVerticalTvShowView(
+                                    "Popular Tv Shows");
+                              },
+                              child: Text(
+                                "See all",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline2
+                                    .copyWith(
+                                      fontSize: 14.0,
+                                      color: Theme.of(context)
+                                          .primaryColorLight
+                                          .withOpacity(0.70),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       verticalSpaceSmall,
@@ -499,11 +583,39 @@ class ExplorePageWidget extends StatelessWidget {
                       ),
                       verticalSpaceSmall,
                       Container(
-                        padding: EdgeInsets.only(left: 16.0),
+                        padding: EdgeInsets.only(
+                          left: 16.0,
+                          right: 16.0,
+                        ),
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          "Top Rated Tv Shows",
-                          style: Theme.of(context).primaryTextTheme.headline2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Top Rated Tv Shows",
+                              style:
+                                  Theme.of(context).primaryTextTheme.headline2,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                model.navigateToVerticalTvShowView(
+                                    "Top Rated Tv Shows");
+                              },
+                              child: Text(
+                                "See all",
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline2
+                                    .copyWith(
+                                      fontSize: 14.0,
+                                      color: Theme.of(context)
+                                          .primaryColorLight
+                                          .withOpacity(0.70),
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       verticalSpaceSmall,
@@ -693,6 +805,7 @@ class DrawerWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
+                          onTap: model.navigateToAboutApp,
                           child: Row(
                             children: [
                               horizontalSpaceSmall,
@@ -710,7 +823,7 @@ class DrawerWidget extends StatelessWidget {
                                         .copyWith(fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "Deatils about app & author",
+                                    "Deatils about app & authors",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline5

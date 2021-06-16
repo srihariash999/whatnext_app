@@ -50,6 +50,8 @@ dependencies:
   stacked_card_carousel: ^0.0.2+1
   fluttertoast: ^8.0.7
   smooth_star_rating: ^1.1.1
+  url_launcher: ^6.0.3
+  feather_icons: ^1.0.1
   
 
 

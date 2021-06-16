@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:whatnext/models/about.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
@@ -142,6 +143,8 @@ class FirestoreService {
     }
   }
 
+  //method to get all the feed posts available.
+
   Future<List<QueryDocumentSnapshot>> getAllFeed() async {
     try {
       var feedList = await _instance.collection("feed").get();
@@ -151,6 +154,7 @@ class FirestoreService {
     }
   }
 
+  // this method will create a new feedpost in firestore db. Also adds the created doc id in user's profile.
   createNewPost(
       {@required String name,
       @required int id,
@@ -187,6 +191,16 @@ class FirestoreService {
     } catch (e) {
       print(" error while adding post to feed: $e");
       return {'res': false, 'message': 'error while adding post !'};
+    }
+  }
+
+  Future<AboutApp> getAboutApp() async {
+    try {
+      var aboutAppDoc =
+          await _instance.collection("aboutApp").doc('aboutApp').get();
+      return AboutApp.fromJson(aboutAppDoc.data());
+    } catch (e) {
+      return e.message;
     }
   }
 }
