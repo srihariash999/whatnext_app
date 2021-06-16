@@ -119,6 +119,16 @@ class HomeViewModel extends BaseModel {
     _navigationService.navigateTo(WatchListViewRoute);
   }
 
+  navigateToVerticalMovieView(String type) {
+    _navigationService
+        .navigateTo(MovieVerticalViewRoute, arguments: {'type': type});
+  }
+
+  navigateToVerticalTvShowView(String type) {
+    _navigationService
+        .navigateTo(TvShowVerticalViewRoute, arguments: {'type': type});
+  }
+
   fetchPopularMovies() async {
     var s = await _tmdbService.fetchPopularMoviesFromTmdb(_popPage);
 
@@ -204,7 +214,7 @@ class HomeViewModel extends BaseModel {
 
   loadMoreTopRatedMovies() async {
     _topPage++;
-    var s = await _tmdbService.fetchTopRatedMoviesFromTmdb(_popPage);
+    var s = await _tmdbService.fetchTopRatedMoviesFromTmdb(_topPage);
     print("s : $s");
     for (var i in s['results']) {
       _topRatedMoviesList.add(Movie.fromJson(i));

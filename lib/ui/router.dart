@@ -4,6 +4,7 @@ import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
 import 'package:whatnext/ui/views/movie_details_view.dart';
+import 'package:whatnext/ui/views/movies_vertical_view.dart';
 import 'package:whatnext/ui/views/new_post_item_select_view.dart';
 import 'package:whatnext/ui/views/new_post_view.dart';
 import 'package:whatnext/ui/views/people_profile_view.dart';
@@ -13,6 +14,7 @@ import 'package:whatnext/ui/views/signup_view.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 import 'package:whatnext/ui/views/themes_view.dart';
 import 'package:whatnext/ui/views/tv_show_details_view.dart';
+import 'package:whatnext/ui/views/tv_shows_vertical_view.dart';
 import 'package:whatnext/ui/views/video_player_view.dart';
 import 'package:whatnext/ui/views/watchlist_view.dart';
 import 'package:whatnext/ui/views/reset_view.dart';
@@ -116,6 +118,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: NewPostItemSearchView(),
+      );
+
+    case MovieVerticalViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: MovieVerticalView(
+          arguments: settings.arguments,
+        ),
+      );
+
+    case TvShowVerticalViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: TvShowVerticalView(
+          arguments: settings.arguments,
+        ),
       );
 
     default:
