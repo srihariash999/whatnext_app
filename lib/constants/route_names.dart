@@ -18,3 +18,4 @@ const String NewPostViewRoute = "NewPostView";
 const String NewPostItemSearchViewRoute = "NewPostItemSearch";
 const String MovieVerticalViewRoute = "MovieVerticalView";
 const String TvShowVerticalViewRoute = "TvShowVerticalView";
+const String AboutAppViewRoute = "AboutAppView";

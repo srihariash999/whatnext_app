@@ -805,6 +805,7 @@ class DrawerWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
+                          onTap: model.navigateToAboutApp,
                           child: Row(
                             children: [
                               horizontalSpaceSmall,
@@ -822,7 +823,7 @@ class DrawerWidget extends StatelessWidget {
                                         .copyWith(fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "Deatils about app & author",
+                                    "Deatils about app & authors",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline5

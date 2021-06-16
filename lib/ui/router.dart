@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatnext/constants/route_names.dart';
+import 'package:whatnext/ui/views/about_app_view.dart';
 import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
@@ -134,6 +135,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         viewToShow: TvShowVerticalView(
           arguments: settings.arguments,
         ),
+      );
+
+    case AboutAppViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: AboutAppView(),
       );
 
     default:

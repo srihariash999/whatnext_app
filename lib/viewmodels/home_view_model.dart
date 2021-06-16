@@ -119,6 +119,11 @@ class HomeViewModel extends BaseModel {
     _navigationService.navigateTo(WatchListViewRoute);
   }
 
+  navigateToAboutApp() {
+    _navigationService.pop();
+    _navigationService.navigateTo(AboutAppViewRoute);
+  }
+
   navigateToVerticalMovieView(String type) {
     _navigationService
         .navigateTo(MovieVerticalViewRoute, arguments: {'type': type});
