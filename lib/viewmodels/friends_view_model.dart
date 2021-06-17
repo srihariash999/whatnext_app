@@ -156,6 +156,10 @@ class FriendsViewModel extends BaseModel {
           FriendStatus.following;
 
       setState();
+      await _fireStoreService.createNewNotification(
+        userName: _toUser.userName,
+        title: "You have a new follower",
+      );
       return true;
     }
     // ~ ~ ~ unfollow a person.

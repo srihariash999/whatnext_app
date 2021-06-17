@@ -194,6 +194,27 @@ class FirestoreService {
     }
   }
 
+  // this method will create a new object in notifications collection.
+  createNewNotification({
+    @required String userName,
+    @required String title,
+  }) async {
+    try {
+      var res = await _instance.collection("notifications").add(
+        {
+          'userName': userName,
+          'title': title,
+        },
+      );
+      print(" firestore res: ${res.path}");
+
+      return {'res': true, 'message': 'notification added.'};
+    } catch (e) {
+      print(" error while adding post to feed: $e");
+      return {'res': false, 'message': 'error while adding notification !'};
+    }
+  }
+
   Future<AboutApp> getAboutApp() async {
     try {
       var aboutAppDoc =

@@ -19,6 +19,7 @@ import 'package:whatnext/viewmodels/theme_view_model.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
 import 'locator.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,7 +40,58 @@ void main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        // final snackbar = SnackBar(
+        //   content: Text(message['notification']['title']),
+        //   action: SnackBarAction(
+        //     label: 'Go',
+        //     onPressed: () => null,
+        //   ),
+        // );
+
+        // Scaffold.of(context).showSnackBar(snackbar);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.amber,
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO optional
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<DeepLinkManager>.withConsumer(
@@ -125,50 +177,6 @@ class MyApp extends StatelessWidget {
               }
             },
           );
-
-          // return ViewModelProvider<ThemesViewModel>.withConsumer(
-          //   viewModelBuilder: () => ThemesViewModel(),
-          //   onModelReady: (model) => model.onInit(),
-          //   builder: (context, model, child) {
-          //     print(" this build is trigggggoooo");
-          //     if (model.busy) {
-          //       return MaterialApp(
-          //         title: 'What Next ?',
-          //         debugShowCheckedModeBanner: false,
-          //         home: Scaffold(
-          //           body: Container(
-          //             child: Center(
-          //               child: CircularProgressIndicator(),
-          //             ),
-          //           ),
-          //         ),
-          //       );
-          //     } else {
-          //       return MaterialApp(
-          //         title: 'What Next ?',
-          //         builder: (context, child) => Navigator(
-          //           key: locator<DialogService>().dialogNavigationKey,
-          //           onGenerateRoute: (settings) => MaterialPageRoute(
-          //               builder: (context) => DialogManager(child: child)),
-          //         ),
-          //         debugShowCheckedModeBanner: false,
-          //         navigatorKey: locator<NavigationService>().navigationKey,
-          //         scaffoldMessengerKey:
-          //             locator<SnackbarService>().scaffoldMessengerKey,
-          //         key: locator<SnackbarService>().scaffoldKey,
-          //         theme: model.theme,
-          //         home: Material(
-          //           child: Scaffold(
-          //             body: theType == 'movie'
-          //                 ? MovieDetailsView(id: theId)
-          //                 : TvShowDetails(id: theId),
-          //           ),
-          //         ),
-          //         onGenerateRoute: generateRoute,
-          //       );
-          //     }
-          //   },
-          // );
         }
       },
     );
