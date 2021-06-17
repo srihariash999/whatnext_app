@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -24,6 +25,25 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  AwesomeNotifications().initialize(
+      // set the icon to null if you want to use the default app icon
+      null,
+      [
+        NotificationChannel(
+            channelKey: 'whatnext_app',
+            channelName: 'Whatnext notifications',
+            channelDescription: 'Notification channel for whatnext app',
+            ledColor: Colors.white)
+      ]);
+
+  AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    if (!isAllowed) {
+      // Insert here your friendly dialog box before call the request method
+      // This is very important to not harm the user experience
+      AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+  });
+
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Colors.white70,
@@ -40,56 +60,52 @@ void main() async {
   );
 }
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-
   @override
   void initState() {
     super.initState();
 
-    _fcm.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print("onMessage: $message");
-        // final snackbar = SnackBar(
-        //   content: Text(message['notification']['title']),
-        //   action: SnackBarAction(
-        //     label: 'Go',
-        //     onPressed: () => null,
-        //   ),
-        // );
-
-        // Scaffold.of(context).showSnackBar(snackbar);
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            content: ListTile(
-              title: Text(message['notification']['title']),
-              subtitle: Text(message['notification']['body']),
-            ),
-            actions: <Widget>[
-              FlatButton(
-                color: Colors.amber,
-                child: Text('Ok'),
-                onPressed: () => Navigator.of(context).pop(),
-              ),
-            ],
-          ),
-        );
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print("onLaunch: $message");
-        // TODO optional
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print("onResume: $message");
-        // TODO optional
-      },
+    FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
     );
+    var _fcm = FirebaseMessaging.onMessage;
+
+    _fcm.listen((event) {
+      print(" event: $event");
+      AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: 10,
+            channelKey: 'whatnext_app',
+            title: '',
+            color: Color(0xFFFFDE59),
+            body: '${event.notification.body}'),
+      );
+    });
+
+    var _fcm2 = FirebaseMessaging.onMessageOpenedApp;
+
+    _fcm2.listen((event) {
+      print(" event2: $event");
+    });
+
+    FirebaseMessaging.onBackgroundMessage(
+        (message) => _firebaseMessagingBackgroundHandler(message));
+
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      print(" this is printed $receivedNotification");
+    });
   }
 
   @override

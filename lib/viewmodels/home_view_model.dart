@@ -23,9 +23,6 @@ class HomeViewModel extends BaseModel {
   final TmdbService _tmdbService = locator<TmdbService>();
 
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final FirebaseMessaging _fcm = FirebaseMessaging();
-
-  StreamSubscription iosSubscription;
 
   int _popPage = 1;
   int _topPage = 1;
@@ -80,16 +77,8 @@ class HomeViewModel extends BaseModel {
     setState();
     fetchTopRatedTvShows();
     setState();
-    if (Platform.isIOS) {
-      iosSubscription = _fcm.onIosSettingsRegistered.listen((data) {
-        print(data);
-        _saveDeviceToken();
-      });
 
-      _fcm.requestNotificationPermissions(IosNotificationSettings());
-    } else {
-      _saveDeviceToken();
-    }
+    _saveDeviceToken();
   }
 
   getUserName() {
@@ -263,7 +252,7 @@ class HomeViewModel extends BaseModel {
     String userName = _authenticationService.currentUser.userName;
 
     // Get the token for this device
-    String fcmToken = await _fcm.getToken();
+    String fcmToken = await FirebaseMessaging.instance.getToken();
 
     // Save it to Firestore
     if (fcmToken != null) {

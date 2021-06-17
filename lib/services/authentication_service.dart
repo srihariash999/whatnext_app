@@ -76,7 +76,7 @@ class AuthenticationService {
       var authResult = await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
 
-      await authResult.user.updateProfile(displayName: userName);
+      await authResult.user.updateDisplayName(userName);
 
       await _firestoreService.createUser(
         UserModel(
