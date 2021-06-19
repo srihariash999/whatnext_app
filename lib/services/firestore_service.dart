@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 
 import 'package:flutter/foundation.dart';
+import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
 import 'package:whatnext/models/user.dart';
 
@@ -194,6 +196,27 @@ class FirestoreService {
     }
   }
 
+  // this method will create a new object in notifications collection.
+  createNewNotification({
+    @required String userName,
+    @required String title,
+  }) async {
+    try {
+      var res = await _instance.collection("notifications").add(
+        {
+          'userName': userName,
+          'title': title,
+        },
+      );
+      print(" firestore res: ${res.path}");
+
+      return {'res': true, 'message': 'notification added.'};
+    } catch (e) {
+      print(" error while adding post to feed: $e");
+      return {'res': false, 'message': 'error while adding notification !'};
+    }
+  }
+
   Future<AboutApp> getAboutApp() async {
     try {
       var aboutAppDoc =
@@ -202,5 +225,49 @@ class FirestoreService {
     } catch (e) {
       return e.message;
     }
+  }
+
+  getuserToken(String username) async {
+    
+    try {
+      var doc = await _instance
+          .collection("users")
+          .doc(username)
+          .collection('tokens')
+          .get();
+      for (var i in doc.docs) {
+        print(' jee jee : ${i.data()}');
+      }
+    
+      if (doc.docs.length > 0) {
+        print("undi ro ${doc.docs.last}");
+        return {
+          'tokenAvailable': true,
+          'token': doc.docs.last.data()['token'],
+        };
+      } else {
+        return {
+          'tokenAvailable': false,
+          'token': "",
+        };
+      }
+    } catch (e) {
+      print("this is error : $e");
+      return e.message;
+    }
+  }
+
+  sendNotification({@required token, @required body}) async {
+    Dio dio = Dio();
+
+    dio.options.headers["Authorization"] = "key=$firebaseServerKey";
+
+    Response resp =
+        await dio.post('https://fcm.googleapis.com/fcm/send', data: {
+      "to": "$token",
+      "priority": "high",
+      "notification": {"title": "", "body": "$body", "text": ""}
+    });
+    print(" notif resp : $resp");
   }
 }

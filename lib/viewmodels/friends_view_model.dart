@@ -117,7 +117,7 @@ class FriendsViewModel extends BaseModel {
   }
 
   friendAction(UserModel user, FriendStatus fs) async {
-    print(" rec fs : $fs");
+    // print(" rec fs : $fs");
     // ~ ~ ~ follow a person.
     if (fs == FriendStatus.available) {
       // intention : update the interested user's followers list and current user's following list
@@ -156,6 +156,14 @@ class FriendsViewModel extends BaseModel {
           FriendStatus.following;
 
       setState();
+      var res = await _fireStoreService.getuserToken(_toUser.userName);
+      if (res['tokenAvailable']) {
+        _fireStoreService.sendNotification(
+            token: res['token'],
+            body: "You have a new follower: @${_currUser.userName}");
+      } else {
+        print(' no token');
+      }
       return true;
     }
     // ~ ~ ~ unfollow a person.
@@ -166,16 +174,16 @@ class FriendsViewModel extends BaseModel {
 
       UserModel _toUser = user;
 
-      print(" before \n");
-      print("all users : $_allUsers");
-      print("all users to disp: $_allUsersToDisplay");
-      print("all friends: $_usersFriendStatus");
-      print("friend disp: $_usersFriendStatusToDisplay");
-      print("**** \n");
+      // print(" before \n");
+      // print("all users : $_allUsers");
+      // print("all users to disp: $_allUsersToDisplay");
+      // print("all friends: $_usersFriendStatus");
+      // print("friend disp: $_usersFriendStatusToDisplay");
+      // print("**** \n");
 
       var _itemToRemove;
 
-      print(" friend list before : ${_toUser.followersList}");
+      // print(" friend list before : ${_toUser.followersList}");
 
       for (var i in _toUser.followersList) {
         if (i['userName'] == _currUser.userName) {
@@ -187,7 +195,7 @@ class FriendsViewModel extends BaseModel {
           ? _toUser.followersList.remove(_itemToRemove)
           : print('cannot find curr user in this user\'s profile');
 
-      print(" friend list after : ${_toUser.followersList}");
+      // print(" friend list after : ${_toUser.followersList}");
 
       await _fireStoreService.updateUserFriends(_toUser);
 
@@ -205,8 +213,8 @@ class FriendsViewModel extends BaseModel {
 
       await _fireStoreService.updateUserFriends(_currUser);
 
-      print(
-          " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
+      // print(
+      //     " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
 
       _allUsers[_allUsers.indexOf(user)] = _toUser;
       _allUsersToDisplay[_allUsersToDisplay.indexOf(user)] = _toUser;
@@ -214,12 +222,12 @@ class FriendsViewModel extends BaseModel {
       _usersFriendStatusToDisplay[_allUsersToDisplay.indexOf(user)] =
           FriendStatus.available;
 
-      print(" after \n");
-      print("all users : $_allUsers");
-      print("all users to disp: $_allUsersToDisplay");
-      print("all friends: $_usersFriendStatus");
-      print("friend disp: $_usersFriendStatusToDisplay");
-      print("**** \n");
+      // print(" after \n");
+      // print("all users : $_allUsers");
+      // print("all users to disp: $_allUsersToDisplay");
+      // print("all friends: $_usersFriendStatus");
+      // print("friend disp: $_usersFriendStatusToDisplay");
+      // print("**** \n");
 
       setState();
       return true;

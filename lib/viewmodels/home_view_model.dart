@@ -1,3 +1,8 @@
+import 'dart:async';
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/feed.dart';
@@ -16,6 +21,8 @@ class HomeViewModel extends BaseModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   final TmdbService _tmdbService = locator<TmdbService>();
+
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   int _popPage = 1;
   int _topPage = 1;
@@ -70,6 +77,8 @@ class HomeViewModel extends BaseModel {
     setState();
     fetchTopRatedTvShows();
     setState();
+
+    _saveDeviceToken();
   }
 
   getUserName() {
@@ -234,6 +243,30 @@ class HomeViewModel extends BaseModel {
     for (var i in s['results']) {
       _topRatedTvShowsList.add(TvShow.fromJson(i));
       setState();
+    }
+  }
+
+  /// Get the token, save it to the database for current user
+  _saveDeviceToken() async {
+    // Get the current user
+    String userName = _authenticationService.currentUser.userName;
+
+    // Get the token for this device
+    String fcmToken = await FirebaseMessaging.instance.getToken();
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      var tokens = _db
+          .collection('users')
+          .doc(userName)
+          .collection('tokens')
+          .doc(fcmToken);
+
+      await tokens.set({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(), // optional
+        'platform': Platform.operatingSystem // optional
+      });
     }
   }
 }

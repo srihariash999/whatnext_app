@@ -79,8 +79,9 @@ class TmdbService {
 
   fetchTvPictures(int tvId) async {
     try {
-      var response = await client.get(
+      var uri = Uri.parse(
           'https://api.themoviedb.org/3/tv/$tvId/images?api_key=$v3&include_image_language=en,null');
+      var response = await client.get(uri);
       var jsonResponse = convert.jsonDecode(response.body);
       return jsonResponse;
     } catch (e) {
