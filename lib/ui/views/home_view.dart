@@ -1,7 +1,7 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:tcard/tcard.dart';
 
@@ -33,7 +33,13 @@ class _HomeViewState extends State<HomeView> {
       builder: (context, model, child) {
         if (model.busy) {
           return Center(
-            child: CircularProgressIndicator(),
+            child: Lottie.asset(
+              'assets/lightning.json',
+              animate: true,
+              height: 50.0,
+              width: 50.0,
+              fit: BoxFit.cover,
+            ),
           );
         } else {
           return ViewModelProvider<FeedViewModel>.withConsumer(
@@ -43,7 +49,12 @@ class _HomeViewState extends State<HomeView> {
               if (model2.busy) {
                 return Scaffold(
                   body: Center(
-                    child: CircularProgressIndicator(),
+                    child: Lottie.asset(
+                      'assets/lightning.json',
+                      height: 50.0,
+                      width: 50.0,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 );
               } else {
@@ -905,7 +916,12 @@ class CustomSearchDelegate extends SearchDelegate<String> {
           print(" query: $query");
           return model.searchResultLoading
               ? Container(
-                  child: CircularProgressIndicator(),
+                  child: Lottie.asset(
+                    'assets/lightning.json',
+                    height: 50.0,
+                    width: 50.0,
+                    fit: BoxFit.cover,
+                  ),
                 )
               : model.searchResults.length == 0
                   ? Container(
