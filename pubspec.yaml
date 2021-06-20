@@ -54,6 +54,7 @@ dependencies:
   firebase_dynamic_links: ^2.0.6
   cloud_firestore: ^2.2.2
   awesome_notifications: ^0.0.6+9
+  expandable: ^5.0.1
   
   
 

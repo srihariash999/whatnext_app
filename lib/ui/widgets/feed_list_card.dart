@@ -67,7 +67,7 @@ class FeedListCardWidget extends StatelessWidget {
                         height: 4.0,
                       ),
                       Text(
-                        '${formatter.format(DateTime.parse(feed.addedOn))}',
+                        '${feed.addedOn != null ? formatter.format(DateTime.parse(feed.addedOn)) : ''}',
                         style: Theme.of(context)
                             .primaryTextTheme
                             .headline4
@@ -123,7 +123,7 @@ class FeedListCardWidget extends StatelessWidget {
               padding: EdgeInsets.only(left: 12.0),
               alignment: Alignment.centerLeft,
               child: Text(
-                "${feed.postBody}",
+                "${feed.postBody ?? ''}",
                 style: Theme.of(context).primaryTextTheme.headline2.copyWith(
                       color: Colors.black.withOpacity(0.70),
                     ),

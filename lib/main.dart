@@ -22,6 +22,7 @@ import 'ui/router.dart';
 import 'locator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -60,11 +61,6 @@ void main() async {
   );
 }
 
-Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  await Firebase.initializeApp();
-  print('Handling a background message ${message.messageId}');
-}
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -94,18 +90,7 @@ class _MyAppState extends State<MyApp> {
       );
     });
 
-    var _fcm2 = FirebaseMessaging.onMessageOpenedApp;
-
-    _fcm2.listen((event) {
-      print(" event2: $event");
-    });
-
-    FirebaseMessaging.onBackgroundMessage(
-        (message) => _firebaseMessagingBackgroundHandler(message));
-
-    AwesomeNotifications().actionStream.listen((receivedNotification) {
-      print(" this is printed $receivedNotification");
-    });
+   
   }
 
   @override

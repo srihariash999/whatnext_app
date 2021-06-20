@@ -18,6 +18,7 @@ class AboutAppView extends StatelessWidget {
             "About App",
             style: Theme.of(context).primaryTextTheme.headline3,
           ),
+          elevation: 0.0,
           actions: [
             InkWell(
               onTap: () {

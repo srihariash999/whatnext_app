@@ -23,6 +23,7 @@ class FriendsView extends StatelessWidget {
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
+            elevation: 0.0,
             title: Text("Find People",
                 style: Theme.of(context).primaryTextTheme.headline1),
             actions: [

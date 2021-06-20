@@ -477,6 +477,13 @@ class TvShowDetailsView extends StatelessWidget {
                                         style: Theme.of(context)
                                             .primaryTextTheme
                                             .headline5),
+                                    SizedBox(width: kDefaultPadding),
+                                    Text(
+                                        _tvd.voteAverage.toStringAsFixed(1) +
+                                            "/10 ⭐ ",
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .headline5),
                                   ],
                                 ),
                               ),

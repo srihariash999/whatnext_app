@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/post_text_field.dart';
@@ -80,10 +81,13 @@ class NewPostView extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        if (_postBodyController.text.length > 1) {
-                          model.createPost(postBody: _postBodyController.text);
-                        } else {
-                          model.showPostBodyErrorToast();
+                        if (!model.isSubmitLoading) {
+                          if (_postBodyController.text.length > 1) {
+                            model.createPost(
+                                postBody: _postBodyController.text);
+                          } else {
+                            model.showPostBodyErrorToast();
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(
@@ -93,10 +97,18 @@ class NewPostView extends StatelessWidget {
                           )),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Submit Post',
-                          style: Theme.of(context).primaryTextTheme.headline5,
-                        ),
+                        child: model.isSubmitLoading
+                            ? Lottie.asset(
+                                'assets/load_black.json',
+                                width: 60,
+                                height: 30,
+                              )
+                            : Text(
+                                'Submit Post',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headline5,
+                              ),
                       ),
                     ),
                     horizontalSpaceMedium,

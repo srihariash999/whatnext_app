@@ -18,7 +18,6 @@ class StartUpViewModel extends BaseModel {
         " has user logged in : $hasLoggedInUser   and ${hasLoggedInUser.runtimeType} ");
 
     if (hasLoggedInUser == true) {
-      await Future.delayed(Duration(seconds: 3));
       _navigationService.navigateReplacement(HomeViewRoute);
     } else {
       _navigationService.navigateReplacement(LoginViewRoute);

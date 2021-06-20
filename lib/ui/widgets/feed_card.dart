@@ -51,7 +51,18 @@ class FeedCardWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                   ),
                 )
-              : Container(),
+              : Container(
+                  height: 250.0,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 20.0, right: 20.0),
+                  child: Text(
+                    "${feed.postBody}",
+                    style:
+                        Theme.of(context).primaryTextTheme.headline3.copyWith(
+                              color: Theme.of(context).backgroundColor,
+                            ),
+                  ),
+                ),
           feed.name != null
               ? Text(
                   "${feed.name}",
@@ -62,12 +73,14 @@ class FeedCardWidget extends StatelessWidget {
                       ),
                 )
               : Container(),
-          Text(
-            "${feed.postBody}",
-            style: Theme.of(context).primaryTextTheme.headline3.copyWith(
-                  color: Theme.of(context).backgroundColor,
+          feed.poster.toString() == 'null'
+              ? Container()
+              : Text(
+                  "${feed.postBody}",
+                  style: Theme.of(context).primaryTextTheme.headline3.copyWith(
+                        color: Theme.of(context).backgroundColor,
+                      ),
                 ),
-          ),
         ],
       ),
     );
