@@ -35,6 +35,9 @@ class NewPostViewModel extends BaseModel {
 
   String _prevQuery = "";
 
+  bool _isSubmitLoading = false;
+  bool get isSubmitLoading => _isSubmitLoading;
+
   goToSearchView() async {
     var result =
         await _navigationService.navigateTo(NewPostItemSearchViewRoute);
@@ -79,6 +82,8 @@ class NewPostViewModel extends BaseModel {
 
   createPost({@required String postBody}) async {
     print("type : $itemType   seelcted: $isItemSelected  ");
+    _isSubmitLoading = true;
+    setState();
     if (itemType != "") // Case where user selected a movie/tv show for a post.
     {
       UserModel _user = _authenticationService.currentUser;
@@ -130,6 +135,9 @@ class NewPostViewModel extends BaseModel {
         _navigationService.pop();
       } else {}
     }
+    _isSubmitLoading = false;
+    setState();
+
     print(" post created");
   }
 

@@ -67,6 +67,7 @@ class HomeViewModel extends BaseModel {
 
   Future<void> onInit() async {
     setBusy(true);
+
     _tabType = 'movie';
     setBusy(false);
     fetchPopularMovies();

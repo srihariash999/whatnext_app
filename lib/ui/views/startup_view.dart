@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/viewmodels/startup_view_model.dart';
 
@@ -21,18 +22,12 @@ class StartUpView extends StatelessWidget {
                   style: Theme.of(context).primaryTextTheme.headline1,
                 ),
               ),
-              Container(
-                height: 28.0,
-                width: 28.0,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation(
-                        Theme.of(context).primaryColorLight),
-                  ),
-                ),
-              )
+              Lottie.asset(
+                'assets/lightning.json',
+                height: 100.0,
+                width: 100.0,
+                fit: BoxFit.cover,
+              ),
             ],
           ),
         ),

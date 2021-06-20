@@ -16,7 +16,7 @@ class PeopleProfileView extends StatelessWidget {
       onModelReady: (model) => model.onInit(userName),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).backgroundColor,
+          elevation: 0.0,
         ),
         body: model.busy
             ? Container(

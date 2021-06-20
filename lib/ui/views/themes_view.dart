@@ -10,7 +10,9 @@ class ThemesView extends StatelessWidget {
       viewModelBuilder: () => ThemesViewModel(),
       onModelReady: (model) => model.getSavedTheme(),
       builder: (context, model, child) => Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          elevation: 0.0,
+        ),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

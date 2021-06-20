@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
+import 'package:whatnext/models/feed.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
@@ -149,7 +150,8 @@ class FirestoreService {
 
   Future<List<QueryDocumentSnapshot>> getAllFeed() async {
     try {
-      var feedList = await _instance.collection("feed").get();
+      var feedList =
+          await _instance.collection("feed").orderBy('addedOn').get();
       return feedList.docs;
     } catch (e) {
       return e.message;
@@ -184,7 +186,9 @@ class FirestoreService {
       if (userData.data()['feedPosts'] != null) {
         feedPosts = userData.data()['feedPosts'];
       }
-      feedPosts.add(res.path.substring(6));
+      print('5 : ${res.path.substring(5)}');
+      print('6 : ${res.path.substring(6)}');
+      feedPosts.add(res.path.substring(5));
       await _instance.collection("users").doc(user.userName).update(
         {"feedPosts": feedPosts},
       );
@@ -228,7 +232,6 @@ class FirestoreService {
   }
 
   getuserToken(String username) async {
-    
     try {
       var doc = await _instance
           .collection("users")
@@ -238,7 +241,7 @@ class FirestoreService {
       for (var i in doc.docs) {
         print(' jee jee : ${i.data()}');
       }
-    
+
       if (doc.docs.length > 0) {
         print("undi ro ${doc.docs.last}");
         return {
@@ -269,5 +272,54 @@ class FirestoreService {
       "notification": {"title": "", "body": "$body", "text": ""}
     });
     print(" notif resp : $resp");
+  }
+
+  Future<List> getUsersPosts({@required userName}) async {
+    var doc = await _instance.collection("users").doc(userName).get();
+    List s = doc.data()['feedPosts'];
+    return s.reversed.toList();
+  }
+
+  Future<Feed> getFeedPostById({@required String id}) async {
+    var _feedPost = await _instance.collection('feed').doc(id).get();
+    print(' feedpost is :${_feedPost.data()}');
+
+    if (_feedPost.data() != null) {
+      return Feed.fromJson(_feedPost.data());
+    } else {
+      return null;
+    }
+  }
+
+  deleteFeedPostById({@required String id, @required String userName}) async {
+    print(" id to delete: $id");
+    // delete the post from feeds;
+
+    await _instance.collection('feed').doc(id).delete();
+
+    print("post deleted from collection : 'feed'");
+    // delete from user's profile;
+
+    var doc = await _instance.collection("users").doc(userName).get();
+    List s = doc.data()['feedPosts'];
+    bool rem = s.remove(id);
+    var newData = doc.data();
+    newData['feedPosts'] = s;
+    await _instance.collection("users").doc(userName).set(newData);
+    print(" post deleted frm user profile ? : $rem");
+  }
+
+  Future<bool> updateDisplayName(
+      {@required String userName, @required String newName}) async {
+    try {
+      await _instance
+          .collection('users')
+          .doc(userName)
+          .update({'fullName': newName});
+
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

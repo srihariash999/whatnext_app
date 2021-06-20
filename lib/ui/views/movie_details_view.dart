@@ -364,6 +364,8 @@ class MovieDetailsView extends StatelessWidget {
                                                       ),
                                                     );
                                                     // model.onAddTap(context);
+                                                  
+                                                  
                                                   },
                                                 ),
                                               ),
@@ -441,6 +443,14 @@ class MovieDetailsView extends StatelessWidget {
                                             ),
                                       SizedBox(width: kDefaultPadding),
                                       Text(_md.runtime.toString() + " min",
+                                          style: Theme.of(context)
+                                              .primaryTextTheme
+                                              .headline5),
+                                      SizedBox(width: kDefaultPadding),
+                                      Text(
+                                          _md.voteAverage.toStringAsFixed(1) +
+                                              "/10 ⭐ " +
+                                              '(${_md.voteCount}👍🏽)',
                                           style: Theme.of(context)
                                               .primaryTextTheme
                                               .headline5),

@@ -34,6 +34,8 @@ class AuthenticationService {
     }
   }
 
+  
+
   // Method to set the value of _currentUserWatchlist after getting it from firebase.
   populateCurrentUserWatchList(String userName) async {
     if (userName != null) {
@@ -95,6 +97,8 @@ class AuthenticationService {
     }
   }
 
+  
+
   // Service function to perform the logout action.
   logout() async {
     await _firebaseAuth.signOut();
@@ -104,7 +108,7 @@ class AuthenticationService {
   // Function returns true if the user is logged in , else ofc returns false
   Future<bool> isUserLoggedIn() async {
     var user = _firebaseAuth.currentUser;
-
+    print(" current user: ${user.displayName}");
     await _populateCurrentUser(user);
     // populate the user's watchlist
     await populateCurrentUserWatchList(user != null ? user.displayName : null);
