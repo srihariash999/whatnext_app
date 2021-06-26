@@ -22,7 +22,6 @@ import 'ui/router.dart';
 import 'locator.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -89,8 +88,6 @@ class _MyAppState extends State<MyApp> {
             body: '${event.notification.body}'),
       );
     });
-
-   
   }
 
   @override
@@ -99,86 +96,89 @@ class _MyAppState extends State<MyApp> {
       viewModelBuilder: () => DeepLinkManager(),
       onModelReady: (model) => model.initDynamicLinks(),
       builder: (context, model, child) {
-        if (model.deepLink == false) {
-          return ViewModelProvider<ThemesViewModel>.withConsumer(
-            viewModelBuilder: () => ThemesViewModel(),
-            onModelReady: (model) => model.onInit(),
-            builder: (context, model, child) {
-              print(" this build is trigggggoooo");
-              if (model.busy) {
-                return MaterialApp(
-                  title: 'What Next ?',
-                  debugShowCheckedModeBanner: false,
-                  home: Scaffold(
-                    body: Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
+        // if (model.deepLink == false) {
+        print(" deeplink is false");
+        return ViewModelProvider<ThemesViewModel>.withConsumer(
+          viewModelBuilder: () => ThemesViewModel(),
+          onModelReady: (model) => model.onInit(),
+          builder: (context, model, child) {
+            print(" this build is trigggggoooo");
+            if (model.busy) {
+              return MaterialApp(
+                title: 'What Next ?',
+                debugShowCheckedModeBanner: false,
+                home: Scaffold(
+                  body: Container(
+                    child: Center(
+                      child: CircularProgressIndicator(),
                     ),
                   ),
-                );
-              } else {
-                return MaterialApp(
-                  title: 'What Next ?',
-                  builder: (context, child) => Navigator(
-                    key: locator<DialogService>().dialogNavigationKey,
-                    onGenerateRoute: (settings) => MaterialPageRoute(
-                        builder: (context) => DialogManager(child: child)),
-                  ),
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: locator<NavigationService>().navigationKey,
-                  scaffoldMessengerKey:
-                      locator<SnackbarService>().scaffoldMessengerKey,
-                  key: locator<SnackbarService>().scaffoldKey,
-                  theme: model.theme,
-                  home: StartUpView(),
-                  onGenerateRoute: generateRoute,
-                );
-              }
-            },
-          );
-        } else {
-          var theType = model.mediaType;
-          var theId = model.id;
-          return ViewModelProvider<ThemesViewModel>.withConsumer(
-            viewModelBuilder: () => ThemesViewModel(),
-            onModelReady: (model) => model.onInit(),
-            builder: (context, model, child) {
-              print(" this build is trigggggoooo");
-              if (model.busy) {
-                return MaterialApp(
-                  title: 'What Next ?',
-                  debugShowCheckedModeBanner: false,
-                  home: Scaffold(
-                    body: Container(
-                      child: Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    ),
-                  ),
-                );
-              } else {
-                return MaterialApp(
-                  title: 'What Next ?',
-                  scaffoldMessengerKey:
-                      locator<SnackbarService>().scaffoldMessengerKey,
-                  key: locator<SnackbarService>().scaffoldKey,
-                  theme: model.theme,
-                  debugShowCheckedModeBanner: false,
-                  navigatorKey: locator<NavigationService>().navigationKey,
-                  home: Material(
-                    child: Scaffold(
-                      body: theType == 'movie'
-                          ? MovieDetailsView(id: theId)
-                          : TvShowDetailsView(id: theId),
-                    ),
-                  ),
-                  onGenerateRoute: generateRoute,
-                );
-              }
-            },
-          );
-        }
+                ),
+              );
+            } else {
+              return MaterialApp(
+                title: 'What Next ?',
+                builder: (context, child) => Navigator(
+                  key: locator<DialogService>().dialogNavigationKey,
+                  onGenerateRoute: (settings) => MaterialPageRoute(
+                      builder: (context) => DialogManager(child: child)),
+                ),
+                debugShowCheckedModeBanner: false,
+                navigatorKey: locator<NavigationService>().navigationKey,
+                scaffoldMessengerKey:
+                    locator<SnackbarService>().scaffoldMessengerKey,
+                key: locator<SnackbarService>().scaffoldKey,
+                theme: model.theme,
+                home: StartUpView(),
+                onGenerateRoute: generateRoute,
+              );
+            }
+          },
+        );
+        // } else {
+        //    print(" deeplink is true");
+        //   var theType = model.mediaType;
+        //   var theId = model.id;
+        //   return ViewModelProvider<ThemesViewModel>.withConsumer(
+        //     viewModelBuilder: () => ThemesViewModel(),
+        //     onModelReady: (model) => model.onInit(),
+        //     builder: (context, model, child) {
+        //       print(" this build is trigggggoooo");
+        //       if (model.busy) {
+        //         return MaterialApp(
+        //           title: 'What Next ?',
+        //           debugShowCheckedModeBanner: false,
+        //           home: Scaffold(
+        //             body: Container(
+        //               child: Center(
+        //                 child: CircularProgressIndicator(),
+        //               ),
+        //             ),
+        //           ),
+        //         );
+        //       } else {
+        //         print(" came to correct route : $theId  $theType");
+        //         return MaterialApp(
+        //           title: 'What Next ?',
+        //           scaffoldMessengerKey:
+        //               locator<SnackbarService>().scaffoldMessengerKey,
+        //           key: locator<SnackbarService>().scaffoldKey,
+        //           theme: model.theme,
+        //           debugShowCheckedModeBanner: false,
+        //           navigatorKey: locator<NavigationService>().navigationKey,
+        //           home: Material(
+        //             child: Scaffold(
+        //               body: theType == 'movie'
+        //                   ? MovieDetailsView(id: theId)
+        //                   : TvShowDetailsView(id: theId),
+        //             ),
+        //           ),
+        //           onGenerateRoute: generateRoute,
+        //         );
+        //       }
+        //     },
+        //   );
+        // }
       },
     );
   }

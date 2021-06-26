@@ -4,6 +4,7 @@ import 'package:whatnext/ui/views/about_app_view.dart';
 import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
+import 'package:whatnext/ui/views/messages_view.dart';
 import 'package:whatnext/ui/views/movie_details_view.dart';
 import 'package:whatnext/ui/views/movies_vertical_view.dart';
 import 'package:whatnext/ui/views/new_post_item_select_view.dart';
@@ -141,6 +142,12 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: AboutAppView(),
+      );
+
+    case MessagesViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: MessagesView(),
       );
 
     default:
