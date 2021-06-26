@@ -119,6 +119,11 @@ class HomeViewModel extends BaseModel {
     _navigationService.navigateTo(ThemesViewRoute);
   }
 
+  navigateToMessages() {
+    _navigationService.pop();
+    _navigationService.navigateTo(MessagesViewRoute);
+  }
+
   navigateToProfile() {
     _navigationService.pop();
     _navigationService.navigateTo(ProfileViewRoute);

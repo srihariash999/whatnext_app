@@ -1,3 +1,4 @@
+import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -163,6 +164,14 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
           child: Image.asset('assets/whatnext_logo.png'),
         ),
         actions: [
+          IconButton(
+            icon:
+                Icon(Icons.search, color: Theme.of(context).primaryColorLight),
+            onPressed: () => showSearch(
+              context: context,
+              delegate: CustomSearchDelegate(),
+            ),
+          ),
           IconButton(
             icon: Icon(
               widget.model.viewType == 'card'
@@ -756,25 +765,27 @@ class DrawerWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: InkWell(
-                          onTap: model.navigateToTheme,
+                          onTap: model.navigateToMessages,
                           child: Row(
                             children: [
                               horizontalSpaceSmall,
-                              Icon(Icons.color_lens_sharp,
-                                  color: Theme.of(context).primaryColorLight),
+                              Icon(
+                                FeatherIcons.messageSquare,
+                                color: Theme.of(context).primaryColorLight,
+                              ),
                               horizontalSpaceMedium,
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Themes",
+                                    "Messages",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline4
                                         .copyWith(fontWeight: FontWeight.w400),
                                   ),
                                   Text(
-                                    "Change the appearance of the app.",
+                                    "Chat with other users.",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline5
@@ -808,6 +819,39 @@ class DrawerWidget extends StatelessWidget {
                                   ),
                                   Text(
                                     "View and change your watchlist.",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline5
+                                        .copyWith(fontSize: 12.0),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                          onTap: model.navigateToTheme,
+                          child: Row(
+                            children: [
+                              horizontalSpaceSmall,
+                              Icon(Icons.color_lens_sharp,
+                                  color: Theme.of(context).primaryColorLight),
+                              horizontalSpaceMedium,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    "Themes",
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .headline4
+                                        .copyWith(fontWeight: FontWeight.w400),
+                                  ),
+                                  Text(
+                                    "Change the appearance of the app.",
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline5

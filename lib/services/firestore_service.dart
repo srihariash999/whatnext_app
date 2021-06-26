@@ -322,4 +322,29 @@ class FirestoreService {
       return false;
     }
   }
+
+  Future<List<String>> getCommonFriends({@required UserModel user}) async {
+    List _f1 = user.followersList;
+    List _f2 = user.followingList;
+
+    List<String> _followersList = [];
+    List<String> _followingList = [];
+
+    for (var i in _f1) {
+      _followersList.add(i['userName']);
+    }
+
+    for (var i in _f2) {
+      _followingList.add(i['userName']);
+    }
+
+    List<String> _commonList = [];
+
+    for (var i in _followersList) {
+      if (_followingList.contains(i)) {
+        _commonList.add(i);
+      }
+    }
+    return _commonList;
+  }
 }

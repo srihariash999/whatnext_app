@@ -123,13 +123,13 @@ class DeepLinkManager extends BaseModel {
       _id = int.parse(id);
       setBusy(false);
       setState();
-      // if (type == 'movie') {
-      //   _navigationService.navigateTo(MovieDetailsViewRoute,
-      //       arguments: _id);
-      // } else {
-      //   _navigationService.navigateTo(TvShowDetailsViewRoute,
-      //       arguments: id);
-      // }
+      if (type == 'movie') {
+        _navigationService.navigateTo(MovieDetailsViewRoute,
+            arguments: _id);
+      } else {
+        _navigationService.navigateTo(TvShowDetailsViewRoute,
+            arguments: id);
+      }
     }
   }
 }
