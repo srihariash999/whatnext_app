@@ -1,6 +1,7 @@
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
+// import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/viewmodels/messages_view_model.dart';
 
 class MessagesView extends StatelessWidget {
@@ -10,6 +11,7 @@ class MessagesView extends StatelessWidget {
       viewModelBuilder: () => MessagesViewModel(),
       onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
+        key: model.scaffoldKey,
         appBar: AppBar(
           title: Text(
             "Messages",
@@ -17,299 +19,103 @@ class MessagesView extends StatelessWidget {
           ),
           elevation: 0.0,
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).primaryColorLight,
-          onPressed: () {},
-          child: Icon(
-            FeatherIcons.messageSquare,
-            color: Theme.of(context).backgroundColor,
-          ),
-        ),
+        floatingActionButton: model.busy
+            ? Container()
+            : FloatingActionButton(
+                backgroundColor: Theme.of(context).primaryColorLight,
+                onPressed: () async {
+                  model.newChatPressed();
+                },
+                child: Icon(
+                  FeatherIcons.messageSquare,
+                  color: Theme.of(context).backgroundColor,
+                ),
+              ),
         body: SafeArea(
           child: model.busy
               ? Container(
                   alignment: Alignment.center,
                   child: CircularProgressIndicator(),
                 )
-              : SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.0),
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.orange[300],
-                                radius: 24.0,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 24.0,
-                                  color: Theme.of(context).backgroundColor,
+              : model.availableChatRooms.length > 0
+                  ? RefreshIndicator(
+                      onRefresh: model.init,
+                      child: ListView.builder(
+                        itemCount: model.availableChatRooms.length,
+                        itemBuilder: (context, index) {
+                          String _roomName = model.availableChatRooms[index];
+                          return Container(
+                            padding: EdgeInsets.all(12.0),
+                            child: Row(
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(12.0),
+                                  alignment: Alignment.center,
+                                  child: CircleAvatar(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColorLight,
+                                    radius: 18.0,
+                                    child: Icon(
+                                      Icons.person,
+                                      size: 18.0,
+                                      color: Theme.of(context).backgroundColor,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'John Doe',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline3
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                Expanded(
+                                  child: Container(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              'chat with ',
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .headline3
+                                                  .copyWith(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                            ),
+                                            Text(
+                                              '${_roomName.replaceAll(model.currentUser, '')}',
+                                              style: Theme.of(context)
+                                                  .primaryTextTheme
+                                                  .headline3
+                                                  .copyWith(
+                                                    fontSize: 18.0,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
                                     ),
-                                    Text(
-                                      'EkdNTVRDIFJkLCBNTVRDIENvbG9ueSwgU2Fydm9kYXlhIEVuY2xhdmUsIE5ldyBEZWxoaSwgRGVsaGkgMTEwMDE3LCBJbmRpYSIuKiwKFAoSCSk109IG4gw5Edkjg4qckO_lEhQKEglrawz8A-IMORFLLQXQSa85Bg',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline5
-                                          .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              padding: EdgeInsets.only(
-                                  right: 8.0,
-                                  top: 30.0,
-                                  bottom: 12.0,
-                                  left: 16.0),
-                              child: Text(
-                                '45s ago',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.0,
-                                    ),
+                          );
+                        },
+                      ),
+                    )
+                  : Center(
+                      child: Container(
+                        child: Text(
+                          'No open chat threads. Create one to chat',
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .headline3
+                              .copyWith(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w400,
                               ),
-                            ),
-                          ],
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.0),
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.orange[300],
-                                radius: 24.0,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 24.0,
-                                  color: Theme.of(context).backgroundColor,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Mia Nguen',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline3
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                    Text(
-                                      'EkdNTVRDIFJkLCBNTVRDIENvbG9ueSwgU2Fydm9kYXlhIEVuY2xhdmUsIE5ldyBEZWxoaSwgRGVsaGkgMTEwMDE3LCBJbmRpYSIuKiwKFAoSCSk109IG4gw5Edkjg4qckO_lEhQKEglrawz8A-IMORFLLQXQSa85Bg',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline5
-                                          .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              padding: EdgeInsets.only(
-                                  right: 8.0,
-                                  top: 30.0,
-                                  bottom: 12.0,
-                                  left: 16.0),
-                              child: Text(
-                                '18m ago',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.0,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.0),
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.orange[300],
-                                radius: 24.0,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 24.0,
-                                  color: Theme.of(context).backgroundColor,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Henna beck',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline3
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                    Text(
-                                      'EkdNTVRDIFJkLCBNTVRDIENvbG9ueSwgU2Fydm9kYXlhIEVuY2xhdmUsIE5ldyBEZWxoaSwgRGVsaGkgMTEwMDE3LCBJbmRpYSIuKiwKFAoSCSk109IG4gw5Edkjg4qckO_lEhQKEglrawz8A-IMORFLLQXQSa85Bg',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline5
-                                          .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              padding: EdgeInsets.only(
-                                  right: 8.0,
-                                  top: 30.0,
-                                  bottom: 12.0,
-                                  left: 16.0),
-                              child: Text(
-                                '2h ago',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.0,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(12.0),
-                        child: Row(
-                          children: [
-                            Container(
-                              padding: EdgeInsets.all(12.0),
-                              alignment: Alignment.center,
-                              child: CircleAvatar(
-                                backgroundColor: Colors.orange[300],
-                                radius: 24.0,
-                                child: Icon(
-                                  Icons.person,
-                                  size: 24.0,
-                                  color: Theme.of(context).backgroundColor,
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Tanim Mridha',
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline3
-                                          .copyWith(
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                    ),
-                                    Text(
-                                      'EkdNTVRDIFJkLCBNTVRDIENvbG9ueSwgU2Fydm9kYXlhIEVuY2xhdmUsIE5ldyBEZWxoaSwgRGVsaGkgMTEwMDE3LCBJbmRpYSIuKiwKFAoSCSk109IG4gw5Edkjg4qckO_lEhQKEglrawz8A-IMORFLLQXQSa85Bg',
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(context)
-                                          .primaryTextTheme
-                                          .headline5
-                                          .copyWith(
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              alignment: Alignment.bottomLeft,
-                              padding: EdgeInsets.only(
-                                  right: 8.0,
-                                  top: 30.0,
-                                  bottom: 12.0,
-                                  left: 16.0),
-                              child: Text(
-                                '3d ago',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .headline5
-                                    .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12.0,
-                                    ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                    ),
         ),
       ),
     );
