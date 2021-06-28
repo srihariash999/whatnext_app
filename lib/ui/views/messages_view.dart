@@ -44,59 +44,68 @@ class MessagesView extends StatelessWidget {
                         itemCount: model.availableChatRooms.length,
                         itemBuilder: (context, index) {
                           String _roomName = model.availableChatRooms[index];
-                          return Container(
-                            padding: EdgeInsets.all(12.0),
-                            child: Row(
-                              children: [
-                                Container(
-                                  padding: EdgeInsets.all(12.0),
-                                  alignment: Alignment.center,
-                                  child: CircleAvatar(
-                                    backgroundColor:
-                                        Theme.of(context).primaryColorLight,
-                                    radius: 18.0,
-                                    child: Icon(
-                                      Icons.person,
-                                      size: 18.0,
-                                      color: Theme.of(context).backgroundColor,
+                          return InkWell(
+                            onTap: () {
+                              model.navigateToChatScreen(
+                                  '${_roomName.replaceAll(model.currentUser, '')}');
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(12.0),
+                              child: Row(
+                                children: [
+                                  Container(
+                                    padding: EdgeInsets.all(12.0),
+                                    alignment: Alignment.center,
+                                    child: CircleAvatar(
+                                      backgroundColor:
+                                          Theme.of(context).primaryColorLight,
+                                      radius: 18.0,
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 18.0,
+                                        color:
+                                            Theme.of(context).backgroundColor,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              'chat with ',
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .headline3
-                                                  .copyWith(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                            ),
-                                            Text(
-                                              '${_roomName.replaceAll(model.currentUser, '')}',
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .headline3
-                                                  .copyWith(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                  Expanded(
+                                    child: Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'chat with ',
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .headline3
+                                                    .copyWith(
+                                                      fontSize: 18.0,
+                                                      fontWeight:
+                                                          FontWeight.w300,
+                                                    ),
+                                              ),
+                                              Text(
+                                                '${_roomName.replaceAll(model.currentUser, '')}',
+                                                style: Theme.of(context)
+                                                    .primaryTextTheme
+                                                    .headline3
+                                                    .copyWith(
+                                                      fontSize: 18.0,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },

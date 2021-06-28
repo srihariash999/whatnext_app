@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
 import 'package:whatnext/models/feed.dart';
+import 'package:whatnext/models/message.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
@@ -408,6 +409,48 @@ class FirestoreService {
       {"chatRooms": chatRooms},
     );
 
+    var toUserData = await _instance.collection('users').doc(toUserName).get();
+    print(" to user chat room : ${toUserData.data()}");
+    List toUserChatRooms = toUserData.data()['chatRooms'] ?? [];
+
+    print(" $toUserChatRooms");
+    toUserChatRooms.add("$fromUserName$toUserName");
+
+    await _instance.collection('users').doc(toUserName).update(
+      {"chatRooms": toUserChatRooms},
+    );
+
     return chatRooms;
+  }
+
+  Future<List<Message>> getMessages({@required String roomName}) async {
+    List<Message> _messages = [];
+
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    for (var i in roomData.data()['messages']) {
+      _messages.add(Message.fromJson(i));
+    }
+    return _messages;
+  }
+
+  sendMessage(
+      {@required String fromuser,
+      @required String toUser,
+      @required String roomName,
+      @required String message}) async {
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    List messages = roomData.data()['messages'];
+
+    messages.add({
+      "message": message,
+      "from": fromuser,
+      "to": toUser,
+      "addedOn": "${DateTime.now()}"
+    });
+
+    await _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .update({"messages": messages});
   }
 }

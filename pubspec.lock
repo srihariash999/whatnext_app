@@ -50,6 +50,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  chat_bubbles:
+    dependency: "direct main"
+    description:
+      name: chat_bubbles
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.0"
   clock:
     dependency: transitive
     description:

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
@@ -65,13 +66,15 @@ class MessagesViewModel extends BaseModel {
     print(_roomExists);
     if (_roomExists['roomExists']) {
       print(" room is there. ${_roomExists['roomName']}");
+      navigateToChatScreen(toUserName);
     } else {
       print("Room not there, create it");
       await _firestoreService.createChatRoom(
           fromUserName: _currentUser,
           toUserName: toUserName,
           chatRooms: availableChatRooms);
-      init();
+      await init();
+      navigateToChatScreen(toUserName);
     }
 
     setBusy(false);
@@ -164,5 +167,9 @@ class MessagesViewModel extends BaseModel {
       _setSheetStatus();
       print(s);
     }
+  }
+
+  navigateToChatScreen(String toUserName) {
+    _navigationService.navigateTo(ChatViewRoute, arguments: toUserName);
   }
 }

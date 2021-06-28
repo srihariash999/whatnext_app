@@ -55,6 +55,7 @@ dependencies:
   cloud_firestore: ^2.2.2
   awesome_notifications: ^0.0.6+9
   expandable: ^5.0.1
+  chat_bubbles: ^1.1.0
   
   
 

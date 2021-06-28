@@ -20,3 +20,4 @@ const String MovieVerticalViewRoute = "MovieVerticalView";
 const String TvShowVerticalViewRoute = "TvShowVerticalView";
 const String AboutAppViewRoute = "AboutAppView";
 const String MessagesViewRoute = "MessagesView";
+const String ChatViewRoute = "ChatView";
