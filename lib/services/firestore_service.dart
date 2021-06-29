@@ -10,7 +10,7 @@ import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
   //firestore instance to user multiple times.
-  FirebaseFirestore _instance = FirebaseFirestore.instance;
+  final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
   // Method to create a user object in the firestore collection 'users' after successful signup (through firebase auth).
   Future createUser(UserModel user) async {
@@ -438,19 +438,22 @@ class FirestoreService {
       @required String toUser,
       @required String roomName,
       @required String message}) async {
+    // get all messages in chat room
     var roomData = await _instance.collection('chatRooms').doc(roomName).get();
     List messages = roomData.data()['messages'];
-
+    // add the new message.
     messages.add({
       "message": message,
       "from": fromuser,
       "to": toUser,
       "addedOn": "${DateTime.now()}"
     });
-
+    // put them back
     await _instance
         .collection('chatRooms')
         .doc(roomName)
         .update({"messages": messages});
+
+   
   }
 }

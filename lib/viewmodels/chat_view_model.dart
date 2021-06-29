@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/message.dart';
@@ -7,6 +8,8 @@ import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/viewmodels/base_model.dart';
 
 class ChatViewModel extends BaseModel {
+  final FirebaseFirestore _instance = FirebaseFirestore.instance;
+
   final FirestoreService _firestoreService = locator<FirestoreService>();
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
@@ -39,6 +42,17 @@ class ChatViewModel extends BaseModel {
     setBusy(false);
 
     WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
+
+    _instance.collection('chatRooms').doc(roomName).snapshots().listen((event) {
+      // print('event p : ${event.get('messages')} ');
+
+      _messages = [];
+      for (var i in event.get('messages')) {
+        _messages.add(Message.fromJson(i));
+      }
+      setState();
+      WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
+    });
   }
 
   getChatRoomName(String toUserName) async {
@@ -53,7 +67,7 @@ class ChatViewModel extends BaseModel {
 
   getMessages() async {
     _messages = await _firestoreService.getMessages(roomName: _roomName);
-    print(_messages);
+    // print(_messages);
     setState();
   }
 
@@ -73,17 +87,30 @@ class ChatViewModel extends BaseModel {
         roomName: roomName,
         message: _messageController.text,
       );
-      _messages.add(Message(
-        from: _authenticationService.currentUser.userName,
-        to: _toUserName,
-        addedOn: "${DateTime.now()}",
-        message: _messageController.text,
-      ));
+      // _messages.add(Message(
+      //   from: _authenticationService.currentUser.userName,
+      //   to: _toUserName,
+      //   addedOn: "${DateTime.now()}",
+      //   message: _messageController.text,
+      // ));
       _isMessageSending = false;
+      String msg = _messageController.text;
       _messageController.clear();
 
       setState();
       print("this completed");
+
+      //get to user token
+
+      // get the token of the to user.
+
+      var res = await _firestoreService.getuserToken(_toUserName);
+      if (res['tokenAvailable']) {
+        // token is there, send notif.
+        await _firestoreService.sendNotification(
+            token: res['token'],
+            body: "${_authenticationService.currentUser.userName} : $msg");
+      }
     }
   }
 }

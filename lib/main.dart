@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
         content: NotificationContent(
             id: 10,
             channelKey: 'whatnext_app',
-            title: '',
+            notificationLayout: NotificationLayout.BigText ,
+            title: '${event.notification.title}',
             color: Color(0xFFFFDE59),
             body: '${event.notification.body}'),
       );
