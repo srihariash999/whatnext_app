@@ -11,10 +11,10 @@ import 'package:whatnext/managers/deep_link_manager.dart';
 import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/snackbar_service.dart';
-import 'package:whatnext/ui/views/movie_details_view.dart';
+// import 'package:whatnext/ui/views/movie_details_view.dart';
 // import 'package:whatnext/ui/views/movie_detail_deepLink.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
-import 'package:whatnext/ui/views/tv_show_details_view.dart';
+// import 'package:whatnext/ui/views/tv_show_details_view.dart';
 // import 'package:whatnext/ui/views/tv_detail_deeplink.dart';
 import 'package:whatnext/viewmodels/theme_view_model.dart';
 import 'managers/dialog_manager.dart';
@@ -83,7 +83,8 @@ class _MyAppState extends State<MyApp> {
         content: NotificationContent(
             id: 10,
             channelKey: 'whatnext_app',
-            title: '',
+            notificationLayout: NotificationLayout.BigText ,
+            title: '${event.notification.title}',
             color: Color(0xFFFFDE59),
             body: '${event.notification.body}'),
       );

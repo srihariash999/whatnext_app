@@ -5,11 +5,12 @@ import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
 import 'package:whatnext/models/feed.dart';
+import 'package:whatnext/models/message.dart';
 import 'package:whatnext/models/user.dart';
 
 class FirestoreService {
   //firestore instance to user multiple times.
-  FirebaseFirestore _instance = FirebaseFirestore.instance;
+  final FirebaseFirestore _instance = FirebaseFirestore.instance;
 
   // Method to create a user object in the firestore collection 'users' after successful signup (through firebase auth).
   Future createUser(UserModel user) async {
@@ -345,6 +346,114 @@ class FirestoreService {
         _commonList.add(i);
       }
     }
+
     return _commonList;
+  }
+
+  Future<List<String>> getChatRooms({@required String userName}) async {
+    List<String> _chatRoomsInvolved = [];
+    var data = await _instance.collection('users').doc(userName).get();
+    List _chatRoomsData =
+        data.data()['chatRooms'] != null ? data.data()['chatRooms'] : [];
+
+    for (var i in _chatRoomsData) {
+      _chatRoomsInvolved.add(i.toString());
+    }
+    return _chatRoomsInvolved;
+  }
+
+  Future checkIfRoomExists(
+      {@required String toUserName, @required String fromUserName}) async {
+    String combo1 = toUserName + fromUserName;
+    String combo2 = fromUserName + toUserName;
+
+    var s = await _instance.collection('chatRooms').doc(combo1).get();
+    print("Data is : ${s.data()}");
+
+    var t = await _instance.collection('chatRooms').doc(combo2).get();
+    print("Data is : ${t.data()}");
+
+    if (s.data() == null && t.data() == null) {
+      return {
+        'roomExists': false,
+      };
+    } else if (s.data() == null && t.data() != null) {
+      return {'roomExists': true, 'roomName': combo2};
+    } else if (t.data() == null && s.data() != null) {
+      return {'roomExists': true, 'roomName': combo1};
+    } else {
+      print(" ${s.data() == null} && ${t.data() == null}  ");
+      return {
+        'roomExists': false,
+      };
+    }
+  }
+
+  Future<List<String>> createChatRoom(
+      {@required String fromUserName,
+      @required String toUserName,
+      @required List<String> chatRooms}) async {
+    await _instance.collection('chatRooms').doc("$fromUserName$toUserName").set(
+      {
+        'participant1': fromUserName,
+        'participant2': toUserName,
+        'messages': []
+      },
+    );
+
+    chatRooms.add("$fromUserName$toUserName");
+
+    print('chatrooms: $chatRooms   from user: $fromUserName  ');
+
+    await _instance.collection('users').doc(fromUserName).update(
+      {"chatRooms": chatRooms},
+    );
+
+    var toUserData = await _instance.collection('users').doc(toUserName).get();
+    print(" to user chat room : ${toUserData.data()}");
+    List toUserChatRooms = toUserData.data()['chatRooms'] ?? [];
+
+    print(" $toUserChatRooms");
+    toUserChatRooms.add("$fromUserName$toUserName");
+
+    await _instance.collection('users').doc(toUserName).update(
+      {"chatRooms": toUserChatRooms},
+    );
+
+    return chatRooms;
+  }
+
+  Future<List<Message>> getMessages({@required String roomName}) async {
+    List<Message> _messages = [];
+
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    for (var i in roomData.data()['messages']) {
+      _messages.add(Message.fromJson(i));
+    }
+    return _messages;
+  }
+
+  sendMessage(
+      {@required String fromuser,
+      @required String toUser,
+      @required String roomName,
+      @required String message}) async {
+    // get all messages in chat room
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    List messages = roomData.data()['messages'];
+    // add the new message.
+    messages.add({
+      "message": message,
+      "from": fromuser,
+      "to": toUser,
+      "addedOn": "${DateTime.now()}"
+    });
+    // put them back
+    await _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .update({"messages": messages});
+
+   
   }
 }

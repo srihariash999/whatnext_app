@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/ui/views/about_app_view.dart';
+import 'package:whatnext/ui/views/chat_view.dart';
 import 'package:whatnext/ui/views/friends_view.dart';
 import 'package:whatnext/ui/views/home_view.dart';
 import 'package:whatnext/ui/views/login_view.dart';
@@ -148,6 +149,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
       return _getPageRoute(
         routeName: settings.name,
         viewToShow: MessagesView(),
+      );
+
+    case ChatViewRoute:
+      return _getPageRoute(
+        routeName: settings.name,
+        viewToShow: ChatView(
+          toUserName: settings.arguments,
+        ),
       );
 
     default:
