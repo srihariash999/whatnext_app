@@ -5,6 +5,7 @@ import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/snackbar_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
+import 'package:whatnext/viewmodels/chat_view_model.dart';
 // import 'package:whatnext/services/snackbar_service.dart';
 
 GetIt locator = GetIt.instance;
@@ -16,4 +17,5 @@ void setupLocator() {
   locator.registerLazySingleton(() => TmdbService());
   locator.registerLazySingleton(() => AuthenticationService());
   locator.registerLazySingleton(() => FirestoreService());
+  locator.registerFactory(() => ChatViewModel());
 }

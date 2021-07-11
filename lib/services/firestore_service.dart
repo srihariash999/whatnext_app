@@ -51,9 +51,9 @@ class FirestoreService {
   }
 
   Future<String> getUserProfilePicture(String userName) async {
-    print("username : #$userName");
+    // print("username : #$userName");
     var userData = await _instance.collection('users').doc(userName).get();
-    print("user data: ${userData.data()}");
+    // print("user data: ${userData.data()}");
     return userData.data()['profilePicture'] ?? null;
   }
 
@@ -408,7 +408,9 @@ class FirestoreService {
       {
         'participant1': fromUserName,
         'participant2': toUserName,
-        'messages': []
+        'messages': [],
+        'lastSeen$fromUserName': DateTime.now().toString(),
+        'lastSeen$toUserName': 'never',
       },
     );
 
@@ -444,6 +446,36 @@ class FirestoreService {
     return _messages;
   }
 
+  Future<String> getLastSeen(
+      {@required String roomName, @required String userName}) async {
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    return roomData.data()['lastSeen$userName'];
+  }
+
+  updateLastSeen({@required String roomName, @required String userName}) async {
+    try {
+      await _instance
+          .collection('chatRooms')
+          .doc(roomName)
+          .update({'lastSeen$userName': DateTime.now().toString()});
+    } catch (e) {
+      print(' error setting last seen for $userName : $e');
+    }
+  }
+
+  Future<Map<String, String>> getChatRoomProps(
+      {@required String roomName,
+      @required String fromUser,
+      @required String toUser}) async {
+    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
+    return {
+      'fromLastSeen': roomData.data()['lastSeen$fromUser'],
+      'fromLastMsg': roomData.data()['lastMsg$fromUser'],
+      'toLastSeen': roomData.data()['lastSeen$toUser'],
+      'toLastMsg': roomData.data()['lastMsg$toUser'],
+    };
+  }
+
   sendMessage(
       {@required String fromuser,
       @required String toUser,
@@ -460,10 +492,15 @@ class FirestoreService {
       "addedOn": "${DateTime.now()}"
     });
     // put them back
-    await _instance
-        .collection('chatRooms')
-        .doc(roomName)
-        .update({"messages": messages});
+
+    String _timeNow = DateTime.now().toString();
+    await _instance.collection('chatRooms').doc(roomName).update(
+      {
+        "messages": messages,
+        'lastSeen$fromuser': _timeNow,
+        'lastMsg$fromuser': _timeNow,
+      },
+    );
   }
 
   Future uploadImage({
@@ -471,7 +508,7 @@ class FirestoreService {
   }) async {
     try {
       String fileName = basename(file.path);
-      Reference reference = _storage.ref().child("productImages/$fileName");
+      Reference reference = _storage.ref().child("profilePictures/$fileName");
       UploadTask uploadTask = reference.putFile(file);
       String imageUrl =
           await uploadTask.then((res) async => res.ref.getDownloadURL());
