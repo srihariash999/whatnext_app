@@ -26,6 +26,9 @@ class MessagesViewModel extends BaseModel {
   String _currentUser = '';
   String get currentUser => _currentUser;
 
+  List<bool> _newMessages = [];
+  List<bool> get newMessages => _newMessages;
+
   bool _isSheetOpen = false;
 
   Future<void> init() async {
@@ -57,7 +60,34 @@ class MessagesViewModel extends BaseModel {
     _availableChatRooms = await _firestoreService.getChatRooms(
         userName: _authenticationService.currentUser.userName);
     print('rooms : $_availableChatRooms');
+
     setState();
+  }
+
+  Future<bool> getMessageStatusOfRoom(
+      String roomName, String toUser, String fromUser) async {
+    Map<String, String> _chatRoomProps =
+        await _firestoreService.getChatRoomProps(
+      roomName: roomName,
+      fromUser: fromUser,
+      toUser: toUser,
+    );
+
+    print('chat props: $_chatRoomProps');
+
+    if (_chatRoomProps['fromLastSeen'] != null &&
+        _chatRoomProps['fromLastSeen'] != 'never' &&
+        _chatRoomProps['toLastMsg'] != null &&
+        _chatRoomProps['toLastMsg'] != 'never') {
+      print(
+          " the diff ${DateTime.parse(_chatRoomProps['toLastMsg']).difference(DateTime.parse(_chatRoomProps['fromLastSeen'])).inSeconds}");
+      return DateTime.parse(_chatRoomProps['toLastMsg'])
+              .difference(DateTime.parse(_chatRoomProps['fromLastSeen']))
+              .inSeconds >
+          2;
+    } else {
+      return false;
+    }
   }
 
   sendMessageClicked(String toUserName) async {
@@ -171,7 +201,8 @@ class MessagesViewModel extends BaseModel {
     }
   }
 
-  navigateToChatScreen(String toUserName) {
-    _navigationService.navigateTo(ChatViewRoute, arguments: toUserName);
+  navigateToChatScreen(String toUserName) async {
+    await _navigationService.navigateTo(ChatViewRoute, arguments: toUserName);
+    init();
   }
 }

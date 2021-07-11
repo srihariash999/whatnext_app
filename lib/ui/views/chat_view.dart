@@ -6,6 +6,7 @@ import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/message.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/viewmodels/chat_view_model.dart';
+import 'package:whatnext/locator.dart';
 
 class ChatView extends StatefulWidget {
   final String toUserName;
@@ -19,7 +20,8 @@ class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
     return ViewModelProvider<ChatViewModel>.withConsumer(
-      viewModelBuilder: () => ChatViewModel(),
+      disposeViewModel: false,
+      viewModelBuilder: () => locator<ChatViewModel>(),
       onModelReady: (model) => model.init(widget.toUserName),
       builder: (context, model, child) {
         return Scaffold(
@@ -76,11 +78,28 @@ class _ChatViewState extends State<ChatView> {
                 SizedBox(
                   width: 16.0,
                 ),
-                Text(
-                  '${widget.toUserName}',
-                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${widget.toUserName}',
+                      style:
+                          Theme.of(context).primaryTextTheme.headline2.copyWith(
+                                fontWeight: FontWeight.w300,
+                              ),
+                    ),
+                    Text(
+                      'Last seen : ${model.lastSeen}',
+                      style:
+                          Theme.of(context).primaryTextTheme.headline5.copyWith(
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12.0,
+                                color: Theme.of(context)
+                                    .primaryColorLight
+                                    .withOpacity(0.70),
+                              ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -117,6 +136,7 @@ class _ChatViewState extends State<ChatView> {
                                   controller: model.messageController,
                                   minLines: 1,
                                   maxLines: 4,
+                                  readOnly: model.isMessageSending,
                                   style: Theme.of(context)
                                       .primaryTextTheme
                                       .headline4,
@@ -124,10 +144,48 @@ class _ChatViewState extends State<ChatView> {
                                     model.scrollToLast();
                                   },
                                   decoration: InputDecoration(
+                                    suffixIcon: model.isMessageSending
+                                        ? Container(
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 1.5,
+                                              color: Theme.of(context)
+                                                  .primaryColorLight,
+                                            ),
+                                          )
+                                        : Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Container(
+                                                height: 40.0,
+                                                width: 1.0,
+                                                color: Theme.of(context)
+                                                    .primaryColorLight
+                                                    .withOpacity(0.60),
+                                              ),
+                                              IconButton(
+                                                onPressed: () async {
+                                                  await model.sendMessage();
+                                                  print(" here");
+                                                  WidgetsBinding.instance
+                                                      .addPostFrameCallback(
+                                                          (_) => model
+                                                              .scrollToLast());
+                                                },
+                                                icon: Icon(
+                                                  FeatherIcons.send,
+                                                  color: Theme.of(context)
+                                                      .primaryColorLight,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                     border: OutlineInputBorder(
                                       borderSide: BorderSide(
                                         color:
                                             Theme.of(context).primaryColorLight,
+                                        width: 0.50,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
@@ -135,6 +193,7 @@ class _ChatViewState extends State<ChatView> {
                                       borderSide: BorderSide(
                                         color:
                                             Theme.of(context).primaryColorLight,
+                                        width: 0.50,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
@@ -142,45 +201,12 @@ class _ChatViewState extends State<ChatView> {
                                       borderSide: BorderSide(
                                         color:
                                             Theme.of(context).primaryColorLight,
+                                        width: 0.50,
                                       ),
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
                                   ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Container(
-                                padding: EdgeInsets.all(2.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: Theme.of(context).primaryColorLight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(14.0),
-                                ),
-                                child: model.isMessageSending
-                                    ? Container(
-                                        child: CircularProgressIndicator(
-                                          strokeWidth: 1.5,
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                        ),
-                                      )
-                                    : IconButton(
-                                        onPressed: () async {
-                                          await model.sendMessage();
-                                          print(" here");
-                                          WidgetsBinding.instance
-                                              .addPostFrameCallback(
-                                                  (_) => model.scrollToLast());
-                                        },
-                                        icon: Icon(
-                                          FeatherIcons.send,
-                                          color: Theme.of(context)
-                                              .primaryColorLight,
-                                        ),
-                                      ),
                               ),
                             ],
                           ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/message.dart';
 import 'package:whatnext/services/authentication_service.dart';
@@ -24,8 +25,12 @@ class ChatViewModel extends BaseModel {
 
   String _toUserName = "";
   String get toUserName => _toUserName;
+
   String _roomName = "";
   String get roomName => _roomName;
+
+  String _lastSeen = "  ";
+  String get lastSeen => _lastSeen;
 
   bool _isMessageSending = false;
   bool get isMessageSending => _isMessageSending;
@@ -38,6 +43,7 @@ class ChatViewModel extends BaseModel {
     _toUserName = toUserName;
     await getChatRoomName(toUserName);
     await getMessages();
+    await getLastSeen(toUserName);
 
     setBusy(false);
 
@@ -45,7 +51,14 @@ class ChatViewModel extends BaseModel {
 
     _instance.collection('chatRooms').doc(roomName).snapshots().listen((event) {
       // print('event p : ${event.get('messages')} ');
-
+      String _s = event.get('lastSeen$_toUserName');
+      if (_s != 'never' && _s != null) {
+        _lastSeen = DateFormat('MMMd').format(DateTime.parse(_s)) +
+            ', ' +
+            DateFormat('Hm').format(DateTime.parse(_s));
+      } else {
+        _lastSeen = 'Never';
+      }
       _messages = [];
       for (var i in event.get('messages')) {
         _messages.add(Message.fromJson(i));
@@ -68,13 +81,38 @@ class ChatViewModel extends BaseModel {
   getMessages() async {
     _messages = await _firestoreService.getMessages(roomName: _roomName);
     // print(_messages);
+
+    //updating current user's last seen, as the messages are seen.
+    await _firestoreService.updateLastSeen(
+        roomName: _roomName,
+        userName: _authenticationService.currentUser.userName);
     setState();
   }
 
+  getLastSeen(String toUserName) async {
+    String _s = await _firestoreService.getLastSeen(
+        roomName: _roomName, userName: toUserName);
+    try {
+      if (_s != 'never' && _s != null) {
+        _lastSeen = DateFormat('MMMd').format(DateTime.parse(_s)) +
+            ', ' +
+            DateFormat('Hm').format(DateTime.parse(_s));
+      } else {
+        _lastSeen = 'Never';
+      }
+    } catch (e) {
+      print(" err: $e");
+    }
+  }
+
   scrollToLast() async {
-    print(" this called");
-    _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
+    try {
+      print(" this called");
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
+    } catch (e) {
+      print(" cannot scroll");
+    }
   }
 
   sendMessage() async {

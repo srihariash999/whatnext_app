@@ -41,7 +41,15 @@ class MessagesView extends StatelessWidget {
               : model.availableChatRooms.length > 0
                   ? RefreshIndicator(
                       onRefresh: model.init,
-                      child: ListView.builder(
+                      child: ListView.separated(
+                        separatorBuilder: (context, sepInd) {
+                          return Divider(
+                              color: Theme.of(context)
+                                  .primaryColorLight
+                                  .withOpacity(0.70),
+                              height: 0.10,
+                              thickness: 0.10);
+                        },
                         itemCount: model.availableChatRooms.length,
                         itemBuilder: (context, index) {
                           String _roomName = model.availableChatRooms[index];
@@ -63,7 +71,8 @@ class MessagesView extends StatelessWidget {
                                                 '${_roomName.replaceAll(model.currentUser, '')}'),
                                         builder: (context, snap) {
                                           if (snap.hasData) {
-                                            print(" data from snap : ${snap.data}");
+                                            print(
+                                                " data from snap : ${snap.data}");
                                             if (snap.data != null) {
                                               return CircleAvatar(
                                                 backgroundColor:
@@ -107,32 +116,72 @@ class MessagesView extends StatelessWidget {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'chat with ',
-                                                style: Theme.of(context)
-                                                    .primaryTextTheme
-                                                    .headline3
-                                                    .copyWith(
-                                                      fontSize: 18.0,
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                    ),
-                                              ),
-                                              Text(
-                                                '${_roomName.replaceAll(model.currentUser, '')}',
-                                                style: Theme.of(context)
-                                                    .primaryTextTheme
-                                                    .headline3
-                                                    .copyWith(
-                                                      fontSize: 18.0,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                              ),
-                                            ],
+                                          Text(
+                                            '${_roomName.replaceAll(model.currentUser, '')}',
+                                            style: Theme.of(context)
+                                                .primaryTextTheme
+                                                .headline3
+                                                .copyWith(
+                                                  fontSize: 20.0,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
                                           ),
+                                          FutureBuilder(
+                                              future:
+                                                  model.getMessageStatusOfRoom(
+                                                      _roomName,
+                                                      _roomName.replaceAll(
+                                                          model.currentUser,
+                                                          ''),
+                                                      model.currentUser),
+                                              builder: (context, snap) {
+                                                if (snap.hasData) {
+                                                  print(" snap : ${snap.data}");
+                                                  if (snap.data == true) {
+                                                    return Container(
+                                                      child: Row(
+                                                        children: [
+                                                          Icon(
+                                                            Icons.circle,
+                                                            color: Colors.red,
+                                                            size: 14.0,
+                                                          ),
+                                                          Text(
+                                                            ' New Messages ',
+                                                            style: Theme.of(
+                                                                    context)
+                                                                .primaryTextTheme
+                                                                .headline5
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      10.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
+                                                                ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return Container();
+                                                  }
+                                                } else {
+                                                  return Container(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.10,
+                                                    child:
+                                                        LinearProgressIndicator(
+                                                      color: Theme.of(context)
+                                                          .primaryColorLight,
+                                                      minHeight: 2.0,
+                                                    ),
+                                                  );
+                                                }
+                                              }),
                                         ],
                                       ),
                                     ),
