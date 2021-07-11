@@ -44,6 +44,8 @@ class MessagesViewModel extends BaseModel {
     setState();
   }
 
+  getProfilePic() async {}
+
   getFriendsWhoFollowBack() async {
     _canMessageUsers = await _firestoreService.getCommonFriends(
         user: _authenticationService.currentUser);

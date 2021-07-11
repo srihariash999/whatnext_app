@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:whatnext/constants/route_names.dart';
@@ -36,6 +39,14 @@ class ProfileViewModel extends BaseModel {
   TextEditingController _controller = TextEditingController();
   TextEditingController get controller => _controller;
 
+  bool _profileUpdating = false;
+  bool get profileUpdating => _profileUpdating;
+
+  File imageFile;
+
+  String _profilePicture;
+  String get profilePicture => _profilePicture;
+
   Future<void> onInit() async {
     setBusy(true);
     _feedIds = [];
@@ -64,8 +75,11 @@ class ProfileViewModel extends BaseModel {
     _navigationService.navigateTo(PersonProfileViewRoute, arguments: userName);
   }
 
-  fetchUser() {
+  fetchUser() async {
     _user = _authenticationService.currentUser;
+
+    _profilePicture =
+        await _firestoreService.getUserProfilePicture(_user.userName);
   }
 
   fetchUserWatchlist() {
@@ -102,10 +116,52 @@ class ProfileViewModel extends BaseModel {
     _navigationService.pop();
   }
 
+  pickImage() async {
+    PickedFile pickedImage =
+        await ImagePicker().getImage(source: ImageSource.gallery);
+    imageFile = pickedImage != null ? File(pickedImage.path) : null;
+
+    await cropImage();
+
+    setState();
+  }
+
+  cropImage() async {
+    File croppedFile = await ImageCropper.cropImage(
+        sourcePath: imageFile.path,
+        aspectRatioPresets: Platform.isAndroid
+            ? [
+                CropAspectRatioPreset.square,
+              ]
+            : [
+                CropAspectRatioPreset.square,
+              ],
+        compressQuality: 40,
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        iosUiSettings: IOSUiSettings(
+          title: 'Cropper',
+        ));
+    if (croppedFile != null) {
+      imageFile = croppedFile;
+    }
+  }
+
   changeName() async {
+    _profileUpdating = true;
+    setState();
     if (_controller.text.length > 0) {
+      String _url = await _firestoreService.uploadImage(file: imageFile);
+
       bool _upd = await _firestoreService.updateDisplayName(
-          userName: _user.userName, newName: _controller.text);
+        userName: _user.userName,
+        newName: _controller.text,
+        imgUrl: _url,
+      );
 
       if (_upd) {
         Fluttertoast.showToast(
@@ -140,5 +196,7 @@ class ProfileViewModel extends BaseModel {
           fontSize: 16.0);
       _controller.text = _user.fullName;
     }
+    _profileUpdating = false;
+    setState();
   }
 }

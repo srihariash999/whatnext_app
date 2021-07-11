@@ -6,6 +6,7 @@ class UserModel {
   String userName;
   String email;
   // String userRole;
+  String profilePicture;
   List<dynamic> followersList;
   List<dynamic> followingList;
   UserModel({
@@ -16,6 +17,7 @@ class UserModel {
     @required this.userName,
     @required this.followersList,
     @required this.followingList,
+    @required this.profilePicture,
   });
 
   UserModel.fromData(Map<String, dynamic> data)
@@ -24,6 +26,7 @@ class UserModel {
         fullName = data['fullName'],
         email = data['email'],
         // userRole = data['userRole'],
+        profilePicture = data['profilePicture'],
         followersList = data['followersList'],
         followingList = data['followingList'];
 
@@ -33,6 +36,7 @@ class UserModel {
       'fullName': fullName,
       'email': email,
       // 'userRole': userRole,
+      'profilePicture': profilePicture,
       'userName': userName,
       'followersList': followersList,
       'followingList': followingList

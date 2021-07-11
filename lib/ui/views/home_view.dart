@@ -700,16 +700,25 @@ class DrawerWidget extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    child: Icon(Icons.person),
-                                  ),
-                                ),
+                                model.user.profilePicture != null
+                                    ? Container(
+                                        alignment: Alignment.center,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          backgroundImage: NetworkImage(
+                                              model.user.profilePicture),
+                                        ),
+                                      )
+                                    : Container(
+                                        alignment: Alignment.center,
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          child: Icon(Icons.person),
+                                        ),
+                                      ),
                                 Container(
                                   child: Text(
-                                    model.userName,
+                                    '@ ' + model.user.userName,
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .headline4,

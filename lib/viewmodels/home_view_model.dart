@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:whatnext/constants/route_names.dart';
@@ -8,6 +7,7 @@ import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/feed.dart';
 import 'package:whatnext/models/movie.dart';
 import 'package:whatnext/models/tv_show.dart';
+import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
@@ -38,8 +38,8 @@ class HomeViewModel extends BaseModel {
 
   String _prevQuery = "";
 
-  String _userName = " ...  ";
-  String get userName => _userName;
+  UserModel _user;
+  UserModel get user => _user;
 
   List<Map<String, dynamic>> _searchResults = [];
   List<Map<String, dynamic>> get searchResults => _searchResults;
@@ -69,7 +69,8 @@ class HomeViewModel extends BaseModel {
     setBusy(true);
 
     _tabType = 'movie';
-    setBusy(false);
+
+    await getUserName();
     fetchPopularMovies();
     setState();
     fetchTopRatedMovies();
@@ -78,18 +79,16 @@ class HomeViewModel extends BaseModel {
     setState();
     fetchTopRatedTvShows();
     setState();
-
     _saveDeviceToken();
+    setBusy(false);
   }
 
-  getUserName() {
+  getUserName() async {
     try {
-      _userName = '@' + _authenticationService.currentUser.userName;
+      _user = _authenticationService.currentUser;
+
       setState();
-    } catch (e) {
-      _userName = '@ ---';
-      setState();
-    }
+    } catch (e) {}
   }
 
   switchTabs(String tabName) {

@@ -1,6 +1,7 @@
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
+import 'package:whatnext/services/firestore_service.dart';
 // import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/viewmodels/messages_view_model.dart';
 
@@ -56,17 +57,49 @@ class MessagesView extends StatelessWidget {
                                   Container(
                                     padding: EdgeInsets.all(12.0),
                                     alignment: Alignment.center,
-                                    child: CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColorLight,
-                                      radius: 18.0,
-                                      child: Icon(
-                                        Icons.person,
-                                        size: 18.0,
-                                        color:
-                                            Theme.of(context).backgroundColor,
-                                      ),
-                                    ),
+                                    child: FutureBuilder(
+                                        future: FirestoreService()
+                                            .getUserProfilePicture(
+                                                '${_roomName.replaceAll(model.currentUser, '')}'),
+                                        builder: (context, snap) {
+                                          if (snap.hasData) {
+                                            print(" data from snap : ${snap.data}");
+                                            if (snap.data != null) {
+                                              return CircleAvatar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColorLight,
+                                                radius: 18.0,
+                                                backgroundImage:
+                                                    NetworkImage(snap.data),
+                                              );
+                                            } else {
+                                              return CircleAvatar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColorLight,
+                                                radius: 18.0,
+                                                child: Icon(
+                                                  Icons.person,
+                                                  size: 18.0,
+                                                  color: Theme.of(context)
+                                                      .backgroundColor,
+                                                ),
+                                              );
+                                            }
+                                          } else
+                                            return CircleAvatar(
+                                              backgroundColor: Theme.of(context)
+                                                  .primaryColorLight,
+                                              radius: 18.0,
+                                              child: Icon(
+                                                Icons.person,
+                                                size: 18.0,
+                                                color: Theme.of(context)
+                                                    .backgroundColor,
+                                              ),
+                                            );
+                                        }),
                                   ),
                                   Expanded(
                                     child: Container(

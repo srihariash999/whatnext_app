@@ -417,7 +417,8 @@ class MovieDetailsView extends StatelessWidget {
                                         ),
                                       )),
                                 ),
-                                Container(
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[

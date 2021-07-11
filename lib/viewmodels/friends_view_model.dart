@@ -82,7 +82,8 @@ class FriendsViewModel extends BaseModel {
             // userRole: (data as Map)['userRole'],
             userName: (data as Map)['userName'],
             followersList: (data as Map)['followersList'],
-            followingList: (data as Map)['followingList']);
+            followingList: (data as Map)['followingList'],
+            profilePicture: (data as Map)['profilePicture']);
         FriendStatus f = getFriendStatus(u);
         _allUsers.add(u);
         _allUsersToDisplay.add(u);
@@ -90,14 +91,18 @@ class FriendsViewModel extends BaseModel {
         _usersFriendStatusToDisplay.add(f);
         setState();
       } else {
-        _authenticationService.setCurrentUser(UserModel(
+        _authenticationService.setCurrentUser(
+          UserModel(
             id: (data as Map)['id'],
             fullName: (data as Map)['fullName'],
             email: (data as Map)['email'],
             // userRole: (data as Map)['userRole'],
             userName: (data as Map)['userName'],
             followersList: (data as Map)['followersList'],
-            followingList: (data as Map)['followingList']));
+            followingList: (data as Map)['followingList'],
+            profilePicture: (data as Map)['profilePicture'],
+          ),
+        );
       }
     }
     // print(" users list : $usersList");

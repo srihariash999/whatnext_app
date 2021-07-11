@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
@@ -11,7 +14,7 @@ import 'package:whatnext/models/user.dart';
 class FirestoreService {
   //firestore instance to user multiple times.
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
-
+  final FirebaseStorage _storage = FirebaseStorage.instance;
   // Method to create a user object in the firestore collection 'users' after successful signup (through firebase auth).
   Future createUser(UserModel user) async {
     try {
@@ -45,6 +48,13 @@ class FirestoreService {
     } catch (e) {
       return e.message;
     }
+  }
+
+  Future<String> getUserProfilePicture(String userName) async {
+    print("username : #$userName");
+    var userData = await _instance.collection('users').doc(userName).get();
+    print("user data: ${userData.data()}");
+    return userData.data()['profilePicture'] ?? null;
   }
 
   // Method to add an item (movie/tv) to a user's watchlist in firestore collection.
@@ -277,7 +287,7 @@ class FirestoreService {
 
   Future<List> getUsersPosts({@required userName}) async {
     var doc = await _instance.collection("users").doc(userName).get();
-    List s = doc.data()['feedPosts'];
+    List s = doc.data()['feedPosts'] ?? [];
     return s.reversed.toList();
   }
 
@@ -311,12 +321,13 @@ class FirestoreService {
   }
 
   Future<bool> updateDisplayName(
-      {@required String userName, @required String newName}) async {
+      {@required String userName,
+      @required String newName,
+      @required imgUrl}) async {
     try {
-      await _instance
-          .collection('users')
-          .doc(userName)
-          .update({'fullName': newName});
+      await _instance.collection('users').doc(userName).update(
+        {'fullName': newName, 'profilePicture': imgUrl},
+      );
 
       return true;
     } catch (e) {
@@ -453,7 +464,21 @@ class FirestoreService {
         .collection('chatRooms')
         .doc(roomName)
         .update({"messages": messages});
+  }
 
-   
+  Future uploadImage({
+    @required File file,
+  }) async {
+    try {
+      String fileName = basename(file.path);
+      Reference reference = _storage.ref().child("productImages/$fileName");
+      UploadTask uploadTask = reference.putFile(file);
+      String imageUrl =
+          await uploadTask.then((res) async => res.ref.getDownloadURL());
+      print(imageUrl);
+      return imageUrl;
+    } catch (e) {
+      return null;
+    }
   }
 }

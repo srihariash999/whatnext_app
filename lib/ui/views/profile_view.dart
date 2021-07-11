@@ -5,6 +5,7 @@ import 'package:whatnext/models/feed.dart';
 
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
+import 'package:whatnext/ui/views/profile_edit_view.dart';
 import 'package:whatnext/ui/widgets/feed_list_card.dart';
 // import 'package:whatnext/locator.dart';
 // import 'package:whatnext/services/snackbar_service.dart';
@@ -41,14 +42,30 @@ class ProfileView extends StatelessWidget {
                       children: [
                         Container(
                           alignment: Alignment.center,
-                          child: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 36.0,
-                            child: Icon(
-                              Icons.person,
-                              size: 38.0,
-                            ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: model.profilePicture != null
+                                ? Border()
+                                : Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
+                          child: model.profilePicture != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Image.network(
+                                    model.profilePicture,
+                                    fit: BoxFit.cover,
+                                    height: 75.0,
+                                    width: 75.0,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 38.0,
+                                  ),
+                                ),
                         ),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,151 +85,14 @@ class ProfileView extends StatelessWidget {
                                   ),
                                 ),
                                 IconButton(
-                                  onPressed: () {
-                                    _scaffoldKey.currentState.showBottomSheet(
-                                      (context) => Container(
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            width: 0.5,
-                                            color:
-                                                Colors.black.withOpacity(0.30),
-                                          ),
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20.0),
-                                            topRight: Radius.circular(20.0),
-                                          ),
-                                        ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            verticalSpaceSmall,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Container(
-                                                  height: 4.0,
-                                                  width: 28.0,
-                                                  color: Colors.black54,
-                                                )
-                                              ],
-                                            ),
-                                            verticalSpaceLarge,
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 32.0,
-                                                      vertical: 12.0),
-                                              child: TextField(
-                                                controller: model.controller,
-                                                maxLines: 1,
-                                                style: TextStyle(
-                                                  color: Colors.black
-                                                      .withOpacity(0.70),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontSize: 18.0,
-                                                ),
-                                                decoration: InputDecoration(
-                                                    fillColor: Colors.white
-                                                        .withOpacity(0.8),
-                                                    filled: true,
-                                                    border: OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                    ),
-                                                    enabledBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                    ),
-                                                    focusedBorder:
-                                                        OutlineInputBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                    ),
-                                                    hintText:
-                                                        "Type something here",
-                                                    hintStyle: TextStyle(
-                                                      color: Colors.black
-                                                          .withOpacity(0.40),
-                                                      fontSize: 20.0,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    )),
-                                              ),
-                                            ),
-                                            verticalSpaceMedium,
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                TextButton(
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors
-                                                                .grey[300]),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 24.0,
-                                                            right: 24.0,
-                                                            top: 8.0,
-                                                            bottom: 8.0),
-                                                    child: Text(
-                                                      "   Cancel   ",
-                                                      style: TextStyle(
-                                                        color: Colors.black
-                                                            .withOpacity(0.70),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    model.canceldelete();
-                                                  },
-                                                ),
-                                                TextButton(
-                                                  style: ButtonStyle(
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all(Colors
-                                                                .blue[300]),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 24.0,
-                                                            right: 24.0,
-                                                            top: 8.0,
-                                                            bottom: 8.0),
-                                                    child: Text(
-                                                      "Update Name",
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    model.changeName();
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                            verticalSpaceLarge,
-                                          ],
-                                        ),
-                                      ),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(22.0),
-                                          topRight: Radius.circular(22.0),
-                                        ),
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ProfileEditView(),
                                       ),
                                     );
+                                    model.onInit();
                                   },
                                   icon: Icon(
                                     FeatherIcons.edit2,
@@ -590,8 +470,11 @@ class ProfileView extends StatelessWidget {
                                                             child: Text(
                                                               "      Cancel     ",
                                                               style: TextStyle(
-                                                                  color: Colors
-                                                                      .white),
+                                                                color: Colors
+                                                                    .black
+                                                                    .withOpacity(
+                                                                        0.70),
+                                                              ),
                                                             ),
                                                           ),
                                                           onPressed: () {

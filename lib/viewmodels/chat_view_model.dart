@@ -78,14 +78,14 @@ class ChatViewModel extends BaseModel {
   }
 
   sendMessage() async {
-    if (!isMessageSending && _messageController.text.length > 1) {
+    if (!isMessageSending && _messageController.text.trim().length > 1) {
       _isMessageSending = true;
       setState();
       await _firestoreService.sendMessage(
         fromuser: _authenticationService.currentUser.userName,
         toUser: _toUserName,
         roomName: roomName,
-        message: _messageController.text,
+        message: _messageController.text.trim(),
       );
       // _messages.add(Message(
       //   from: _authenticationService.currentUser.userName,
@@ -94,7 +94,7 @@ class ChatViewModel extends BaseModel {
       //   message: _messageController.text,
       // ));
       _isMessageSending = false;
-      String msg = _messageController.text;
+      String msg = _messageController.text.trim();
       _messageController.clear();
 
       setState();
@@ -111,6 +111,11 @@ class ChatViewModel extends BaseModel {
             token: res['token'],
             body: "${_authenticationService.currentUser.userName} : $msg");
       }
+    } else {
+      print(" message ignored: ${_messageController.text}");
+      _messageController.clear();
+
+      setState();
     }
   }
 }

@@ -84,6 +84,7 @@ class AuthenticationService {
           email: email,
           userName: userName,
           fullName: fullName,
+          profilePicture: null,
           // userRole: role,
           followingList: [],
           followersList: [],

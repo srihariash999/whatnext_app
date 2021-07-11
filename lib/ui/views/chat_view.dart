@@ -1,8 +1,10 @@
 import 'package:chat_bubbles/bubbles/bubble_special_one.dart';
 import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/message.dart';
+import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/viewmodels/chat_view_model.dart';
 
 class ChatView extends StatefulWidget {
@@ -22,9 +24,65 @@ class _ChatViewState extends State<ChatView> {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(
-              '${widget.toUserName}',
-              style: Theme.of(context).primaryTextTheme.headline3,
+            title: Row(
+              children: [
+                FutureBuilder(
+                    future: FirestoreService()
+                        .getUserProfilePicture(widget.toUserName),
+                    builder: (context, snap) {
+                      if (snap.hasData) {
+                        String pic = snap.data;
+                        if (pic != null) {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorLight,
+                              radius: 20.0,
+                              backgroundImage: NetworkImage(pic),
+                            ),
+                          );
+                        } else {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorLight,
+                              radius: 20.0,
+                              child: Icon(
+                                Icons.person,
+                                size: 20.0,
+                                color: Theme.of(context).backgroundColor,
+                              ),
+                            ),
+                          );
+                        }
+                      } else {
+                        return Container(
+                          alignment: Alignment.center,
+                          child: CircleAvatar(
+                            backgroundColor:
+                                Theme.of(context).primaryColorLight,
+                            radius: 20.0,
+                            child: Icon(
+                              Icons.person,
+                              size: 20.0,
+                              color: Theme.of(context).backgroundColor,
+                            ),
+                          ),
+                        );
+                      }
+                    }),
+                SizedBox(
+                  width: 16.0,
+                ),
+                Text(
+                  '${widget.toUserName}',
+                  style: Theme.of(context).primaryTextTheme.headline2.copyWith(
+                        fontWeight: FontWeight.w300,
+                      ),
+                ),
+              ],
             ),
             elevation: 0.0,
           ),
@@ -43,13 +101,9 @@ class _ChatViewState extends State<ChatView> {
                             itemCount: model.messages.length,
                             itemBuilder: (context, int index) {
                               Message _message = model.messages[index];
-                              return Container(
-                                margin: EdgeInsets.symmetric(vertical: 6.0),
-                                child: BubbleSpecialOne(
-                                  text: _message.message,
-                                  color: Color(0xFFE8E8EE),
-                                  isSender: _message.to == model.toUserName,
-                                ),
+                              return ChatAndDateWidget(
+                                message: _message,
+                                model: model,
                               );
                             },
                           ),
@@ -137,6 +191,83 @@ class _ChatViewState extends State<ChatView> {
                 ),
         );
       },
+    );
+  }
+}
+
+class ChatAndDateWidget extends StatelessWidget {
+  const ChatAndDateWidget({
+    Key key,
+    @required Message message,
+    @required this.model,
+  })  : _message = message,
+        super(key: key);
+
+  final Message _message;
+  final ChatViewModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 6.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: _message.to == model.toUserName
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
+        children: [
+          _message.to != model.toUserName
+              ? Container()
+              : Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 5.0),
+                      child: Text(
+                        "${DateFormat('MMMd').format(
+                          DateTime.parse(_message.addedOn),
+                        )}, ${DateFormat('Hm').format(
+                          DateTime.parse(_message.addedOn),
+                        )}",
+                        style: TextStyle(
+                          fontSize: 9.0,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context)
+                              .primaryColorLight
+                              .withOpacity(0.50),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+          BubbleSpecialOne(
+            text: _message.message,
+            color: Color(0xFFE8E8EE),
+            isSender: _message.to == model.toUserName,
+          ),
+          _message.to == model.toUserName
+              ? Container()
+              : Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 5.0),
+                    child: Text(
+                      "${DateFormat('MMMd').format(
+                        DateTime.parse(_message.addedOn),
+                      )}, ${DateFormat('Hm').format(
+                        DateTime.parse(_message.addedOn),
+                      )}",
+                      style: TextStyle(
+                        fontSize: 9.0,
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context)
+                            .primaryColorLight
+                            .withOpacity(0.50),
+                      ),
+                    ),
+                  ),
+                ),
+        ],
+      ),
     );
   }
 }

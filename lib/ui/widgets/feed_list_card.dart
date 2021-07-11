@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:whatnext/models/feed.dart';
+import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
@@ -34,18 +35,53 @@ class FeedListCardWidget extends StatelessWidget {
                   SizedBox(
                     width: 10.0,
                   ),
-                  Container(
-                    alignment: Alignment.center,
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColorLight,
-                      radius: 24.0,
-                      child: Icon(
-                        Icons.person,
-                        size: 24.0,
-                        color: Theme.of(context).backgroundColor,
-                      ),
-                    ),
-                  ),
+                  FutureBuilder(
+                      future: FirestoreService()
+                          .getUserProfilePicture(feed.userName),
+                      builder: (context, snap) {
+                        if (snap.hasData) {
+                          String pic = snap.data;
+                          if (pic != null) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                radius: 24.0,
+                                backgroundImage: NetworkImage(pic),
+                              ),
+                            );
+                          } else {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: CircleAvatar(
+                                backgroundColor:
+                                    Theme.of(context).primaryColorLight,
+                                radius: 24.0,
+                                child: Icon(
+                                  Icons.person,
+                                  size: 24.0,
+                                  color: Theme.of(context).backgroundColor,
+                                ),
+                              ),
+                            );
+                          }
+                        } else {
+                          return Container(
+                            alignment: Alignment.center,
+                            child: CircleAvatar(
+                              backgroundColor:
+                                  Theme.of(context).primaryColorLight,
+                              radius: 24.0,
+                              child: Icon(
+                                Icons.person,
+                                size: 24.0,
+                                color: Theme.of(context).backgroundColor,
+                              ),
+                            ),
+                          );
+                        }
+                      }),
                   SizedBox(
                     width: 16.0,
                   ),

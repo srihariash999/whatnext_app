@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+// import 'package:fluttertoast/fluttertoast.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/services/authentication_service.dart';
@@ -25,14 +25,14 @@ class LoginViewModel extends BaseModel {
 
     if (result is bool) {
       if (result) {
-        Fluttertoast.showToast(
-            msg: "Login succesful!",
-            toastLength: Toast.LENGTH_SHORT,
-            gravity: ToastGravity.BOTTOM,
-            timeInSecForIosWeb: 1,
-            backgroundColor: Colors.black.withOpacity(0.70),
-            textColor: Colors.white,
-            fontSize: 16.0);
+        // Fluttertoast.showToast(
+        //     msg: "Login succesful!",
+        //     toastLength: Toast.LENGTH_SHORT,
+        //     gravity: ToastGravity.BOTTOM_RIGHT,
+        //     timeInSecForIosWeb: 1,
+        //     backgroundColor: Colors.black.withOpacity(0.70),
+        //     textColor: Colors.white,
+        //     fontSize: 16.0);
         _navigationService.navigateReplacement(StartupViewRoute);
       } else {
         await _dialogService.showDialog(

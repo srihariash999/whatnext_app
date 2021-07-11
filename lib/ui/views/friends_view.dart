@@ -81,74 +81,113 @@ class FriendsView extends StatelessWidget {
                       ),
                       verticalSpaceMedium,
                       Expanded(
-                        child: ListView(
-                            children: model.allUsers.map((UserModel u) {
-                          int ind = model.allUsers.indexOf(u);
-                          FriendStatus fri = model.usersFriendStatus[ind];
-                          String _toShow = " ... ";
-                          if (fri == FriendStatus.available) {
-                            _toShow = "Follow";
-                          } else {
-                            _toShow = "Following";
-                          }
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              left: 16.0,
-                              right: 16.0,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                model.navigateToPeopleProfileView(u.userName);
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).splashColor,
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                margin: EdgeInsets.all(4.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(12.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        flex: 4,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${u.fullName}',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .bodyText1,
-                                            ),
-                                            Text(
-                                              '@${u.userName}',
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .bodyText2,
-                                            ),
-                                          ],
+                        child: ListView.builder(
+                          itemCount: model.allUsers.length,
+                          itemBuilder: (context, index) {
+                            UserModel u = model.allUsers[index];
+                            int ind = model.allUsers.indexOf(u);
+                            FriendStatus fri = model.usersFriendStatus[ind];
+                            String _toShow = " ... ";
+                            if (fri == FriendStatus.available) {
+                              _toShow = "Follow";
+                            } else {
+                              _toShow = "Following";
+                            }
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                left: 16.0,
+                                right: 16.0,
+                              ),
+                              child: InkWell(
+                                onTap: () {
+                                  model.navigateToPeopleProfileView(u.userName);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).splashColor,
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  margin: EdgeInsets.all(4.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(12.0),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          flex: 5,
+                                          child: Row(
+                                            children: [
+                                              u.profilePicture != null
+                                                  ? Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        backgroundImage:
+                                                            NetworkImage(u
+                                                                .profilePicture),
+                                                      ),
+                                                    )
+                                                  : Container(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: CircleAvatar(
+                                                        backgroundColor:
+                                                            Colors.white,
+                                                        child:
+                                                            Icon(Icons.person),
+                                                      ),
+                                                    ),
+                                              SizedBox(
+                                                width: 6.0,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      '${u.fullName}',
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: Theme.of(context)
+                                                          .primaryTextTheme
+                                                          .headline4
+                                                          .copyWith(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                          ),
+                                                    ),
+                                                    Text(
+                                                      '@${u.userName}',
+                                                      style: Theme.of(context)
+                                                          .primaryTextTheme
+                                                          .headline5,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      Expanded(
-                                        flex: 2,
-                                        child: FriendStatusWidget(
-                                            u: u,
-                                            fri: fri,
-                                            model: model,
-                                            toShow: _toShow),
-                                      ),
-                                    ],
+                                        Expanded(
+                                          flex: 2,
+                                          child: FriendStatusWidget(
+                                              u: u,
+                                              fri: fri,
+                                              model: model,
+                                              toShow: _toShow),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          );
-                        }).toList()),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),

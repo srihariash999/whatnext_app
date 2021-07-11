@@ -29,17 +29,33 @@ class PeopleProfileView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Container(
-                        alignment: Alignment.center,
-                        child: CircleAvatar(
-                          radius: 28.0,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.person,
-                            size: 28.0,
+                     Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: model.person.profilePicture != null
+                                ? Border()
+                                : Border.all(),
+                            borderRadius: BorderRadius.circular(12.0),
                           ),
+                          child: model.person.profilePicture != null
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  child: Image.network(
+                                    model.person.profilePicture,
+                                    fit: BoxFit.cover,
+                                    height: 75.0,
+                                    width: 75.0,
+                                  ),
+                                )
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 38.0,
+                                  ),
+                                ),
                         ),
-                      ),
                       Column(
                         children: [
                           Container(
