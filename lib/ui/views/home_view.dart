@@ -165,6 +165,9 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
         ),
         actions: [
           IconButton(
+              onPressed: widget.model.navigateToWatchListWithoutPopping,
+              icon: Icon(Icons.movie_creation_outlined)),
+          IconButton(
             icon:
                 Icon(Icons.search, color: Theme.of(context).primaryColorLight),
             onPressed: () => showSearch(
@@ -186,15 +189,33 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
         ],
         elevation: 0.0,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Theme.of(context).primaryColorLight,
-        onPressed: () {
-          widget.model.navigateToNewPost();
-        },
-        child: Icon(
-          Icons.post_add_outlined,
-          color: Theme.of(context).backgroundColor,
-        ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColorLight,
+            onPressed: () {
+              widget.model.navigateToMessagesWithoutPopping();
+            },
+            child: Icon(
+              FeatherIcons.messageSquare,
+              color: Theme.of(context).backgroundColor,
+            ),
+          ),
+          SizedBox(
+            height: 8.0,
+          ),
+          FloatingActionButton(
+            backgroundColor: Theme.of(context).primaryColorLight,
+            onPressed: () {
+              widget.model.navigateToNewPost();
+            },
+            child: Icon(
+              Icons.post_add_outlined,
+              color: Theme.of(context).backgroundColor,
+            ),
+          )
+        ],
       ),
       drawer: DrawerWidget(),
       body: Container(
@@ -321,7 +342,7 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
 }
 
 class ExplorePageWidget extends StatelessWidget {
-  final model;
+  final HomeViewModel model;
   const ExplorePageWidget({
     Key key,
     @required this.model,
@@ -342,11 +363,19 @@ class ExplorePageWidget extends StatelessWidget {
           IconButton(
             icon:
                 Icon(Icons.search, color: Theme.of(context).primaryColorLight),
-            onPressed: () => showSearch(
-              context: context,
-              delegate: CustomSearchDelegate(),
-            ),
-          )
+            onPressed: () =>
+                showSearch(context: context, delegate: CustomSearchDelegate()),
+          ),
+          IconButton(
+            onPressed: model.navigateToWatchListWithoutPopping,
+            icon: Icon(Icons.movie_creation_outlined,
+                color: Theme.of(context).primaryColorLight),
+          ),
+          IconButton(
+            onPressed: model.navigateToMessagesWithoutPopping,
+            icon: Icon(FeatherIcons.messageSquare,
+                size: 22.0, color: Theme.of(context).primaryColorLight),
+          ),
         ],
         elevation: 0.0,
       ),

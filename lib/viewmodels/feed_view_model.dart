@@ -83,6 +83,14 @@ class FeedViewModel extends BaseModel {
     getFeed();
   }
 
+  navigateToWatchListWithoutPopping() {
+    _navigationService.navigateTo(WatchListViewRoute);
+  }
+
+  navigateToMessagesWithoutPopping() {
+    _navigationService.navigateTo(MessagesViewRoute);
+  }
+
   getFeed() async {
     setBusy(true);
     _feedList.clear();

@@ -367,19 +367,14 @@ class ProfileView extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text(
-                                              people['fullName'],
-                                              style: Theme.of(context)
-                                                  .primaryTextTheme
-                                                  .headline4
-                                                  .copyWith(
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                            ),
                                             Text('@' + people['userName'],
                                                 style: Theme.of(context)
                                                     .primaryTextTheme
-                                                    .headline4),
+                                                    .headline4
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                    )),
                                           ],
                                         ),
                                       ],

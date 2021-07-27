@@ -15,6 +15,15 @@ class WatchlistViewModel extends BaseModel {
   List _currentUserWatchlistTemp = [];
   List get currentUserWatchlist => _currentUserWatchlistTemp;
 
+  int _watchedCount = 0;
+  int get watchedCount => _watchedCount;
+
+  int _watchingCount = 0;
+  int get watchingCount => _watchingCount;
+
+  int _wantToWatchCount = 0;
+  int get wantToWatchCount => _wantToWatchCount;
+
   onMovieSelect(int id, String mediaType) async {
     if (mediaType == "movie") {
       var n = await _navigationService.navigateTo(MovieDetailsViewRoute,
@@ -55,12 +64,21 @@ class WatchlistViewModel extends BaseModel {
 
   Future<void> onInit() async {
     setBusy(true);
-
+    _watchedCount = _watchingCount = _wantToWatchCount = 0;
     await _authenticationService.populateCurrentUserWatchList(
         _authenticationService.currentUser.userName);
     _currentUserWatchlist =
         _authenticationService.currentUserWatchList.reversed.toList();
     _currentUserWatchlistTemp = _currentUserWatchlist;
+    for (var i in _currentUserWatchlist) {
+      if (i['status'].toString() == "Watching") {
+        _watchingCount += 1;
+      } else if (i['status'].toString() == "Watched") {
+        _watchedCount += 1;
+      } else {
+        _wantToWatchCount += 1;
+      }
+    }
     print(" cuw : $_currentUserWatchlist");
     setBusy(false);
   }
