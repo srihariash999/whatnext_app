@@ -156,6 +156,7 @@ class MessagesViewModel extends BaseModel {
                                         .primaryTextTheme
                                         .headline3
                                         .copyWith(
+                                          color: Colors.black,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w400,
                                         ),

@@ -122,6 +122,9 @@ class HomeViewModel extends BaseModel {
     _navigationService.pop();
     _navigationService.navigateTo(MessagesViewRoute);
   }
+  navigateToMessagesWithoutPopping() {
+    _navigationService.navigateTo(MessagesViewRoute);
+  }
 
   navigateToProfile() {
     _navigationService.pop();
@@ -130,6 +133,10 @@ class HomeViewModel extends BaseModel {
 
   navigateToWatchList() {
     _navigationService.pop();
+    _navigationService.navigateTo(WatchListViewRoute);
+  }
+
+  navigateToWatchListWithoutPopping() {
     _navigationService.navigateTo(WatchListViewRoute);
   }
 

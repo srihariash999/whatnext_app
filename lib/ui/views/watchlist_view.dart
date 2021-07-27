@@ -15,13 +15,8 @@ class WatchlistView extends StatelessWidget {
 
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(top: 16.0, right: 8.0),
-              child: Text("Your Watchlist",
-                  style: Theme.of(context).primaryTextTheme.headline1),
-            )
-          ],
+          title: Text("Your Watchlist",
+              style: Theme.of(context).primaryTextTheme.headline1),
           elevation: 0.0,
         ),
         body: Column(
@@ -30,69 +25,101 @@ class WatchlistView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  children: [
-                    Text("Want to watch",
-                        style: Theme.of(context).primaryTextTheme.headline5),
-                    horizontalSpaceSmall,
-                    Container(
-                      height: 16.0,
-                      width: 16.0,
-                      decoration: BoxDecoration(
-                        color: Colors.red[600],
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    )
-                  ],
+                InkWell(
+                  onTap: () {
+                    model.onMovieFilter("Want to watch");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.red[600],
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    padding: EdgeInsets.all(6.0),
+                    child: Row(
+                      children: [
+                        Text("Want to watch",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                        Text(" : ${model.wantToWatchCount}",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                      ],
+                    ),
+                  ),
                 ),
-                Row(
-                  children: [
-                    Text("Watching",
-                        style: Theme.of(context).primaryTextTheme.headline5),
-                    horizontalSpaceSmall,
-                    Container(
-                      height: 16.0,
-                      width: 16.0,
-                      decoration: BoxDecoration(
-                        color: Colors.yellow[600],
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    )
-                  ],
+                horizontalSpaceSmall,
+                InkWell(
+                  onTap: () {
+                    model.onMovieFilter("Watching");
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.yellow[600],
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    padding: EdgeInsets.all(6.0),
+                    child: Row(
+                      children: [
+                        Text("Watching",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                        Text(" : ${model.watchingCount}",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                      ],
+                    ),
+                  ),
                 ),
-                Row(
-                  children: [
-                    Text("Watched",
-                        style: Theme.of(context).primaryTextTheme.headline5),
-                    horizontalSpaceSmall,
-                    Container(
-                      height: 16.0,
-                      width: 16.0,
-                      decoration: BoxDecoration(
-                        color: Colors.green[600],
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
-                    )
-                  ],
-                ),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: InkWell(
-                    onTap: () {
-                      _reviewsFilterDailogue(context: context, model: model);
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 8.0,
-                        bottom: 8.0,
-                        left: 8.0,
-                        right: 12.0,
-                      ),
-                      child: Icon(
-                        Icons.sort,
-                        size: 24,
-                        color: Theme.of(context).primaryColorLight,
-                      ),
+                horizontalSpaceSmall,
+                InkWell(
+                  onTap: () {
+                    model.onMovieFilter("Watched");
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(6.0),
+                    decoration: BoxDecoration(
+                      color: Colors.green[600],
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    child: Row(
+                      children: [
+                        Text("Watched",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                        Text(" : ${model.watchedCount}",
+                            style: Theme.of(context)
+                                .primaryTextTheme
+                                .headline5
+                                .copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.black,
+                                )),
+                      ],
                     ),
                   ),
                 ),
@@ -143,144 +170,5 @@ class WatchlistView extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  _reviewsFilterDailogue({
-    BuildContext context,
-    WatchlistViewModel model,
-  }) {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            backgroundColor: Colors.white,
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Sort movies by',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black.withOpacity(0.70),
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                Column(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        model.onMovieFilter("Want to watch");
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Want to watch",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline5
-                                  .copyWith(
-                                    color: Colors.black.withOpacity(0.7),
-                                  ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 50.0),
-                              child: Container(
-                                height: 16.0,
-                                width: 16.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.red[600],
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        model.onMovieFilter("Watching");
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Watching",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline5
-                                  .copyWith(
-                                    color: Colors.black.withOpacity(0.7),
-                                  ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 50.0),
-                              child: Container(
-                                height: 16.0,
-                                width: 16.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow[600],
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        model.onMovieFilter("Watched");
-                        Navigator.of(context).pop();
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              "Watched",
-                              style: Theme.of(context)
-                                  .primaryTextTheme
-                                  .headline5
-                                  .copyWith(
-                                    color: Colors.black.withOpacity(0.7),
-                                  ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(right: 50.0),
-                              child: Container(
-                                height: 16.0,
-                                width: 16.0,
-                                decoration: BoxDecoration(
-                                  color: Colors.green[600],
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          );
-        });
   }
 }
