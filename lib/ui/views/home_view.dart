@@ -1,11 +1,9 @@
 import 'package:feather_icons/feather_icons.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:tcard/tcard.dart';
-
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/feed_card.dart';
 import 'package:whatnext/ui/widgets/feed_list_card.dart';

@@ -15,8 +15,8 @@ class ThemesViewModel extends BaseModel {
   onInit() async {
     setBusy(true);
     await getSavedTheme();
-    print(_td);
-    print(" something");
+    // print(_td);
+    // print(" something");
     setBusy(false);
   }
 
@@ -24,9 +24,9 @@ class ThemesViewModel extends BaseModel {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _themeIndex = _prefs.getInt('theme');
     setState();
-    print(" this is theme indexz: $_themeIndex");
+    // print(" this is theme indexz: $_themeIndex");
     _td = getThemes().elementAt(_prefs.getInt('theme') ?? 0);
-    print(" this is td : $_td");
+    // print(" this is td : $_td");
     setState();
   }
 

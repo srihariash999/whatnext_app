@@ -1,13 +1,11 @@
-import 'dart:ui';
-import 'package:lottie/lottie.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/tv_credit.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-
 import 'package:whatnext/ui/widgets/expansion_list.dart';
 import 'package:whatnext/ui/widgets/genre_card.dart';
 import 'package:whatnext/ui/widgets/tv_shows_list_widget.dart';

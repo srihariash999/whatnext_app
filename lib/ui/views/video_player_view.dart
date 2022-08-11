@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
-import 'package:flutter/cupertino.dart';
 
 /// Homepage
 class VideoPlayerView extends StatefulWidget {
