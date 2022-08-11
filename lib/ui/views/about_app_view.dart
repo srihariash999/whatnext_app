@@ -2,15 +2,15 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/about__app_view_model.dart';
+import 'package:whatnext/providers/about_app_provider.dart';
 
 // import 'package:whatnext/ui/widgets/expansion_list.dart';
 
 class AboutAppView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<AboutAppViewModel>.withConsumer(
-      viewModelBuilder: () => AboutAppViewModel(),
+    return ViewModelProvider<AboutAppProvider>.withConsumer(
+      viewModelBuilder: () => AboutAppProvider(),
       onModelReady: (model) => model.requestAboutApp(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
@@ -152,8 +152,7 @@ class AboutAppView extends StatelessWidget {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            model.onGithubTap(
-                                                contributor.github);
+                                            model.onUrlTap(contributor.github);
                                           },
                                           icon: Icon(
                                             FeatherIcons.github,
@@ -164,8 +163,7 @@ class AboutAppView extends StatelessWidget {
                                         ),
                                         IconButton(
                                           onPressed: () {
-                                            model.onTwitterTap(
-                                                contributor.twitter);
+                                            model.onUrlTap(contributor.twitter);
                                           },
                                           icon: Icon(FeatherIcons.twitter),
                                           color: Theme.of(context)
@@ -188,7 +186,7 @@ class AboutAppView extends StatelessWidget {
                       ),
                       InkWell(
                         onTap: () {
-                          model.onGithubTap(model.aboutApp.githubLink);
+                          model.onUrlTap(model.aboutApp.githubLink);
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,

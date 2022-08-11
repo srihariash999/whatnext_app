@@ -10,9 +10,9 @@ import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class ProfileViewModel extends BaseModel {
+class ProfileProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 

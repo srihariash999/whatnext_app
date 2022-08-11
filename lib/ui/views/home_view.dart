@@ -9,10 +9,10 @@ import 'package:whatnext/ui/widgets/feed_card.dart';
 import 'package:whatnext/ui/widgets/feed_list_card.dart';
 import 'package:whatnext/ui/widgets/movies_list_widget.dart';
 import 'package:whatnext/ui/widgets/tv_shows_list_widget.dart';
-import 'package:whatnext/viewmodels/feed_view_model.dart';
+import 'package:whatnext/providers/feed_provider.dart';
 // import 'package:whatnext/ui/views/movie_details_view.dart';
 
-import 'package:whatnext/viewmodels/home_view_model.dart';
+import 'package:whatnext/providers/home_provider.dart';
 
 import '../shared/ui_helpers.dart';
 
@@ -26,8 +26,8 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<HomeViewModel>.withConsumer(
-      viewModelBuilder: () => HomeViewModel(),
+    return ViewModelProvider<HomeProvider>.withConsumer(
+      viewModelBuilder: () => HomeProvider(),
       onModelReady: (model) => model.onInit(),
       builder: (context, model, child) {
         if (model.busy) {
@@ -41,8 +41,8 @@ class _HomeViewState extends State<HomeView> {
             ),
           );
         } else {
-          return ViewModelProvider<FeedViewModel>.withConsumer(
-            viewModelBuilder: () => FeedViewModel(),
+          return ViewModelProvider<FeedProvider>.withConsumer(
+            viewModelBuilder: () => FeedProvider(),
             onModelReady: (model) => model.onInit(),
             builder: (context, model2, child) {
               if (model2.busy) {
@@ -135,7 +135,7 @@ class _HomeViewState extends State<HomeView> {
 }
 
 class FeedPageWidget extends StatefulWidget {
-  final FeedViewModel model;
+  final FeedProvider model;
   const FeedPageWidget({
     Key key,
     @required this.model,
@@ -340,7 +340,7 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
 }
 
 class ExplorePageWidget extends StatelessWidget {
-  final HomeViewModel model;
+  final HomeProvider model;
   const ExplorePageWidget({
     Key key,
     @required this.model,
@@ -703,8 +703,8 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<HomeViewModel>.withConsumer(
-        viewModelBuilder: () => HomeViewModel(),
+    return ViewModelProvider<HomeProvider>.withConsumer(
+        viewModelBuilder: () => HomeProvider(),
         onModelReady: (model) => model.getUserName(),
         builder: (context, model, child) {
           return SafeArea(
@@ -987,8 +987,8 @@ class CustomSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ViewModelProvider<HomeViewModel>.withConsumer(
-        viewModelBuilder: () => HomeViewModel(),
+    return ViewModelProvider<HomeProvider>.withConsumer(
+        viewModelBuilder: () => HomeProvider(),
         builder: (context, model, child) {
           if (query.length > 1) {
             model.fetchSearchReults(query);

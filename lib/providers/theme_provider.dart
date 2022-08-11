@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatnext/ui/themes/themes.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class ThemesViewModel extends BaseModel {
+class ThemesProvider extends BaseProvider {
   ThemeData _td;
 
   ThemeData get theme => _td;

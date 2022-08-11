@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/message.dart';
 import 'package:whatnext/services/firestore_service.dart';
-import 'package:whatnext/viewmodels/chat_view_model.dart';
+import 'package:whatnext/providers/chat_provider.dart';
 import 'package:whatnext/locator.dart';
 
 class ChatView extends StatefulWidget {
@@ -19,9 +19,9 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<ChatViewModel>.withConsumer(
+    return ViewModelProvider<ChatProvider>.withConsumer(
       disposeViewModel: false,
-      viewModelBuilder: () => locator<ChatViewModel>(),
+      viewModelBuilder: () => locator<ChatProvider>(),
       onModelReady: (model) => model.init(widget.toUserName),
       builder: (context, model, child) {
         return Scaffold(
@@ -230,7 +230,7 @@ class ChatAndDateWidget extends StatelessWidget {
         super(key: key);
 
   final Message _message;
-  final ChatViewModel model;
+  final ChatProvider model;
 
   @override
   Widget build(BuildContext context) {

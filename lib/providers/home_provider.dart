@@ -13,9 +13,9 @@ import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
 // import 'package:whatnext/services/snackbar_service.dart';
 
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class HomeViewModel extends BaseModel {
+class HomeProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -122,6 +122,7 @@ class HomeViewModel extends BaseModel {
     _navigationService.pop();
     _navigationService.navigateTo(MessagesViewRoute);
   }
+
   navigateToMessagesWithoutPopping() {
     _navigationService.navigateTo(MessagesViewRoute);
   }

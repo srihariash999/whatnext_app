@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/watchlist_view_model.dart';
+import 'package:whatnext/providers/watchlist_provider.dart';
 
 class WatchlistView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<WatchlistViewModel>.withConsumer(
-      viewModelBuilder: () => WatchlistViewModel(),
+    return ViewModelProvider<WatchlistProvider>.withConsumer(
+      viewModelBuilder: () => WatchlistProvider(),
       onModelReady: (model) => model.onInit(),
       builder: (context, model, child) => Scaffold(
         // key: locator<SnackbarService>().scaffoldKey,

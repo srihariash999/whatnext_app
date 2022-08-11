@@ -18,9 +18,9 @@ import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
 import 'package:whatnext/ui/views/reviews_view.dart';
 
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class TvShowDetailsViewModel extends BaseModel {
+class TvShowDetailsProvider extends BaseProvider {
   final TmdbService _tmdbService = locator<TmdbService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AuthenticationService _authenticationService =

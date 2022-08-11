@@ -5,9 +5,9 @@ import 'package:whatnext/locator.dart';
 // import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class DeepLinkManager extends BaseModel {
+class DeepLinkManager extends BaseProvider {
   bool _deepLink = false;
   bool get deepLink => _deepLink;
 

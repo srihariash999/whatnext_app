@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 
-import 'package:whatnext/viewmodels/new_post_view_model.dart';
+import 'package:whatnext/providers/new_post_provider.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
 
@@ -10,8 +10,8 @@ class NewPostItemSearchView extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<NewPostViewModel>.withConsumer(
-      viewModelBuilder: () => NewPostViewModel(),
+    return ViewModelProvider<NewPostProvider>.withConsumer(
+      viewModelBuilder: () => NewPostProvider(),
       builder: (context, model, child) {
         print(" query: ${_searchController.text}");
         return Scaffold(

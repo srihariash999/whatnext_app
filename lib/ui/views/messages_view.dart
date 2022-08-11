@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/services/firestore_service.dart';
 // import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/messages_view_model.dart';
+import 'package:whatnext/providers/messages_provider.dart';
 
 class MessagesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<MessagesViewModel>.withConsumer(
-      viewModelBuilder: () => MessagesViewModel(),
+    return ViewModelProvider<MessagesProvider>.withConsumer(
+      viewModelBuilder: () => MessagesProvider(),
       onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
         key: model.scaffoldKey,

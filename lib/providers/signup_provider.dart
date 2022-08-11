@@ -8,9 +8,9 @@ import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
-import 'base_model.dart';
+import 'base_provider.dart';
 
-class SignUpViewModel extends BaseModel {
+class SignUpProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final DialogService _dialogService = locator<DialogService>();

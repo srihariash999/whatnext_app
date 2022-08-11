@@ -5,7 +5,7 @@ import 'package:whatnext/models/user.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 // import 'package:whatnext/locator.dart';
 // import 'package:whatnext/services/snackbar_service.dart';
-import 'package:whatnext/viewmodels/friends_view_model.dart';
+import 'package:whatnext/providers/friends_provider.dart';
 
 final TextEditingController _searchController = TextEditingController();
 
@@ -14,8 +14,8 @@ class FriendsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<FriendsViewModel>.withConsumer(
-      viewModelBuilder: () => FriendsViewModel(),
+    return ViewModelProvider<FriendsProvider>.withConsumer(
+      viewModelBuilder: () => FriendsProvider(),
       onModelReady: (model) => model.onInit(),
       builder: (context, model, child) {
         print("############## build trig##########");
@@ -213,7 +213,7 @@ class FriendStatusWidget extends StatefulWidget {
   final String _toShow;
   final UserModel _u;
   final FriendStatus _fri;
-  final FriendsViewModel model;
+  final FriendsProvider model;
 
   @override
   _FriendStatusWidgetState createState() => _FriendStatusWidgetState();

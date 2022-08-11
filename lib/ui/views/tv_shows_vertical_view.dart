@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/tv_shows_list_widget.dart';
-import 'package:whatnext/viewmodels/home_view_model.dart';
+import 'package:whatnext/providers/home_provider.dart';
 
 /* 
    arguments : {    
@@ -28,8 +28,8 @@ class TvShowVerticalView extends StatelessWidget {
         ),
         elevation: 0.0,
       ),
-      body: ViewModelProvider<HomeViewModel>.withConsumer(
-        viewModelBuilder: () => HomeViewModel(),
+      body: ViewModelProvider<HomeProvider>.withConsumer(
+        viewModelBuilder: () => HomeProvider(),
         onModelReady: (model) => model.onInit(),
         builder: (context, model, child) => Column(
           children: [

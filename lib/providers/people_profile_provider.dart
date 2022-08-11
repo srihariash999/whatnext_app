@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/firestore_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class PeopleProfileViewModel extends BaseModel {
+class PeopleProfileProvider extends BaseProvider {
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
   UserModel _person;
