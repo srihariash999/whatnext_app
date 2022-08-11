@@ -19,6 +19,6 @@ class NavigationService {
   // Method to replace the current route and then navigate to a given routename with given arguments.
   Future<dynamic> navigateReplacement(String routeName, {dynamic arguments}) {
     return _navigationKey.currentState
-        .pushReplacementNamed(routeName, arguments: arguments);
+        ?.pushReplacementNamed(routeName, arguments: arguments);
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:esys_flutter_share_plus/esys_flutter_share_plus.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
@@ -11,7 +12,6 @@ import 'package:whatnext/models/tv_credit.dart';
 import 'package:whatnext/models/tv_show.dart';
 import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
-import 'package:esys_flutter_share/esys_flutter_share.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 

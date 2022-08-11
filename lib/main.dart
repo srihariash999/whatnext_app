@@ -78,12 +78,12 @@ class _MyAppState extends State<MyApp> {
     var _fcm = FirebaseMessaging.onMessage;
 
     _fcm.listen((event) {
-      print(" event: $event");
+      // print(" event: $event");
       AwesomeNotifications().createNotification(
         content: NotificationContent(
             id: 10,
             channelKey: 'whatnext_app',
-            notificationLayout: NotificationLayout.BigText ,
+            notificationLayout: NotificationLayout.BigText,
             title: '${event.notification.title}',
             color: Color(0xFFFFDE59),
             body: '${event.notification.body}'),
@@ -98,12 +98,11 @@ class _MyAppState extends State<MyApp> {
       onModelReady: (model) => model.initDynamicLinks(),
       builder: (context, model, child) {
         // if (model.deepLink == false) {
-        print(" deeplink is false");
+        // print(" deeplink is false");
         return ViewModelProvider<ThemesViewModel>.withConsumer(
           viewModelBuilder: () => ThemesViewModel(),
           onModelReady: (model) => model.onInit(),
           builder: (context, model, child) {
-            print(" this build is trigggggoooo");
             if (model.busy) {
               return MaterialApp(
                 title: 'What Next ?',

@@ -10,12 +10,12 @@ class StartUpViewModel extends BaseModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   Future handleStartUpLogic() async {
-    print(" first thing yo");
+    // print(" first thing yo");
 
     bool hasLoggedInUser = await _authenticationService.isUserLoggedIn();
 
-    print(
-        " has user logged in : $hasLoggedInUser   and ${hasLoggedInUser.runtimeType} ");
+    // print(
+    //     " has user logged in : $hasLoggedInUser   and ${hasLoggedInUser.runtimeType} ");
 
     if (hasLoggedInUser == true) {
       _navigationService.navigateReplacement(HomeViewRoute);

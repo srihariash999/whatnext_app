@@ -117,8 +117,8 @@ class ProfileViewModel extends BaseModel {
   }
 
   pickImage() async {
-    PickedFile pickedImage =
-        await ImagePicker().getImage(source: ImageSource.gallery);
+    XFile pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     imageFile = pickedImage != null ? File(pickedImage.path) : null;
 
     await cropImage();
@@ -127,7 +127,7 @@ class ProfileViewModel extends BaseModel {
   }
 
   cropImage() async {
-    File croppedFile = await ImageCropper.cropImage(
+    File croppedFile = await ImageCropper().cropImage(
         sourcePath: imageFile.path,
         aspectRatioPresets: Platform.isAndroid
             ? [

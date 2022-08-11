@@ -106,7 +106,7 @@ class AuthenticationService {
   Future<bool> isUserLoggedIn() async {
     try {
       var user = _firebaseAuth.currentUser;
-      print(" current user: ${user.displayName}");
+      // print(" current user: ${user?.displayName}");
       await _populateCurrentUser(user);
       // populate the user's watchlist
       await populateCurrentUserWatchList(
