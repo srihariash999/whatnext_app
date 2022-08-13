@@ -12,6 +12,10 @@ class ThemesView extends StatelessWidget {
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           elevation: 0.0,
+          backgroundColor: Theme.of(context).primaryColor,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
         ),
         body: Center(
           child: Column(

@@ -161,6 +161,9 @@ class _FeedPageWidgetState extends State<FeedPageWidget>
           padding: EdgeInsets.all(4.0),
           child: Image.asset('assets/whatnext_logo.png'),
         ),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColorLight,
+        ),
         actions: [
           IconButton(
               onPressed: widget.model.navigateToWatchListWithoutPopping,
@@ -356,6 +359,9 @@ class ExplorePageWidget extends StatelessWidget {
           width: 140.0,
           padding: EdgeInsets.all(4.0),
           child: Image.asset('assets/whatnext_logo.png'),
+        ),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColorLight,
         ),
         actions: [
           IconButton(

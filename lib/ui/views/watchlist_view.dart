@@ -18,6 +18,9 @@ class WatchlistView extends StatelessWidget {
           title: Text("Your Watchlist",
               style: Theme.of(context).primaryTextTheme.headline1),
           elevation: 0.0,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
         ),
         body: Column(
           children: [

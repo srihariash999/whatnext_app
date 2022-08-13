@@ -14,11 +14,15 @@ class AboutAppView extends StatelessWidget {
       onModelReady: (model) => model.requestAboutApp(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           title: Text(
             "About App",
             style: Theme.of(context).primaryTextTheme.headline3,
           ),
           elevation: 0.0,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
           actions: [
             InkWell(
               onTap: () {

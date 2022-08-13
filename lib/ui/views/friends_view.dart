@@ -26,6 +26,9 @@ class FriendsView extends StatelessWidget {
             elevation: 0.0,
             title: Text("Find People",
                 style: Theme.of(context).primaryTextTheme.headline1),
+            iconTheme: IconThemeData(
+              color: Theme.of(context).primaryColorLight,
+            ),
             actions: [
               IconButton(
                 icon: Icon(
@@ -35,7 +38,7 @@ class FriendsView extends StatelessWidget {
                 onPressed: () {
                   model.onInit();
                 },
-              )
+              ),
             ],
           ),
           body: Center(

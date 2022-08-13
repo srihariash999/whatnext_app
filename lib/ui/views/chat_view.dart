@@ -26,6 +26,10 @@ class _ChatViewState extends State<ChatView> {
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            iconTheme: IconThemeData(
+              color: Theme.of(context).primaryColorLight,
+            ),
             title: Row(
               children: [
                 FutureBuilder(

@@ -24,8 +24,9 @@ class ThemesProvider extends BaseProvider {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _themeIndex = _prefs.getInt('theme');
     setState();
-    // print(" this is theme indexz: $_themeIndex");
-    _td = getThemes().elementAt(_prefs.getInt('theme') ?? 0);
+
+    // Get Saved theme. Defaults to `1` (Dark Theme)
+    _td = getThemes().elementAt(_prefs.getInt('theme') ?? 1);
     // print(" this is td : $_td");
     setState();
   }

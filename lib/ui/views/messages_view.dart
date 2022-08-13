@@ -18,6 +18,10 @@ class MessagesView extends StatelessWidget {
             "Messages",
             style: Theme.of(context).primaryTextTheme.headline3,
           ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
           elevation: 0.0,
         ),
         floatingActionButton: model.busy
