@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/firestore_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class PeopleProfileViewModel extends BaseModel {
+class PeopleProfileProvider extends BaseProvider {
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
   UserModel _person;
@@ -42,10 +42,10 @@ class PeopleProfileViewModel extends BaseModel {
     _pageSelected = i;
     if (i == 0) {
       _peopleToShow = _person.followersList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     } else {
       _peopleToShow = _person.followingList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     }
     setState();
   }

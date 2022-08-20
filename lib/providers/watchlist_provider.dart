@@ -4,9 +4,9 @@ import 'package:whatnext/locator.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 // import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class WatchlistViewModel extends BaseModel {
+class WatchlistProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -79,7 +79,7 @@ class WatchlistViewModel extends BaseModel {
         _wantToWatchCount += 1;
       }
     }
-    print(" cuw : $_currentUserWatchlist");
+    // print(" cuw : $_currentUserWatchlist");
     setBusy(false);
   }
 }

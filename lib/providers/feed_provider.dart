@@ -5,9 +5,9 @@ import 'package:whatnext/models/feed.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class FeedViewModel extends BaseModel {
+class FeedProvider extends BaseProvider {
   final FirestoreService _firestoreService = locator<FirestoreService>();
   final NavigationService _navigationService = locator<NavigationService>();
 
@@ -68,7 +68,7 @@ class FeedViewModel extends BaseModel {
   }
 
   onItemTap(int id, String mediaType) {
-    print(" media type : $mediaType");
+    // print(" media type : $mediaType");
     if (mediaType != null) {
       if (mediaType == "movie") {
         _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);

@@ -34,7 +34,7 @@ class MovieListWidget extends StatelessWidget {
           Movie popMovie = moviesList[ind];
           return InkWell(
             onTap: () {
-              print(" tapped on ${moviesList[ind].id} ");
+              // print(" tapped on ${moviesList[ind].id} ");
               onMovieTap(moviesList[ind].id, 'movie');
             },
             child: Container(
@@ -140,7 +140,7 @@ class MovieGridWidget extends StatelessWidget {
           Movie popMovie = moviesList[ind];
           return InkWell(
             onTap: () {
-              print(" tapped on ${moviesList[ind].id} ");
+              // print(" tapped on ${moviesList[ind].id} ");
               onMovieTap(moviesList[ind].id, 'movie');
             },
             child: Container(

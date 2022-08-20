@@ -3,15 +3,15 @@ import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/busy_button.dart';
 import 'package:whatnext/ui/widgets/input_field.dart';
-import 'package:whatnext/viewmodels/login_view_model.dart';
+import 'package:whatnext/providers/login_provider.dart';
 
 class ResetView extends StatelessWidget {
   final emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<LoginViewModel>.withConsumer(
-      viewModelBuilder: () => LoginViewModel(),
+    return ViewModelProvider<LoginProvider>.withConsumer(
+      viewModelBuilder: () => LoginProvider(),
       builder: (context, model, child) => Scaffold(
           body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 50),

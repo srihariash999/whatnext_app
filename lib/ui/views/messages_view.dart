@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/services/firestore_service.dart';
 // import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/messages_view_model.dart';
+import 'package:whatnext/providers/messages_provider.dart';
 
 class MessagesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<MessagesViewModel>.withConsumer(
-      viewModelBuilder: () => MessagesViewModel(),
+    return ViewModelProvider<MessagesProvider>.withConsumer(
+      viewModelBuilder: () => MessagesProvider(),
       onModelReady: (model) => model.init(),
       builder: (context, model, child) => Scaffold(
         key: model.scaffoldKey,
@@ -18,6 +18,10 @@ class MessagesView extends StatelessWidget {
             "Messages",
             style: Theme.of(context).primaryTextTheme.headline3,
           ),
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
+          backgroundColor: Theme.of(context).primaryColor,
           elevation: 0.0,
         ),
         floatingActionButton: model.busy
@@ -71,8 +75,6 @@ class MessagesView extends StatelessWidget {
                                                 '${_roomName.replaceAll(model.currentUser, '')}'),
                                         builder: (context, snap) {
                                           if (snap.hasData) {
-                                            print(
-                                                " data from snap : ${snap.data}");
                                             if (snap.data != null) {
                                               return CircleAvatar(
                                                 backgroundColor:
@@ -136,7 +138,7 @@ class MessagesView extends StatelessWidget {
                                                       model.currentUser),
                                               builder: (context, snap) {
                                                 if (snap.hasData) {
-                                                  print(" snap : ${snap.data}");
+                                                  // print(" snap : ${snap.data}");
                                                   if (snap.data == true) {
                                                     return Container(
                                                       child: Row(

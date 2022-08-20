@@ -16,7 +16,7 @@ import 'package:whatnext/services/snackbar_service.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
 // import 'package:whatnext/ui/views/tv_show_details_view.dart';
 // import 'package:whatnext/ui/views/tv_detail_deeplink.dart';
-import 'package:whatnext/viewmodels/theme_view_model.dart';
+import 'package:whatnext/providers/theme_provider.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
 import 'locator.dart';
@@ -99,8 +99,8 @@ class _MyAppState extends State<MyApp> {
       builder: (context, model, child) {
         // if (model.deepLink == false) {
         // print(" deeplink is false");
-        return ViewModelProvider<ThemesViewModel>.withConsumer(
-          viewModelBuilder: () => ThemesViewModel(),
+        return ViewModelProvider<ThemesProvider>.withConsumer(
+          viewModelBuilder: () => ThemesProvider(),
           onModelReady: (model) => model.onInit(),
           builder: (context, model, child) {
             if (model.busy) {

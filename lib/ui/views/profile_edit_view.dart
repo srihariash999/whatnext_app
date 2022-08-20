@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/profile_view_model.dart';
+import 'package:whatnext/providers/profile_provider.dart';
 
 class ProfileEditView extends StatelessWidget {
   const ProfileEditView({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<ProfileViewModel>.withConsumer(
-      viewModelBuilder: () => ProfileViewModel(),
+    return ViewModelProvider<ProfileProvider>.withConsumer(
+      viewModelBuilder: () => ProfileProvider(),
       onModelReady: (model) => model.onInit(),
       builder: (context, model, child) {
         return Scaffold(

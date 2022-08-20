@@ -2,9 +2,9 @@ import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class StartUpViewModel extends BaseModel {
+class StartUpProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();

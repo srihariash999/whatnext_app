@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:whatnext/ui/themes/themes.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class ThemesViewModel extends BaseModel {
+class ThemesProvider extends BaseProvider {
   ThemeData _td;
 
   ThemeData get theme => _td;
@@ -24,8 +24,9 @@ class ThemesViewModel extends BaseModel {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _themeIndex = _prefs.getInt('theme');
     setState();
-    // print(" this is theme indexz: $_themeIndex");
-    _td = getThemes().elementAt(_prefs.getInt('theme') ?? 0);
+
+    // Get Saved theme. Defaults to `1` (Dark Theme)
+    _td = getThemes().elementAt(_prefs.getInt('theme') ?? 1);
     // print(" this is td : $_td");
     setState();
   }

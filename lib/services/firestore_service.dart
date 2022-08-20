@@ -190,15 +190,15 @@ class FirestoreService {
           'addedOn': DateTime.now().toString(),
         },
       );
-      print(" firestore res: ${res.path}");
+      // print(" firestore res: ${res.path}");
       var userData =
           await _instance.collection("users").doc(user.userName).get();
       List feedPosts = [];
       if (userData.data()['feedPosts'] != null) {
         feedPosts = userData.data()['feedPosts'];
       }
-      print('5 : ${res.path.substring(5)}');
-      print('6 : ${res.path.substring(6)}');
+      // print('5 : ${res.path.substring(5)}');
+      // print('6 : ${res.path.substring(6)}');
       feedPosts.add(res.path.substring(5));
       await _instance.collection("users").doc(user.userName).update(
         {"feedPosts": feedPosts},
@@ -217,13 +217,14 @@ class FirestoreService {
     @required String title,
   }) async {
     try {
-      var res = await _instance.collection("notifications").add(
+      // var res = 
+      await _instance.collection("notifications").add(
         {
           'userName': userName,
           'title': title,
         },
       );
-      print(" firestore res: ${res.path}");
+      // print(" firestore res: ${res.path}");
 
       return {'res': true, 'message': 'notification added.'};
     } catch (e) {
@@ -249,12 +250,11 @@ class FirestoreService {
           .doc(username)
           .collection('tokens')
           .get();
-      for (var i in doc.docs) {
-        print(' jee jee : ${i.data()}');
-      }
+      // for (var i in doc.docs) {
+        // print(' jee jee : ${i.data()}');
+      // }
 
       if (doc.docs.length > 0) {
-        print("undi ro ${doc.docs.last}");
         return {
           'tokenAvailable': true,
           'token': doc.docs.last.data()['token'],
@@ -276,13 +276,13 @@ class FirestoreService {
 
     dio.options.headers["Authorization"] = "key=$firebaseServerKey";
 
-    Response resp =
+    // Response resp =
         await dio.post('https://fcm.googleapis.com/fcm/send', data: {
       "to": "$token",
       "priority": "high",
       "notification": {"title": "", "body": "$body", "text": ""}
     });
-    print(" notif resp : $resp");
+    // print(" notif resp : $resp");
   }
 
   Future<List> getUsersPosts({@required userName}) async {
@@ -293,7 +293,7 @@ class FirestoreService {
 
   Future<Feed> getFeedPostById({@required String id}) async {
     var _feedPost = await _instance.collection('feed').doc(id).get();
-    print(' feedpost is :${_feedPost.data()}');
+    // print(' feedpost is :${_feedPost.data()}');
 
     if (_feedPost.data() != null) {
       return Feed.fromJson(_feedPost.data());
@@ -303,21 +303,22 @@ class FirestoreService {
   }
 
   deleteFeedPostById({@required String id, @required String userName}) async {
-    print(" id to delete: $id");
+    // print(" id to delete: $id");
     // delete the post from feeds;
 
     await _instance.collection('feed').doc(id).delete();
 
-    print("post deleted from collection : 'feed'");
+    // print("post deleted from collection : 'feed'");
     // delete from user's profile;
 
     var doc = await _instance.collection("users").doc(userName).get();
     List s = doc.data()['feedPosts'];
-    bool rem = s.remove(id);
+    // bool rem = 
+    s.remove(id);
     var newData = doc.data();
     newData['feedPosts'] = s;
     await _instance.collection("users").doc(userName).set(newData);
-    print(" post deleted frm user profile ? : $rem");
+    // print(" post deleted frm user profile ? : $rem");
   }
 
   Future<bool> updateDisplayName(
@@ -379,10 +380,10 @@ class FirestoreService {
     String combo2 = fromUserName + toUserName;
 
     var s = await _instance.collection('chatRooms').doc(combo1).get();
-    print("Data is : ${s.data()}");
+    // print("Data is : ${s.data()}");
 
     var t = await _instance.collection('chatRooms').doc(combo2).get();
-    print("Data is : ${t.data()}");
+    // print("Data is : ${t.data()}");
 
     if (s.data() == null && t.data() == null) {
       return {
@@ -393,7 +394,7 @@ class FirestoreService {
     } else if (t.data() == null && s.data() != null) {
       return {'roomExists': true, 'roomName': combo1};
     } else {
-      print(" ${s.data() == null} && ${t.data() == null}  ");
+      // print(" ${s.data() == null} && ${t.data() == null}  ");
       return {
         'roomExists': false,
       };
@@ -416,17 +417,17 @@ class FirestoreService {
 
     chatRooms.add("$fromUserName$toUserName");
 
-    print('chatrooms: $chatRooms   from user: $fromUserName  ');
+    // print('chatrooms: $chatRooms   from user: $fromUserName  ');
 
     await _instance.collection('users').doc(fromUserName).update(
       {"chatRooms": chatRooms},
     );
 
     var toUserData = await _instance.collection('users').doc(toUserName).get();
-    print(" to user chat room : ${toUserData.data()}");
+    // print(" to user chat room : ${toUserData.data()}");
     List toUserChatRooms = toUserData.data()['chatRooms'] ?? [];
 
-    print(" $toUserChatRooms");
+    // print(" $toUserChatRooms");
     toUserChatRooms.add("$fromUserName$toUserName");
 
     await _instance.collection('users').doc(toUserName).update(
@@ -512,7 +513,7 @@ class FirestoreService {
       UploadTask uploadTask = reference.putFile(file);
       String imageUrl =
           await uploadTask.then((res) async => res.ref.getDownloadURL());
-      print(imageUrl);
+      // print(imageUrl);
       return imageUrl;
     } catch (e) {
       return null;

@@ -3,7 +3,7 @@ import 'package:provider_architecture/provider_architecture.dart';
 // import 'package:whatnext/ui/shared/app_colors.dart';
 // import 'package:whatnext/ui/shared/shared_styles.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/people_profile_view_model.dart';
+import 'package:whatnext/providers/people_profile_provider.dart';
 
 class PeopleProfileView extends StatelessWidget {
   final String userName;
@@ -11,8 +11,8 @@ class PeopleProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<PeopleProfileViewModel>.withConsumer(
-      viewModelBuilder: () => PeopleProfileViewModel(),
+    return ViewModelProvider<PeopleProfileProvider>.withConsumer(
+      viewModelBuilder: () => PeopleProfileProvider(),
       onModelReady: (model) => model.onInit(userName),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
@@ -29,33 +29,33 @@ class PeopleProfileView extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                     Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: model.person.profilePicture != null
-                                ? Border()
-                                : Border.all(),
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          child: model.person.profilePicture != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  child: Image.network(
-                                    model.person.profilePicture,
-                                    fit: BoxFit.cover,
-                                    height: 75.0,
-                                    width: 75.0,
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 38.0,
-                                  ),
-                                ),
+                      Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: model.person.profilePicture != null
+                              ? Border()
+                              : Border.all(),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
+                        child: model.person.profilePicture != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12.0),
+                                child: Image.network(
+                                  model.person.profilePicture,
+                                  fit: BoxFit.cover,
+                                  height: 75.0,
+                                  width: 75.0,
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.person,
+                                  size: 38.0,
+                                ),
+                              ),
+                      ),
                       Column(
                         children: [
                           Container(

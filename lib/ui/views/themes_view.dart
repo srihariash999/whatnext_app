@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/ui/shared/ui_helpers.dart';
-import 'package:whatnext/viewmodels/theme_view_model.dart';
+import 'package:whatnext/providers/theme_provider.dart';
 
 class ThemesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<ThemesViewModel>.withConsumer(
-      viewModelBuilder: () => ThemesViewModel(),
+    return ViewModelProvider<ThemesProvider>.withConsumer(
+      viewModelBuilder: () => ThemesProvider(),
       onModelReady: (model) => model.getSavedTheme(),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
           elevation: 0.0,
+          backgroundColor: Theme.of(context).primaryColor,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
         ),
         body: Center(
           child: Column(

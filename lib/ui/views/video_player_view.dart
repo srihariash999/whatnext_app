@@ -102,6 +102,10 @@ class _VideoPlayerViewState extends State<VideoPlayerView> {
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
+          elevation: 0.0,
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,

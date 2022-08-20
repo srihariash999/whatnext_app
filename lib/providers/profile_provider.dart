@@ -10,9 +10,9 @@ import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class ProfileViewModel extends BaseModel {
+class ProfileProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
 
@@ -63,10 +63,10 @@ class ProfileViewModel extends BaseModel {
     _pageSelected = i;
     if (i == 0) {
       _peopleToShow = _authenticationService.currentUser.followersList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     } else {
       _peopleToShow = _authenticationService.currentUser.followingList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     }
     setState();
   }
@@ -91,7 +91,7 @@ class ProfileViewModel extends BaseModel {
         userName: _authenticationService.currentUser.userName);
     _feedIds = feedIds;
     setState();
-    print("_feed ids are : $_feedIds");
+    // print("_feed ids are : $_feedIds");
     for (var id in feedIds) {
       Feed _feedPost = await _firestoreService.getFeedPostById(id: id);
 

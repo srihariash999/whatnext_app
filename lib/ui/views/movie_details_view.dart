@@ -9,7 +9,7 @@ import 'package:whatnext/ui/shared/ui_helpers.dart';
 import 'package:whatnext/ui/widgets/expansion_list.dart';
 import 'package:whatnext/ui/widgets/genre_card.dart';
 import 'package:whatnext/ui/widgets/movies_list_widget.dart';
-import 'package:whatnext/viewmodels/movie_details_view_model.dart';
+import 'package:whatnext/providers/movie_details_provider.dart';
 
 var formatter = DateFormat.yMMMd('en_US');
 
@@ -20,8 +20,8 @@ class MovieDetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ViewModelProvider<MovieDetailsViewModel>.withConsumer(
-        viewModelBuilder: () => MovieDetailsViewModel(),
+      body: ViewModelProvider<MovieDetailsProvider>.withConsumer(
+        viewModelBuilder: () => MovieDetailsProvider(),
         onModelReady: (model) => model.onInit(id),
         builder: (context, model, child) {
           MovieDetails _md = model.movieDetails;
@@ -363,8 +363,6 @@ class MovieDetailsView extends StatelessWidget {
                                                       ),
                                                     );
                                                     // model.onAddTap(context);
-                                                  
-                                                  
                                                   },
                                                 ),
                                               ),

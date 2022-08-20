@@ -6,23 +6,21 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/foundation.dart';
 import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/locator.dart';
-import 'package:whatnext/models/movie.dart';
-import 'package:whatnext/models/movie_credit.dart';
-import 'package:whatnext/models/movie_details.dart';
 import 'package:whatnext/models/picture.dart';
 import 'package:whatnext/models/review.dart';
-import 'package:whatnext/models/video.dart';
+import 'package:whatnext/models/tv_credit.dart';
+import 'package:whatnext/models/tv_show.dart';
+import 'package:whatnext/models/tv_show_details.dart';
 import 'package:whatnext/services/authentication_service.dart';
-
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
 import 'package:whatnext/services/tmdb_service.dart';
 import 'package:whatnext/ui/views/reviews_view.dart';
 
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class MovieDetailsViewModel extends BaseModel {
+class TvShowDetailsProvider extends BaseProvider {
   final TmdbService _tmdbService = locator<TmdbService>();
   final NavigationService _navigationService = locator<NavigationService>();
   final AuthenticationService _authenticationService =
@@ -30,11 +28,11 @@ class MovieDetailsViewModel extends BaseModel {
 
   final FirestoreService _firestoreService = locator<FirestoreService>();
 
-  bool _isMovieAdded = false;
-  bool get isMovieAdded => _isMovieAdded;
+  bool _isTvShowAdded = false;
+  bool get isMovieAdded => _isTvShowAdded;
 
-  MovieDetails _movieDetails = MovieDetails();
-  MovieDetails get movieDetails => _movieDetails;
+  TvShowDetails _tvShowDetails = TvShowDetails();
+  TvShowDetails get movieDetails => _tvShowDetails;
 
   String _choice = "Select a choice";
   String get choice => _choice;
@@ -45,17 +43,14 @@ class MovieDetailsViewModel extends BaseModel {
   bool _isBeingAdded = false;
   bool get isBeingAdded => _isBeingAdded;
 
-  List<MovieCredit> _creditsList = [];
-  List<MovieCredit> get creditList => _creditsList;
+  List<TvCredit> _creditsList = [];
+  List<TvCredit> get creditList => _creditsList;
 
-  List<Movie> _similarMovies = [];
-  List<Movie> get similarMovies => _similarMovies;
+  List<TvShow> _similarTvShows = [];
+  List<TvShow> get similarTvShows => _similarTvShows;
 
-  List<Movie> _recommendedMovies = [];
-  List<Movie> get recommendedMovies => _recommendedMovies;
-
-  Video _video;
-  Video get video => _video;
+  List<TvShow> _recommendedTvShows = [];
+  List<TvShow> get recommendedTvShows => _recommendedTvShows;
 
   List<Picture> _pictures = [];
   List<Picture> get pictures => _pictures;
@@ -69,61 +64,65 @@ class MovieDetailsViewModel extends BaseModel {
     setBusy(true);
     print("id : $id");
 
-    var det = await _tmdbService.fetchMovieDetails(id);
-    print("det : $det");
-    _movieDetails = MovieDetails.fromJson(det);
-    await ifMovieAdded(id);
+    var det = await _tmdbService.fetchTvShowDetails(id);
+
+    _tvShowDetails = TvShowDetails.fromJson(det);
+    await ifTvShowAdded(id);
     setBusy(false);
     getCast(id);
-    getSimilarMovies(id);
-    getRecommendedMovies(id);
-    getVideo(id);
+    getSimilarTvShows(id);
+    getRecommendedTvShows(id);
     getPictures(id);
     getReviews(id);
   }
 
+// This function determines whether the tv show is added in the user's list or not.
+  ifTvShowAdded(int tvId) async {
+    for (var element in _authenticationService.currentUserWatchList) {
+      if (element['id'] == tvId) {
+        // print(" found movie");
+        _isTvShowAdded = true;
+        setState();
+        return;
+      }
+    }
+    await _authenticationService.populateCurrentUserWatchList(
+        _authenticationService.currentUser.userName);
+    _isTvShowAdded = false;
+    setState();
+    return;
+  }
+
   getCast(int id) async {
-    var castRes = await _tmdbService.fetchMovieCast(id);
+    var castRes = await _tmdbService.fetchTvCast(id);
 
     for (var i in castRes['cast']) {
-      _creditsList.add(MovieCredit.fromJson(i));
+      _creditsList.add(TvCredit.fromJson(i));
     }
     setState();
   }
 
-  getSimilarMovies(int id) async {
-    var similarRes = await _tmdbService.fetchSimilarMovies(id);
+  getSimilarTvShows(int id) async {
+    var similarRes = await _tmdbService.fetchSimilarTvShows(id);
 
     for (var i in similarRes['results']) {
-      _similarMovies.add(Movie.fromJson(i));
+      _similarTvShows.add(TvShow.fromJson(i));
     }
     setState();
   }
 
-  getRecommendedMovies(int id) async {
-    var recommendedRes = await _tmdbService.fetchMovieRecommendations(id);
+  getRecommendedTvShows(int id) async {
+    var recommendedRes = await _tmdbService.fetchTvShowRecommendations(id);
 
     for (var i in recommendedRes['results']) {
-      _recommendedMovies.add(Movie.fromJson(i));
-    }
-    setState();
-  }
-
-  getVideo(int id) async {
-    var videoRes = await _tmdbService.fetchVideosofMovie(id);
-
-    for (var i in videoRes['results']) {
-      if (i['type'] == "Trailer" && i['site'] == "YouTube") {
-        _video = Video.fromJson(i);
-        break;
-      }
+      _recommendedTvShows.add(TvShow.fromJson(i));
     }
     setState();
   }
 
   getPictures(int id) async {
-    var picturesRes = await _tmdbService.fetchMoviePictures(id);
-    print("picres: $picturesRes");
+    var picturesRes = await _tmdbService.fetchTvPictures(id);
+
     for (var i in picturesRes['backdrops']) {
       _pictures.add(Picture.fromJson(i));
     }
@@ -134,8 +133,8 @@ class MovieDetailsViewModel extends BaseModel {
   }
 
   getReviews(int id) async {
-    var reviewsRes = await _tmdbService.fetchReviews(id, 'movie');
-    print("review res : $reviewsRes");
+    var reviewsRes = await _tmdbService.fetchReviews(id, 'tv');
+    // print("review res : $reviewsRes");
     for (var i in reviewsRes['results']) {
       _reviews.add(Review.fromJson(i));
     }
@@ -143,28 +142,13 @@ class MovieDetailsViewModel extends BaseModel {
     setState();
   }
 
-  // this function determines if a movie is added to watchlist or not.
-  ifMovieAdded(int movieId) async {
-    print(" watchist: ${_authenticationService.currentUserWatchList}");
-    for (var element in _authenticationService.currentUserWatchList) {
-      print(">>>>>>>>>>>${element['movieId']}");
-      if (element['id'] == movieId) {
-        print(" found movie");
-        _isMovieAdded = true;
-        setState();
-        return;
-      }
-    }
-    await _authenticationService.populateCurrentUserWatchList(
-        _authenticationService.currentUser.userName);
-    _isMovieAdded = false;
-    setState();
-    return;
-  }
-
   changeChoice(String choice) {
     _choice = choice;
     setState();
+  }
+
+  onTvShowTap(int id, String mediaType) {
+    _navigationService.navigateTo(TvShowDetailsViewRoute, arguments: id);
   }
 
   onShareTap() async {
@@ -172,14 +156,13 @@ class MovieDetailsViewModel extends BaseModel {
     setState();
     try {
       var request = await HttpClient().getUrl(Uri.parse(
-          'https://image.tmdb.org/t/p/w500${_movieDetails.posterPath}'));
+          'https://image.tmdb.org/t/p/w500${_tvShowDetails.posterPath}'));
       var response = await request.close();
       Uint8List bytes = await consolidateHttpClientResponseBytes(response);
-
       final DynamicLinkParameters parameters = DynamicLinkParameters(
         uriPrefix: 'https://whatnext.page.link',
         link: Uri.parse(
-            'https://whatnext.page.link/details?type=movie&id=${_movieDetails.id}'),
+            'https://whatnext.page.link/details?type=tv&id=${_tvShowDetails.id}'),
         androidParameters: AndroidParameters(
           packageName: 'app.zepplaud.whatnext',
           minimumVersion: 0,
@@ -198,12 +181,11 @@ class MovieDetailsViewModel extends BaseModel {
       final ShortDynamicLink shortLink = await parameters.buildShortLink();
       url = shortLink.shortUrl;
 
-      print("I am the deep link");
-      print(url.toString());
-
-      await Share.file('${_movieDetails.title}', '${_movieDetails.title}.png',
-          bytes, 'image/jpg',
-          text: "Checkout this movie '${_movieDetails.title}' at : $url ");
+      // print("I am the deep link");
+      // print(url.toString());
+      await Share.file('${_tvShowDetails.originalName}',
+          '${_tvShowDetails.name}.png', bytes, 'image/jpg',
+          text: "Checkout this tv show '${_tvShowDetails.name}' at : $url ");
     } catch (e) {
       print('error: $e');
     }
@@ -213,61 +195,55 @@ class MovieDetailsViewModel extends BaseModel {
     return;
   }
 
-  onMovieTap(int id, String mediaType) {
-    _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);
-  }
-
-  navigateToVideoPlayer() {
-    _navigationService.navigateTo(VideoPlayerViewRoute, arguments: _video.key);
-  }
-
   navigateToReviewsScreen() {
     _navigationService.navigateTo(
       ReviewsScreenRoute,
       arguments: ReviewsViewArguments(
         type: 'movie',
         reviews: _reviews.reversed.toList(),
-        title: _movieDetails.title,
+        title: _tvShowDetails.name,
       ),
     );
   }
 
-  onChangeMovieStatus() async {
-    // Escape multiple presses of the button before the action is completed.
+  onTvStatusChange() async {
+    //escape multiple presses of the same button.
     if (!_isBeingAdded) {
-      // Set the state to indicate busy.
+      //Signal busy status.
       _isBeingAdded = true;
       setState();
 
-      // remove the old item from user's watchlist.
+      //Remove the tv show from the user's list.
 
       var s = await _firestoreService.removeFromUserWatchList(
-        _movieDetails,
+        _tvShowDetails,
         _authenticationService.currentUser.userName,
       );
 
-      // update the user's watchlist.
       if (s['res'] == true) {
         await _authenticationService.populateCurrentUserWatchList(
             _authenticationService.currentUser.userName);
-        ifMovieAdded(_movieDetails.id);
+        ifTvShowAdded(_tvShowDetails.id);
       }
 
-      // add the movie in user's watchlist with whatever status they want.
+      //Now add the tv show to the user's list again, with updated staus.
 
       s = await _firestoreService.addToUserWatchList(
-          name: _movieDetails.title,
-          id: _movieDetails.id,
-          posterPath: _movieDetails.posterPath,
+          name: _tvShowDetails.originalName,
+          id: _tvShowDetails.id,
+          posterPath: _tvShowDetails.posterPath,
+          type: 'tv',
           userName: _authenticationService.currentUser.userName,
-          status: _choice,
-          type: 'movie');
+          status: _choice);
 
       if (s['res'] == true) {
         await _authenticationService.populateCurrentUserWatchList(
             _authenticationService.currentUser.userName);
-        ifMovieAdded(_movieDetails.id);
-        _isMovieAdded = true;
+        ifTvShowAdded(_tvShowDetails.id);
+
+        // set the bool, that says the tv show is added.
+        _isTvShowAdded = true;
+        //indicate that the state is not busy anymore.
         _isBeingAdded = false;
         _isChanged = true;
         setState();
@@ -278,21 +254,19 @@ class MovieDetailsViewModel extends BaseModel {
 
   onAddTap() async {
     if (!_isBeingAdded) {
-      print(" on tap pressed");
-      if (_isMovieAdded) {
+      if (_isTvShowAdded) {
         _isBeingAdded = true;
         setState();
-
         var s = await _firestoreService.removeFromUserWatchList(
-          _movieDetails,
+          _tvShowDetails,
           _authenticationService.currentUser.userName,
         );
 
         if (s['res'] == true) {
           await _authenticationService.populateCurrentUserWatchList(
               _authenticationService.currentUser.userName);
-          ifMovieAdded(_movieDetails.id);
-          _isMovieAdded = false;
+          ifTvShowAdded(_tvShowDetails.id);
+          _isTvShowAdded = false;
           _isBeingAdded = false;
           _isChanged = true;
           setState();
@@ -305,20 +279,19 @@ class MovieDetailsViewModel extends BaseModel {
         } else {
           _isBeingAdded = true;
           setState();
-
           var s = await _firestoreService.addToUserWatchList(
-              name: _movieDetails.title,
-              id: _movieDetails.id,
-              posterPath: _movieDetails.posterPath,
+              name: _tvShowDetails.originalName,
+              id: _tvShowDetails.id,
+              posterPath: _tvShowDetails.posterPath,
+              type: 'tv',
               userName: _authenticationService.currentUser.userName,
-              status: _choice,
-              type: 'movie');
+              status: _choice);
 
           if (s['res'] == true) {
             await _authenticationService.populateCurrentUserWatchList(
                 _authenticationService.currentUser.userName);
-            ifMovieAdded(_movieDetails.id);
-            _isMovieAdded = true;
+            ifTvShowAdded(_tvShowDetails.id);
+            _isTvShowAdded = true;
             _isBeingAdded = false;
             _isChanged = true;
             setState();

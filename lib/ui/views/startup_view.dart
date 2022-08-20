@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-import 'package:whatnext/viewmodels/startup_view_model.dart';
+import 'package:whatnext/providers/startup_provider.dart';
 
 class StartUpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<StartUpViewModel>.withConsumer(
-      viewModelBuilder: () => StartUpViewModel(),
+    return ViewModelProvider<StartUpProvider>.withConsumer(
+      viewModelBuilder: () => StartUpProvider(),
       onModelReady: (model) => model.handleStartUpLogic(),
       builder: (context, model, child) => Scaffold(
         body: Center(

@@ -9,9 +9,9 @@ import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class NewPostViewModel extends BaseModel {
+class NewPostProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final TmdbService _tmdbService = locator<TmdbService>();
@@ -52,9 +52,9 @@ class NewPostViewModel extends BaseModel {
   }
 
   fetchSearchReults(String query) async {
-    print(" query got : $query");
+    // print(" query got : $query");
     if (_prevQuery != query) {
-      print(" diff query");
+      // print(" diff query");
       var sRes = await _tmdbService.fetchSearchResultsFromTmdb(query);
       _searchResults = [];
       for (var i in sRes['results']) {
@@ -70,18 +70,18 @@ class NewPostViewModel extends BaseModel {
       _prevQuery = query;
       setState();
     } else {
-      print('same query : $_prevQuery   $query');
+      // print('same query : $_prevQuery   $query');
     }
   }
 
   onItemSelect({@required result}) {
-    print("result : $result");
+    // print("result : $result");
 
     _navigationService.pop(arguments: result);
   }
 
   createPost({@required String postBody}) async {
-    print("type : $itemType   seelcted: $isItemSelected  ");
+    // print("type : $itemType   seelcted: $isItemSelected  ");
     _isSubmitLoading = true;
     setState();
     if (itemType != "") // Case where user selected a movie/tv show for a post.
@@ -98,7 +98,7 @@ class NewPostViewModel extends BaseModel {
           type: itemType,
           user: _user,
         );
-        print(" res : $res");
+        // print(" res : $res");
         if (res['res'] == true) {
           _navigationService.pop();
         } else {}
@@ -115,7 +115,7 @@ class NewPostViewModel extends BaseModel {
         if (res['res'] == true) {
           _navigationService.pop();
         } else {}
-        print(" res : $res");
+        // print(" res : $res");
       }
     } else // Case where user did not select any movie or tv show.
     {
@@ -130,7 +130,7 @@ class NewPostViewModel extends BaseModel {
         type: null,
         user: _user,
       );
-      print(" res : $res");
+      // print(" res : $res");
       if (res['res'] == true) {
         _navigationService.pop();
       } else {}
@@ -138,7 +138,7 @@ class NewPostViewModel extends BaseModel {
     _isSubmitLoading = false;
     setState();
 
-    print(" post created");
+    // print(" post created");
   }
 
   showPostBodyErrorToast() {

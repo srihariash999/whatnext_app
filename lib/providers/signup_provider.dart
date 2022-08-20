@@ -8,9 +8,9 @@ import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 
-import 'base_model.dart';
+import 'base_provider.dart';
 
-class SignUpViewModel extends BaseModel {
+class SignUpProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final DialogService _dialogService = locator<DialogService>();
@@ -92,10 +92,10 @@ class SignUpViewModel extends BaseModel {
     for (var i in snap) {
       // print(i.data());
       // Object data = i.data();
-      print(" username is : ${i['userName']} ");
+      // print(" username is : ${i['userName']} ");
       if (i['userName'] == userName) {
         _isUserNameTaken = true;
-        print(' username is taken');
+        // print(' username is taken');
         break;
       }
     }

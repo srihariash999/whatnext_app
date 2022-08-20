@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
 import 'package:whatnext/models/message.dart';
 import 'package:whatnext/services/firestore_service.dart';
-import 'package:whatnext/viewmodels/chat_view_model.dart';
+import 'package:whatnext/providers/chat_provider.dart';
 import 'package:whatnext/locator.dart';
 
 class ChatView extends StatefulWidget {
@@ -19,13 +19,17 @@ class ChatView extends StatefulWidget {
 class _ChatViewState extends State<ChatView> {
   @override
   Widget build(BuildContext context) {
-    return ViewModelProvider<ChatViewModel>.withConsumer(
+    return ViewModelProvider<ChatProvider>.withConsumer(
       disposeViewModel: false,
-      viewModelBuilder: () => locator<ChatViewModel>(),
+      viewModelBuilder: () => locator<ChatProvider>(),
       onModelReady: (model) => model.init(widget.toUserName),
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: Theme.of(context).primaryColor,
+            iconTheme: IconThemeData(
+              color: Theme.of(context).primaryColorLight,
+            ),
             title: Row(
               children: [
                 FutureBuilder(
@@ -116,6 +120,7 @@ class _ChatViewState extends State<ChatView> {
                       children: [
                         Expanded(
                           child: ListView.builder(
+                            reverse: true,
                             controller: model.scrollController,
                             itemCount: model.messages.length,
                             itemBuilder: (context, int index) {
@@ -140,9 +145,9 @@ class _ChatViewState extends State<ChatView> {
                                   style: Theme.of(context)
                                       .primaryTextTheme
                                       .headline4,
-                                  onChanged: (String d) {
-                                    model.scrollToLast();
-                                  },
+                                  // onChanged: (String d) {
+                                  //   model.scrollToLast();
+                                  // },
                                   decoration: InputDecoration(
                                     suffixIcon: model.isMessageSending
                                         ? Container(
@@ -167,11 +172,11 @@ class _ChatViewState extends State<ChatView> {
                                               IconButton(
                                                 onPressed: () async {
                                                   await model.sendMessage();
-                                                  print(" here");
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback(
-                                                          (_) => model
-                                                              .scrollToLast());
+                                                  // print(" here");
+                                                  // WidgetsBinding.instance
+                                                  //     .addPostFrameCallback(
+                                                  //         (_) => model
+                                                  //             .scrollToLast());
                                                 },
                                                 icon: Icon(
                                                   FeatherIcons.send,
@@ -230,7 +235,7 @@ class ChatAndDateWidget extends StatelessWidget {
         super(key: key);
 
   final Message _message;
-  final ChatViewModel model;
+  final ChatProvider model;
 
   @override
   Widget build(BuildContext context) {

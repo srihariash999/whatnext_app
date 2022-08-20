@@ -6,9 +6,9 @@ import 'package:whatnext/models/user.dart';
 import 'package:whatnext/services/authentication_service.dart';
 import 'package:whatnext/services/firestore_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class FriendsViewModel extends BaseModel {
+class FriendsProvider extends BaseProvider {
   final FirestoreService _fireStoreService = locator<FirestoreService>();
 
   final AuthenticationService _authenticationService =
@@ -151,8 +151,8 @@ class FriendsViewModel extends BaseModel {
       );
 
       await _fireStoreService.updateUserFriends(_toUser);
-      print(
-          " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
+      // print(
+      //     " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
       _allUsers[_allUsers.indexOf(user)] = _toUser;
       _allUsersToDisplay[_allUsersToDisplay.indexOf(user)] = _toUser;
 
@@ -167,7 +167,7 @@ class FriendsViewModel extends BaseModel {
             token: res['token'],
             body: "You have a new follower: @${_currUser.userName}");
       } else {
-        print(' no token');
+        // print(' no token');
       }
       return true;
     }

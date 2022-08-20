@@ -13,9 +13,9 @@ import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/tmdb_service.dart';
 // import 'package:whatnext/services/snackbar_service.dart';
 
-import 'package:whatnext/viewmodels/base_model.dart';
+import 'package:whatnext/providers/base_provider.dart';
 
-class HomeViewModel extends BaseModel {
+class HomeProvider extends BaseProvider {
   final AuthenticationService _authenticationService =
       locator<AuthenticationService>();
   final NavigationService _navigationService = locator<NavigationService>();
@@ -98,7 +98,7 @@ class HomeViewModel extends BaseModel {
 
   switchPages(int index) {
     _bottomIndex = index;
-    print("_bottom Index : $_bottomIndex");
+    // print("_bottom Index : $_bottomIndex");
     setState();
   }
 
@@ -122,6 +122,7 @@ class HomeViewModel extends BaseModel {
     _navigationService.pop();
     _navigationService.navigateTo(MessagesViewRoute);
   }
+
   navigateToMessagesWithoutPopping() {
     _navigationService.navigateTo(MessagesViewRoute);
   }
@@ -241,7 +242,7 @@ class HomeViewModel extends BaseModel {
   loadMoreTopRatedMovies() async {
     _topPage++;
     var s = await _tmdbService.fetchTopRatedMoviesFromTmdb(_topPage);
-    print("s : $s");
+    // print("s : $s");
     for (var i in s['results']) {
       _topRatedMoviesList.add(Movie.fromJson(i));
       setState();
