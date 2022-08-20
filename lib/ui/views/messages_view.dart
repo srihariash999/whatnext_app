@@ -75,8 +75,6 @@ class MessagesView extends StatelessWidget {
                                                 '${_roomName.replaceAll(model.currentUser, '')}'),
                                         builder: (context, snap) {
                                           if (snap.hasData) {
-                                            print(
-                                                " data from snap : ${snap.data}");
                                             if (snap.data != null) {
                                               return CircleAvatar(
                                                 backgroundColor:
@@ -140,7 +138,7 @@ class MessagesView extends StatelessWidget {
                                                       model.currentUser),
                                               builder: (context, snap) {
                                                 if (snap.hasData) {
-                                                  print(" snap : ${snap.data}");
+                                                  // print(" snap : ${snap.data}");
                                                   if (snap.data == true) {
                                                     return Container(
                                                       child: Row(

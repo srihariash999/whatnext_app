@@ -98,7 +98,7 @@ class HomeProvider extends BaseProvider {
 
   switchPages(int index) {
     _bottomIndex = index;
-    print("_bottom Index : $_bottomIndex");
+    // print("_bottom Index : $_bottomIndex");
     setState();
   }
 
@@ -242,7 +242,7 @@ class HomeProvider extends BaseProvider {
   loadMoreTopRatedMovies() async {
     _topPage++;
     var s = await _tmdbService.fetchTopRatedMoviesFromTmdb(_topPage);
-    print("s : $s");
+    // print("s : $s");
     for (var i in s['results']) {
       _topRatedMoviesList.add(Movie.fromJson(i));
       setState();

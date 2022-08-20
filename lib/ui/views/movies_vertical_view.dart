@@ -22,6 +22,9 @@ class MovieVerticalView extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColor,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).primaryColorLight,
+          ),
           title: Text(
             "${arguments['type']}",
             style: Theme.of(context).primaryTextTheme.headline2,

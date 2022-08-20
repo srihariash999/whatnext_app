@@ -151,8 +151,8 @@ class FriendsProvider extends BaseProvider {
       );
 
       await _fireStoreService.updateUserFriends(_toUser);
-      print(
-          " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
+      // print(
+      //     " index : ${_allUsers.indexOf(user)}    --  ${_allUsersToDisplay.indexOf(user)}  ");
       _allUsers[_allUsers.indexOf(user)] = _toUser;
       _allUsersToDisplay[_allUsersToDisplay.indexOf(user)] = _toUser;
 
@@ -167,7 +167,7 @@ class FriendsProvider extends BaseProvider {
             token: res['token'],
             body: "You have a new follower: @${_currUser.userName}");
       } else {
-        print(' no token');
+        // print(' no token');
       }
       return true;
     }

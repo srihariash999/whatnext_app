@@ -68,7 +68,7 @@ class FeedProvider extends BaseProvider {
   }
 
   onItemTap(int id, String mediaType) {
-    print(" media type : $mediaType");
+    // print(" media type : $mediaType");
     if (mediaType != null) {
       if (mediaType == "movie") {
         _navigationService.navigateTo(MovieDetailsViewRoute, arguments: id);

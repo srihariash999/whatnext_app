@@ -52,9 +52,9 @@ class NewPostProvider extends BaseProvider {
   }
 
   fetchSearchReults(String query) async {
-    print(" query got : $query");
+    // print(" query got : $query");
     if (_prevQuery != query) {
-      print(" diff query");
+      // print(" diff query");
       var sRes = await _tmdbService.fetchSearchResultsFromTmdb(query);
       _searchResults = [];
       for (var i in sRes['results']) {
@@ -70,18 +70,18 @@ class NewPostProvider extends BaseProvider {
       _prevQuery = query;
       setState();
     } else {
-      print('same query : $_prevQuery   $query');
+      // print('same query : $_prevQuery   $query');
     }
   }
 
   onItemSelect({@required result}) {
-    print("result : $result");
+    // print("result : $result");
 
     _navigationService.pop(arguments: result);
   }
 
   createPost({@required String postBody}) async {
-    print("type : $itemType   seelcted: $isItemSelected  ");
+    // print("type : $itemType   seelcted: $isItemSelected  ");
     _isSubmitLoading = true;
     setState();
     if (itemType != "") // Case where user selected a movie/tv show for a post.
@@ -98,7 +98,7 @@ class NewPostProvider extends BaseProvider {
           type: itemType,
           user: _user,
         );
-        print(" res : $res");
+        // print(" res : $res");
         if (res['res'] == true) {
           _navigationService.pop();
         } else {}
@@ -115,7 +115,7 @@ class NewPostProvider extends BaseProvider {
         if (res['res'] == true) {
           _navigationService.pop();
         } else {}
-        print(" res : $res");
+        // print(" res : $res");
       }
     } else // Case where user did not select any movie or tv show.
     {
@@ -130,7 +130,7 @@ class NewPostProvider extends BaseProvider {
         type: null,
         user: _user,
       );
-      print(" res : $res");
+      // print(" res : $res");
       if (res['res'] == true) {
         _navigationService.pop();
       } else {}
@@ -138,7 +138,7 @@ class NewPostProvider extends BaseProvider {
     _isSubmitLoading = false;
     setState();
 
-    print(" post created");
+    // print(" post created");
   }
 
   showPostBodyErrorToast() {

@@ -18,7 +18,7 @@ class FriendsView extends StatelessWidget {
       viewModelBuilder: () => FriendsProvider(),
       onModelReady: (model) => model.onInit(),
       builder: (context, model, child) {
-        print("############## build trig##########");
+        // print("############## build trig##########");
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(

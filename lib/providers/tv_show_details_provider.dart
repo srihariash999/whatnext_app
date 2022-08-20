@@ -80,7 +80,7 @@ class TvShowDetailsProvider extends BaseProvider {
   ifTvShowAdded(int tvId) async {
     for (var element in _authenticationService.currentUserWatchList) {
       if (element['id'] == tvId) {
-        print(" found movie");
+        // print(" found movie");
         _isTvShowAdded = true;
         setState();
         return;
@@ -134,7 +134,7 @@ class TvShowDetailsProvider extends BaseProvider {
 
   getReviews(int id) async {
     var reviewsRes = await _tmdbService.fetchReviews(id, 'tv');
-    print("review res : $reviewsRes");
+    // print("review res : $reviewsRes");
     for (var i in reviewsRes['results']) {
       _reviews.add(Review.fromJson(i));
     }
@@ -181,8 +181,8 @@ class TvShowDetailsProvider extends BaseProvider {
       final ShortDynamicLink shortLink = await parameters.buildShortLink();
       url = shortLink.shortUrl;
 
-      print("I am the deep link");
-      print(url.toString());
+      // print("I am the deep link");
+      // print(url.toString());
       await Share.file('${_tvShowDetails.originalName}',
           '${_tvShowDetails.name}.png', bytes, 'image/jpg',
           text: "Checkout this tv show '${_tvShowDetails.name}' at : $url ");

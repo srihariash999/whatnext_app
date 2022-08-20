@@ -67,10 +67,10 @@ class MovieDetailsProvider extends BaseProvider {
 
   Future onInit(int id) async {
     setBusy(true);
-    print("id : $id");
+    // print("id : $id");
 
     var det = await _tmdbService.fetchMovieDetails(id);
-    print("det : $det");
+    // print("det : $det");
     _movieDetails = MovieDetails.fromJson(det);
     await ifMovieAdded(id);
     setBusy(false);
@@ -123,7 +123,7 @@ class MovieDetailsProvider extends BaseProvider {
 
   getPictures(int id) async {
     var picturesRes = await _tmdbService.fetchMoviePictures(id);
-    print("picres: $picturesRes");
+    // print("picres: $picturesRes");
     for (var i in picturesRes['backdrops']) {
       _pictures.add(Picture.fromJson(i));
     }
@@ -135,7 +135,7 @@ class MovieDetailsProvider extends BaseProvider {
 
   getReviews(int id) async {
     var reviewsRes = await _tmdbService.fetchReviews(id, 'movie');
-    print("review res : $reviewsRes");
+    // print("review res : $reviewsRes");
     for (var i in reviewsRes['results']) {
       _reviews.add(Review.fromJson(i));
     }
@@ -145,11 +145,11 @@ class MovieDetailsProvider extends BaseProvider {
 
   // this function determines if a movie is added to watchlist or not.
   ifMovieAdded(int movieId) async {
-    print(" watchist: ${_authenticationService.currentUserWatchList}");
+    // print(" watchist: ${_authenticationService.currentUserWatchList}");
     for (var element in _authenticationService.currentUserWatchList) {
-      print(">>>>>>>>>>>${element['movieId']}");
+      // print(">>>>>>>>>>>${element['movieId']}");
       if (element['id'] == movieId) {
-        print(" found movie");
+        // print(" found movie");
         _isMovieAdded = true;
         setState();
         return;
@@ -198,8 +198,8 @@ class MovieDetailsProvider extends BaseProvider {
       final ShortDynamicLink shortLink = await parameters.buildShortLink();
       url = shortLink.shortUrl;
 
-      print("I am the deep link");
-      print(url.toString());
+      // print("I am the deep link");
+      // print(url.toString());
 
       await Share.file('${_movieDetails.title}', '${_movieDetails.title}.png',
           bytes, 'image/jpg',
@@ -278,7 +278,7 @@ class MovieDetailsProvider extends BaseProvider {
 
   onAddTap() async {
     if (!_isBeingAdded) {
-      print(" on tap pressed");
+      // print(" on tap pressed");
       if (_isMovieAdded) {
         _isBeingAdded = true;
         setState();

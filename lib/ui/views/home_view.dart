@@ -999,7 +999,7 @@ class CustomSearchDelegate extends SearchDelegate<String> {
           if (query.length > 1) {
             model.fetchSearchReults(query);
           }
-          print(" query: $query");
+          // print(" query: $query");
           return model.searchResultLoading
               ? Container(
                   child: Lottie.asset(

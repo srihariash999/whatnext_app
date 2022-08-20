@@ -53,13 +53,13 @@ class MessagesProvider extends BaseProvider {
     _canMessageUsers = await _firestoreService.getCommonFriends(
         user: _authenticationService.currentUser);
 
-    print("common : $_canMessageUsers");
+    // print("common : $_canMessageUsers");
   }
 
   getAvailableChatRooms() async {
     _availableChatRooms = await _firestoreService.getChatRooms(
         userName: _authenticationService.currentUser.userName);
-    print('rooms : $_availableChatRooms');
+    // print('rooms : $_availableChatRooms');
 
     setState();
   }
@@ -73,14 +73,14 @@ class MessagesProvider extends BaseProvider {
       toUser: toUser,
     );
 
-    print('chat props: $_chatRoomProps');
+    // print('chat props: $_chatRoomProps');
 
     if (_chatRoomProps['fromLastSeen'] != null &&
         _chatRoomProps['fromLastSeen'] != 'never' &&
         _chatRoomProps['toLastMsg'] != null &&
         _chatRoomProps['toLastMsg'] != 'never') {
-      print(
-          " the diff ${DateTime.parse(_chatRoomProps['toLastMsg']).difference(DateTime.parse(_chatRoomProps['fromLastSeen'])).inSeconds}");
+      // print(
+      //     " the diff ${DateTime.parse(_chatRoomProps['toLastMsg']).difference(DateTime.parse(_chatRoomProps['fromLastSeen'])).inSeconds}");
       return DateTime.parse(_chatRoomProps['toLastMsg'])
               .difference(DateTime.parse(_chatRoomProps['fromLastSeen']))
               .inSeconds >
@@ -95,12 +95,12 @@ class MessagesProvider extends BaseProvider {
     _navigationService.pop();
     Map _roomExists = await _firestoreService.checkIfRoomExists(
         fromUserName: _currentUser, toUserName: toUserName);
-    print(_roomExists);
+    // print(_roomExists);
     if (_roomExists['roomExists']) {
-      print(" room is there. ${_roomExists['roomName']}");
+      // print(" room is there. ${_roomExists['roomName']}");
       navigateToChatScreen(toUserName);
     } else {
-      print("Room not there, create it");
+      // print("Room not there, create it");
       await _firestoreService.createChatRoom(
           fromUserName: _currentUser,
           toUserName: toUserName,
@@ -196,9 +196,10 @@ class MessagesProvider extends BaseProvider {
           ),
         ),
       );
-      var s = await _controller.closed;
+      // var s =
+      await _controller.closed;
       _setSheetStatus();
-      print(s);
+      // print(s);
     }
   }
 

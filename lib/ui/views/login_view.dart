@@ -71,7 +71,7 @@ class LoginView extends StatelessWidget {
             TextLink(
               'Create an Account if you\'re new',
               onPressed: () {
-                print(" wants to signup");
+                // print(" wants to signup");
                 model.navigateToSignUp();
               },
             ),
@@ -79,7 +79,7 @@ class LoginView extends StatelessWidget {
             TextLink(
               'Reset password',
               onPressed: () {
-                print(" Reset password");
+                // print(" Reset password");
                 model.navigateToResetView();
               },
             )

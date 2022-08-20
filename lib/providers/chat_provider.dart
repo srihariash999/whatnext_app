@@ -72,7 +72,7 @@ class ChatProvider extends BaseProvider {
     setBusy(false);
 
     // Scroll to the last of the chat list.
-    WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
+    // WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
 
     // Listen to the chatRoom updates. (new message arrival)
     _instance.collection('chatRooms').doc(roomName).snapshots().listen((event) {
@@ -87,10 +87,10 @@ class ChatProvider extends BaseProvider {
       }
       _messages = [];
       for (var i in event.get('messages')) {
-        _messages.add(Message.fromJson(i));
+        _messages.insert(0, Message.fromJson(i));
       }
       setState();
-      WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
+      // WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
     });
   }
 
@@ -108,6 +108,7 @@ class ChatProvider extends BaseProvider {
   // Method to get list of all messages for current chat room.
   getMessages() async {
     _messages = await _firestoreService.getMessages(roomName: _roomName);
+    _messages = _messages.reversed.toList();
     // print(_messages);
 
     //updating current user's last seen, as the messages are seen.
@@ -135,15 +136,15 @@ class ChatProvider extends BaseProvider {
   }
 
   // Utility function used to scroll to the end of the messages list on screen.
-  scrollToLast() async {
-    try {
-      print(" this called");
-      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-          duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
-    } catch (e) {
-      print(" cannot scroll");
-    }
-  }
+  // scrollToLast() async {
+  //   try {
+  //     // print(" this called");
+  //     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+  //         duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
+  //   } catch (e) {
+  //     // print(" cannot scroll");
+  //   }
+  // }
 
   // Message to actually send a message.
   sendMessage() async {
@@ -175,7 +176,7 @@ class ChatProvider extends BaseProvider {
       _messageController.clear();
 
       setState();
-      print("this completed");
+      // print("this completed");
 
       //get to user token
 
@@ -190,7 +191,7 @@ class ChatProvider extends BaseProvider {
             body: "${_authenticationService.currentUser.userName} : $msg");
       }
     } else {
-      print(" message ignored: ${_messageController.text}");
+      // print(" message ignored: ${_messageController.text}");
       _messageController.clear();
 
       setState();

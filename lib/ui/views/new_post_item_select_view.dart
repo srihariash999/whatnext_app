@@ -13,7 +13,7 @@ class NewPostItemSearchView extends StatelessWidget {
     return ViewModelProvider<NewPostProvider>.withConsumer(
       viewModelBuilder: () => NewPostProvider(),
       builder: (context, model, child) {
-        print(" query: ${_searchController.text}");
+        // print(" query: ${_searchController.text}");
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
@@ -34,7 +34,7 @@ class NewPostItemSearchView extends StatelessWidget {
                   ),
                   onSubmitted: (String query) {
                     if (query.length > 1) {
-                      print(" query submitted");
+                      // print(" query submitted");
                       model.fetchSearchReults(query);
                     }
                   },
@@ -44,7 +44,7 @@ class NewPostItemSearchView extends StatelessWidget {
                     suffixIcon: GestureDetector(
                       onTap: () {
                         if (_searchController.text.length > 1) {
-                          print(" query submitted");
+                          // print(" query submitted");
                           model.fetchSearchReults(_searchController.text);
                         }
                       },

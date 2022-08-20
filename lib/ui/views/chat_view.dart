@@ -120,6 +120,7 @@ class _ChatViewState extends State<ChatView> {
                       children: [
                         Expanded(
                           child: ListView.builder(
+                            reverse: true,
                             controller: model.scrollController,
                             itemCount: model.messages.length,
                             itemBuilder: (context, int index) {
@@ -144,9 +145,9 @@ class _ChatViewState extends State<ChatView> {
                                   style: Theme.of(context)
                                       .primaryTextTheme
                                       .headline4,
-                                  onChanged: (String d) {
-                                    model.scrollToLast();
-                                  },
+                                  // onChanged: (String d) {
+                                  //   model.scrollToLast();
+                                  // },
                                   decoration: InputDecoration(
                                     suffixIcon: model.isMessageSending
                                         ? Container(
@@ -171,11 +172,11 @@ class _ChatViewState extends State<ChatView> {
                                               IconButton(
                                                 onPressed: () async {
                                                   await model.sendMessage();
-                                                  print(" here");
-                                                  WidgetsBinding.instance
-                                                      .addPostFrameCallback(
-                                                          (_) => model
-                                                              .scrollToLast());
+                                                  // print(" here");
+                                                  // WidgetsBinding.instance
+                                                  //     .addPostFrameCallback(
+                                                  //         (_) => model
+                                                  //             .scrollToLast());
                                                 },
                                                 icon: Icon(
                                                   FeatherIcons.send,

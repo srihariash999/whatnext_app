@@ -31,7 +31,7 @@ class TvShowListWidget extends StatelessWidget {
           TvShow popTvShow = tvShowsList[ind];
           return InkWell(
             onTap: () {
-              print(" tapped on ${tvShowsList[ind].id} ");
+              // print(" tapped on ${tvShowsList[ind].id} ");
               onTvShowTap(tvShowsList[ind].id, 'tv');
             },
             child: Container(
@@ -135,7 +135,7 @@ class TvShowGridView extends StatelessWidget {
           TvShow popTvShow = tvShowsList[ind];
           return InkWell(
             onTap: () {
-              print(" tapped on ${tvShowsList[ind].id} ");
+              // print(" tapped on ${tvShowsList[ind].id} ");
               onTvShowTap(tvShowsList[ind].id, 'tv');
             },
             child: Container(

@@ -92,10 +92,10 @@ class SignUpProvider extends BaseProvider {
     for (var i in snap) {
       // print(i.data());
       // Object data = i.data();
-      print(" username is : ${i['userName']} ");
+      // print(" username is : ${i['userName']} ");
       if (i['userName'] == userName) {
         _isUserNameTaken = true;
-        print(' username is taken');
+        // print(' username is taken');
         break;
       }
     }

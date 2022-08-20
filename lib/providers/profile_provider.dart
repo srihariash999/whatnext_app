@@ -63,10 +63,10 @@ class ProfileProvider extends BaseProvider {
     _pageSelected = i;
     if (i == 0) {
       _peopleToShow = _authenticationService.currentUser.followersList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     } else {
       _peopleToShow = _authenticationService.currentUser.followingList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     }
     setState();
   }
@@ -91,7 +91,7 @@ class ProfileProvider extends BaseProvider {
         userName: _authenticationService.currentUser.userName);
     _feedIds = feedIds;
     setState();
-    print("_feed ids are : $_feedIds");
+    // print("_feed ids are : $_feedIds");
     for (var id in feedIds) {
       Feed _feedPost = await _firestoreService.getFeedPostById(id: id);
 

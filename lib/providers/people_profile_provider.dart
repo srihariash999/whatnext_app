@@ -42,10 +42,10 @@ class PeopleProfileProvider extends BaseProvider {
     _pageSelected = i;
     if (i == 0) {
       _peopleToShow = _person.followersList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     } else {
       _peopleToShow = _person.followingList;
-      print("_peopleToShow : $_peopleToShow");
+      // print("_peopleToShow : $_peopleToShow");
     }
     setState();
   }

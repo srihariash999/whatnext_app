@@ -26,6 +26,9 @@ class TvShowVerticalView extends StatelessWidget {
           "${arguments['type']}",
           style: Theme.of(context).primaryTextTheme.headline2,
         ),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).primaryColorLight,
+        ),
         elevation: 0.0,
       ),
       body: ViewModelProvider<HomeProvider>.withConsumer(
