@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:whatnext/locator.dart';
 import 'package:whatnext/models/message.dart';
-import 'package:whatnext/services/authentication_service.dart';
-import 'package:whatnext/services/firestore_service.dart';
 // import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/providers/base_provider.dart';
+import 'package:whatnext/services/authentication_service.dart';
+import 'package:whatnext/services/firestore_service.dart';
 
 class ChatProvider extends BaseProvider {
   // Firestore instance.
@@ -51,6 +51,10 @@ class ChatProvider extends BaseProvider {
   // Getter to get the private loader variable
   bool get isMessageSending => _isMessageSending;
 
+  bool _isLastPage = false;
+
+  bool get isLastPage => _isLastPage;
+
   // List of messages.
   List<Message> _messages = [];
   List<Message> get messages => _messages;
@@ -71,9 +75,6 @@ class ChatProvider extends BaseProvider {
     // indicate not busy.
     setBusy(false);
 
-    // Scroll to the last of the chat list.
-    // WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
-
     // Listen to the chatRoom updates. (new message arrival)
     _instance.collection('chatRooms').doc(roomName).snapshots().listen((event) {
       // print('event p : ${event.get('messages')} ');
@@ -85,13 +86,43 @@ class ChatProvider extends BaseProvider {
       } else {
         _lastSeen = 'Never';
       }
-      _messages = [];
-      for (var i in event.get('messages')) {
-        _messages.insert(0, Message.fromJson(i));
-      }
-      setState();
-      // WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
     });
+
+    // Listen to the chatRoom messages update. (new message arrival)
+    _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .collection('messages')
+        .orderBy('addedOn', descending: true)
+        .limit(20)
+        .snapshots()
+        .listen((event) {
+      print('event p : ${event.metadata.isFromCache} ');
+      if (!event.metadata.isFromCache) {
+        _messages = [];
+        for (var i in event.docs) {
+          // for (var i in event.get('messages')) {
+          var map = i.data();
+          map['message'] = map['message'] + " from event";
+          _messages.add(Message.fromJson(map));
+          // }
+          setState();
+          // WidgetsBinding.instance.addPostFrameCallback((_) => scrollToLast());
+        }
+      }
+    });
+  }
+
+  loadMoreMessages() async {
+    var res = await _firestoreService.getMessagesFrom(
+      roomName: roomName,
+      addedOn: messages.last.addedOn,
+    );
+    if (res.length < 20) {
+      _isLastPage = true;
+    }
+    _messages.addAll([...res]);
+    setState();
   }
 
   // Method used to get the curren chat room's name.
@@ -135,17 +166,6 @@ class ChatProvider extends BaseProvider {
     }
   }
 
-  // Utility function used to scroll to the end of the messages list on screen.
-  // scrollToLast() async {
-  //   try {
-  //     // print(" this called");
-  //     _scrollController.animateTo(_scrollController.position.maxScrollExtent,
-  //         duration: Duration(milliseconds: 100), curve: Curves.easeInOut);
-  //   } catch (e) {
-  //     // print(" cannot scroll");
-  //   }
-  // }
-
   // Message to actually send a message.
   sendMessage() async {
     // check ig the message is not empty.
@@ -153,6 +173,8 @@ class ChatProvider extends BaseProvider {
       // set the loader to true.
       _isMessageSending = true;
       setState();
+      // clear the chat editing box.
+
       // send the message.
       await _firestoreService.sendMessage(
         fromuser: _authenticationService.currentUser.userName,
@@ -160,6 +182,7 @@ class ChatProvider extends BaseProvider {
         roomName: roomName,
         message: _messageController.text.trim(),
       );
+      _messageController.clear();
       // _messages.add(Message(
       //   from: _authenticationService.currentUser.userName,
       //   to: _toUserName,
@@ -171,9 +194,6 @@ class ChatProvider extends BaseProvider {
 
       // store the message text in a variable.
       String msg = _messageController.text.trim();
-
-      // clear the chat editing box.
-      _messageController.clear();
 
       setState();
       // print("this completed");
