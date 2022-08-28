@@ -176,7 +176,7 @@ class _ChatViewState extends State<ChatView> {
                                   controller: model.messageController,
                                   minLines: 1,
                                   maxLines: 4,
-                                  keyboardType: TextInputType.text,
+                                  keyboardType: TextInputType.multiline,
                                   readOnly: model.isMessageSending,
                                   style: Theme.of(context)
                                       .primaryTextTheme

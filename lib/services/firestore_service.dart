@@ -445,7 +445,7 @@ class FirestoreService {
         .collection('chatRooms')
         .doc(roomName)
         .collection('messages')
-        .orderBy('addedOn', descending: false)
+        .orderBy('addedOn', descending: true)
         .limit(20)
         .get();
 
@@ -515,6 +515,8 @@ class FirestoreService {
       @required String roomName,
       @required String message}) async {
     // add new message as a document in the sub collection 'messages'
+
+    print(" in here to send $message");
     await _instance
         .collection('chatRooms')
         .doc(roomName)

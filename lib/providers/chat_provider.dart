@@ -103,7 +103,7 @@ class ChatProvider extends BaseProvider {
         for (var i in event.docs) {
           // for (var i in event.get('messages')) {
           var map = i.data();
-          map['message'] = map['message'] + " from event";
+          // map['message'] = map['message'] + " from event";
           _messages.add(Message.fromJson(map));
           // }
           setState();
@@ -114,10 +114,16 @@ class ChatProvider extends BaseProvider {
   }
 
   loadMoreMessages() async {
-    var res = await _firestoreService.getMessagesFrom(
-      roomName: roomName,
-      addedOn: messages.last.addedOn,
-    );
+    var res;
+    try {
+      res = await _firestoreService.getMessagesFrom(
+        roomName: roomName,
+        addedOn: messages.last.addedOn,
+      );
+    } on Exception catch (e) {
+      debugPrint(" error getting older messages: $e");
+      res = [];
+    }
     if (res.length < 20) {
       _isLastPage = true;
     }
@@ -139,7 +145,8 @@ class ChatProvider extends BaseProvider {
   // Method to get list of all messages for current chat room.
   getMessages() async {
     _messages = await _firestoreService.getMessages(roomName: _roomName);
-    _messages = _messages.reversed.toList();
+    if (_messages.length == 0) _isLastPage = true;
+    // _messages = _messages.reversed.toList();
     // print(_messages);
 
     //updating current user's last seen, as the messages are seen.
@@ -172,35 +179,25 @@ class ChatProvider extends BaseProvider {
     if (!isMessageSending && _messageController.text.trim().length > 1) {
       // set the loader to true.
       _isMessageSending = true;
-      setState();
+      // store the message text in a variable.
+      String msg = _messageController.text.trim();
       // clear the chat editing box.
+      _messageController.clear();
 
       // send the message.
       await _firestoreService.sendMessage(
         fromuser: _authenticationService.currentUser.userName,
         toUser: _toUserName,
         roomName: roomName,
-        message: _messageController.text.trim(),
+        message: msg,
       );
-      _messageController.clear();
-      // _messages.add(Message(
-      //   from: _authenticationService.currentUser.userName,
-      //   to: _toUserName,
-      //   addedOn: "${DateTime.now()}",
-      //   message: _messageController.text,
-      // ));
+
       // set the loader to false.
       _isMessageSending = false;
 
-      // store the message text in a variable.
-      String msg = _messageController.text.trim();
-
       setState();
-      // print("this completed");
 
       //get to user token
-
-      // get the token of the to user.
 
       // Send a notification to the other person in chat.
       var res = await _firestoreService.getuserToken(_toUserName);
