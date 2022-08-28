@@ -1,26 +1,20 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:provider_architecture/_viewmodel_provider.dart';
-// import 'package:whatnext/constants/route_names.dart';
 import 'package:whatnext/managers/deep_link_manager.dart';
-// import 'package:whatnext/models/movie_details.dart';
-// import 'package:whatnext/models/tv_show_details.dart';
+import 'package:whatnext/providers/theme_provider.dart';
 import 'package:whatnext/services/dialog_service.dart';
 import 'package:whatnext/services/navigation_service.dart';
 import 'package:whatnext/services/snackbar_service.dart';
-// import 'package:whatnext/ui/views/movie_details_view.dart';
-// import 'package:whatnext/ui/views/movie_detail_deepLink.dart';
 import 'package:whatnext/ui/views/startup_view.dart';
-// import 'package:whatnext/ui/views/tv_show_details_view.dart';
-// import 'package:whatnext/ui/views/tv_detail_deeplink.dart';
-import 'package:whatnext/providers/theme_provider.dart';
+
+import 'locator.dart';
 import 'managers/dialog_manager.dart';
 import 'ui/router.dart';
-import 'locator.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

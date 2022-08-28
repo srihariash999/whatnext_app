@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 import 'package:whatnext/constants/api_keys.dart';
 import 'package:whatnext/models/about.dart';
 import 'package:whatnext/models/feed.dart';
@@ -217,7 +217,7 @@ class FirestoreService {
     @required String title,
   }) async {
     try {
-      // var res = 
+      // var res =
       await _instance.collection("notifications").add(
         {
           'userName': userName,
@@ -249,9 +249,11 @@ class FirestoreService {
           .collection("users")
           .doc(username)
           .collection('tokens')
+          .orderBy('createdAt', descending: true)
+          .limit(1)
           .get();
       // for (var i in doc.docs) {
-        // print(' jee jee : ${i.data()}');
+      //   print(' jee jee : ${i.data()}');
       // }
 
       if (doc.docs.length > 0) {
@@ -277,7 +279,7 @@ class FirestoreService {
     dio.options.headers["Authorization"] = "key=$firebaseServerKey";
 
     // Response resp =
-        await dio.post('https://fcm.googleapis.com/fcm/send', data: {
+    await dio.post('https://fcm.googleapis.com/fcm/send', data: {
       "to": "$token",
       "priority": "high",
       "notification": {"title": "", "body": "$body", "text": ""}
@@ -313,7 +315,7 @@ class FirestoreService {
 
     var doc = await _instance.collection("users").doc(userName).get();
     List s = doc.data()['feedPosts'];
-    // bool rem = 
+    // bool rem =
     s.remove(id);
     var newData = doc.data();
     newData['feedPosts'] = s;
@@ -409,7 +411,6 @@ class FirestoreService {
       {
         'participant1': fromUserName,
         'participant2': toUserName,
-        'messages': [],
         'lastSeen$fromUserName': DateTime.now().toString(),
         'lastSeen$toUserName': 'never',
       },
@@ -440,10 +441,41 @@ class FirestoreService {
   Future<List<Message>> getMessages({@required String roomName}) async {
     List<Message> _messages = [];
 
-    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
-    for (var i in roomData.data()['messages']) {
-      _messages.add(Message.fromJson(i));
+    var roomSnap = await _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .collection('messages')
+        .orderBy('addedOn', descending: true)
+        .limit(20)
+        .get();
+
+    for (var i in roomSnap.docs) {
+      var msg = i.data();
+      _messages.add(Message.fromJson(msg));
     }
+
+    return _messages;
+  }
+
+  Future<List<Message>> getMessagesFrom(
+      {@required String roomName, @required String addedOn}) async {
+    print(" getting messages from $addedOn");
+    List<Message> _messages = [];
+
+    var roomSnap = await _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .collection('messages')
+        .orderBy('addedOn', descending: true)
+        .startAfter([addedOn])
+        .limit(20)
+        .get();
+
+    for (var i in roomSnap.docs) {
+      var msg = i.data();
+      _messages.add(Message.fromJson(msg));
+    }
+
     return _messages;
   }
 
@@ -482,22 +514,25 @@ class FirestoreService {
       @required String toUser,
       @required String roomName,
       @required String message}) async {
-    // get all messages in chat room
-    var roomData = await _instance.collection('chatRooms').doc(roomName).get();
-    List messages = roomData.data()['messages'];
-    // add the new message.
-    messages.add({
+    // add new message as a document in the sub collection 'messages'
+
+    print(" in here to send $message");
+    await _instance
+        .collection('chatRooms')
+        .doc(roomName)
+        .collection('messages')
+        .add({
       "message": message,
       "from": fromuser,
       "to": toUser,
       "addedOn": "${DateTime.now()}"
     });
-    // put them back
+
+    // update the times.
 
     String _timeNow = DateTime.now().toString();
     await _instance.collection('chatRooms').doc(roomName).update(
       {
-        "messages": messages,
         'lastSeen$fromuser': _timeNow,
         'lastMsg$fromuser': _timeNow,
       },

@@ -3,10 +3,10 @@ import 'package:feather_icons/feather_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider_architecture/provider_architecture.dart';
-import 'package:whatnext/models/message.dart';
-import 'package:whatnext/services/firestore_service.dart';
-import 'package:whatnext/providers/chat_provider.dart';
 import 'package:whatnext/locator.dart';
+import 'package:whatnext/models/message.dart';
+import 'package:whatnext/providers/chat_provider.dart';
+import 'package:whatnext/services/firestore_service.dart';
 
 class ChatView extends StatefulWidget {
   final String toUserName;
@@ -119,11 +119,46 @@ class _ChatViewState extends State<ChatView> {
                     child: Column(
                       children: [
                         Expanded(
+                          // List View of the messages
                           child: ListView.builder(
                             reverse: true,
                             controller: model.scrollController,
-                            itemCount: model.messages.length,
+                            itemCount: model.messages.length + 1,
                             itemBuilder: (context, int index) {
+                              if (index == model.messages.length) {
+                                if (model.isLastPage) {
+                                  return Container();
+                                }
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    InkWell(
+                                      onTap: model.loadMoreMessages,
+                                      child: Container(
+                                        margin: const EdgeInsets.symmetric(
+                                            vertical: 8.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 16.0),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .primaryColorLight,
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                        child: Text(
+                                          "Load older messages",
+                                          style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Theme.of(context)
+                                                .backgroundColor,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }
                               Message _message = model.messages[index];
                               return ChatAndDateWidget(
                                 message: _message,
@@ -141,6 +176,7 @@ class _ChatViewState extends State<ChatView> {
                                   controller: model.messageController,
                                   minLines: 1,
                                   maxLines: 4,
+                                  keyboardType: TextInputType.multiline,
                                   readOnly: model.isMessageSending,
                                   style: Theme.of(context)
                                       .primaryTextTheme
