@@ -24,8 +24,7 @@ class FriendsView extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Theme.of(context).primaryColor,
             elevation: 0.0,
-            title: Text("Find People",
-                style: Theme.of(context).primaryTextTheme.headline1),
+            title: Text("Find People", style: Theme.of(context).primaryTextTheme.headline1),
             iconTheme: IconThemeData(
               color: Theme.of(context).primaryColorLight,
             ),
@@ -55,8 +54,7 @@ class FriendsView extends StatelessWidget {
                           style: Theme.of(context).primaryTextTheme.headline4,
                           decoration: InputDecoration(
                             hintText: "Search a user",
-                            hintStyle:
-                                Theme.of(context).primaryTextTheme.headline4,
+                            hintStyle: Theme.of(context).primaryTextTheme.headline4,
                             suffixIcon: InkWell(
                               onTap: () {
                                 _searchController.clear();
@@ -114,8 +112,7 @@ class FriendsView extends StatelessWidget {
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           flex: 5,
@@ -123,24 +120,18 @@ class FriendsView extends StatelessWidget {
                                             children: [
                                               u.profilePicture != null
                                                   ? Container(
-                                                      alignment:
-                                                          Alignment.center,
+                                                      alignment: Alignment.center,
                                                       child: CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.white,
+                                                        backgroundColor: Colors.white,
                                                         backgroundImage:
-                                                            NetworkImage(u
-                                                                .profilePicture),
+                                                            NetworkImage(u.profilePicture),
                                                       ),
                                                     )
                                                   : Container(
-                                                      alignment:
-                                                          Alignment.center,
+                                                      alignment: Alignment.center,
                                                       child: CircleAvatar(
-                                                        backgroundColor:
-                                                            Colors.white,
-                                                        child:
-                                                            Icon(Icons.person),
+                                                        backgroundColor: Colors.white,
+                                                        child: Icon(Icons.person),
                                                       ),
                                                     ),
                                               SizedBox(
@@ -148,19 +139,16 @@ class FriendsView extends StatelessWidget {
                                               ),
                                               Expanded(
                                                 child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
                                                       '${u.fullName}',
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
+                                                      overflow: TextOverflow.ellipsis,
                                                       style: Theme.of(context)
                                                           .primaryTextTheme
                                                           .headline4
                                                           .copyWith(
-                                                            fontWeight:
-                                                                FontWeight.w500,
+                                                            fontWeight: FontWeight.w500,
                                                           ),
                                                     ),
                                                     Text(
@@ -178,10 +166,7 @@ class FriendsView extends StatelessWidget {
                                         Expanded(
                                           flex: 2,
                                           child: FriendStatusWidget(
-                                              u: u,
-                                              fri: fri,
-                                              model: model,
-                                              toShow: _toShow),
+                                              u: u, fri: fri, model: model, toShow: _toShow),
                                         ),
                                       ],
                                     ),

@@ -16,6 +16,7 @@ class PeopleProfileView extends StatelessWidget {
       onModelReady: (model) => model.onInit(userName),
       builder: (context, model, child) => Scaffold(
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColor,
           elevation: 0.0,
         ),
         body: model.busy
@@ -33,9 +34,7 @@ class PeopleProfileView extends StatelessWidget {
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                           color: Colors.white,
-                          border: model.person.profilePicture != null
-                              ? Border()
-                              : Border.all(),
+                          border: model.person.profilePicture != null ? Border() : Border.all(),
                           borderRadius: BorderRadius.circular(12.0),
                         ),
                         child: model.person.profilePicture != null
@@ -61,16 +60,14 @@ class PeopleProfileView extends StatelessWidget {
                           Container(
                             child: Text(
                               "${model.person.fullName}",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline2,
+                              style: Theme.of(context).primaryTextTheme.headline2,
                             ),
                           ),
                           verticalSpaceSmall,
                           Container(
                             child: Text(
                               "@${model.person.userName}",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline4,
+                              style: Theme.of(context).primaryTextTheme.headline4,
                             ),
                           ),
                         ],
@@ -87,16 +84,14 @@ class PeopleProfileView extends StatelessWidget {
                           Container(
                             child: Text(
                               "Following : ",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                           horizontalSpaceSmall,
                           Container(
                             child: Text(
                               "${model.person.followingList.length}",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                         ],
@@ -108,16 +103,14 @@ class PeopleProfileView extends StatelessWidget {
                           Container(
                             child: Text(
                               "Followers : ",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                           horizontalSpaceSmall,
                           Container(
                             child: Text(
                               "${model.person.followersList.length}",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                         ],
@@ -129,16 +122,14 @@ class PeopleProfileView extends StatelessWidget {
                           Container(
                             child: Text(
                               "Movies : ",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                           horizontalSpaceSmall,
                           Container(
                             child: Text(
                               "${model.personWatchList.length}",
-                              style:
-                                  Theme.of(context).primaryTextTheme.headline5,
+                              style: Theme.of(context).primaryTextTheme.headline5,
                             ),
                           ),
                         ],
@@ -160,8 +151,8 @@ class PeopleProfileView extends StatelessWidget {
                           padding: const EdgeInsets.only(
                               left: 4.0, right: 4.0, top: 4.0, bottom: 4.0),
                           child: Container(
-                            padding: EdgeInsets.only(
-                                top: 6.0, bottom: 6.0, left: 6.0, right: 6.0),
+                            padding:
+                                EdgeInsets.only(top: 6.0, bottom: 6.0, left: 6.0, right: 6.0),
                             decoration: BoxDecoration(
                                 color: model.getColor(
                                   movie['status'].toString(),
@@ -169,8 +160,8 @@ class PeopleProfileView extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(15.0)),
                             child: Container(
                               clipBehavior: Clip.antiAlias,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15.0)),
+                              decoration:
+                                  BoxDecoration(borderRadius: BorderRadius.circular(15.0)),
                               alignment: Alignment.center,
                               child: Image.network(
                                 "https://image.tmdb.org/t/p/w500${movie['poster']}",
