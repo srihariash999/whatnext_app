@@ -11,6 +11,24 @@
  
 
 What next is a social platform to track your movie and tv shows consumption and socialize with your friends to see their watchlists.
+ 
+ <br/>
+
+ ---
+ 
+ <br/>
+
+## ** NOTICE ** 
+
+Thank you to the people who downloaded this app from playstore and those who starred my repo. I started this project to be a way for me to learn more about firebase related stuff like firestore, fcm, dynamic links etc. I still see this project as such. 
+
+But I am going to put development of this project on an indefinite hiatus as I don't really have time to maintain Whatnext? anymore. I am however planning to push one last maintenance commit to whatnext to make it compatible with flutter v3.7.5 which is the latest version as of Feb 2023 and update the playstore version with the same.
+
+I will probably wait some time before archiving this project. That said I still think Whatnext? is still valid for someone getting started with flutter to use as a reference but as this project was made when I was starting out with flutter, there might me some things which are more of a hack than a solve so take it with a grain of salt.
+
+If anyone is willing to maintain Whatnext? in the future contact me or open an issue stating the same and we can work out the details.
+
+ ---
 
 ## Tech Stack:
 
