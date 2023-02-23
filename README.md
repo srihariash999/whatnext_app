@@ -28,7 +28,11 @@ I will probably wait some time before archiving this project. That said I still 
 
 If anyone is willing to maintain Whatnext? in the future contact me or open an issue stating the same and we can work out the details.
 
+ <br/>
+
  ---
+ 
+ <br/>
 
 ## Tech Stack:
 
